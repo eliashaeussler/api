@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright (c) 2018 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
+ */
+
 // Slack app credentials
 define("SIGNING_SECRET", "0d5b309cb4c07a5922ea8154186fcaf9");
 
@@ -8,8 +12,7 @@ define("API_METHOD", "users.profile.set");
 
 // Slack Authentication settings
 define("AUTH_TYPE", "Bearer");
-define("AUTH_PREFIX", "xoxp");
-define("AUTH_TOKEN", "33584152470-238146475475-491173017538-ab45b16cf4769b6fc4d56a8e9bf83489");
+define("AUTH_TOKEN", "xoxp-33584152470-238146475475-491173017538-ab45b16cf4769b6fc4d56a8e9bf83489");
 
 // Get request body
 $req_body = file_get_contents('php://input');
@@ -60,7 +63,7 @@ curl_setopt_array($ch, [
     CURLOPT_POSTFIELDS => $data_string,
     CURLOPT_HTTPHEADER => [
         "Content-Type: " . "application/json; charset=utf-8",
-        "Authorization: " . sprintf("%s %s-%s", AUTH_TYPE, AUTH_PREFIX, AUTH_TOKEN),
+        "Authorization: " . sprintf("%s %s", AUTH_TYPE, AUTH_TOKEN),
         "Content-Length: " . strlen($data_string),
     ],
 ]);
