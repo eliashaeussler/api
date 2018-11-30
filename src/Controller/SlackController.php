@@ -128,8 +128,8 @@ class SlackController extends BaseController
         // Check if request is older than 5 minutes
         $cur_time = new \DateTime();
         $req_time = (new \DateTime())->setTimestamp((int) $timestamp);
-        $time_int = $cur_time->diff($req_time);
-        if ($time_int->format('%i') >= 5) return false;
+        $interval = $req_time->diff($cur_time);
+        if ($interval->format('%i') >= 5) return false;
 
         // Test if request is authenticated
         $version_number = "v0";
