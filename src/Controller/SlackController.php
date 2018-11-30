@@ -46,7 +46,7 @@ class SlackController extends BaseController
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_URL => self::API_URL . self::API_METHOD,
+            CURLOPT_URL => self::API_URL . "users.profile.set",
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $data,
             CURLOPT_HTTPHEADER => [
