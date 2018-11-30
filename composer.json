@@ -12,5 +12,10 @@
   "require": {
     "ext-curl": "*",
     "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "EliasHaeussler\\Api\\": "src/"
+    }
   }
 }
