@@ -9,6 +9,6 @@ namespace EliasHaeussler\Api\Exception;
  * @package EliasHaeussler\Api\Exception
  * @author Elias Häußler <mail@elias-haeussler.de>
  */
-class EmptyFunctionException extends \Exception
+class EmptyParametersException extends \Exception
 {
 }

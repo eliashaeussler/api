@@ -58,10 +58,13 @@ abstract class BaseController
     {
         $headers = [];
 
+        // Get HTTP headers
         $allHeaders = $_SERVER;
         $httpHeaders = array_filter($allHeaders, function ($header) {
             return stripos(trim($header), "HTTP_") === 0;
         }, ARRAY_FILTER_USE_KEY);
+
+        // Normalize HTTP headers by removing "HTTP_" prefix
         array_walk($httpHeaders, function (&$value, $header) use (&$headers) {
             $header = preg_replace("/^(\s?HTTP_)/", "", $header);
             $headers[$header] = $value;
