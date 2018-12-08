@@ -39,6 +39,8 @@ abstract class BaseController
         $this->readRequestBody();
         $this->readRequestHeaders();
         $this->setRoute($route);
+
+        $this->initializeRequest();
     }
 
     /**
@@ -67,6 +69,11 @@ abstract class BaseController
 
         $this->requestHeaders = $headers;
     }
+
+    /**
+     * @todo add doc
+     */
+    protected function initializeRequest() {}
 
     /**
      * @todo add doc
