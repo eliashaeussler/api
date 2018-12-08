@@ -15,11 +15,15 @@ use EliasHaeussler\Api\Exception\AuthenticationException;
  */
 class SlackController extends BaseController
 {
-    /** @var string Base API url of Slack */
+    /**
+     * @var string Base API url of Slack
+     */
     const API_URL = "https://slack.com/api/";
 
-    /** @var string Signing secret from Slack App, used for authentication */
-    const SIGNING_SECRET = "0d5b309cb4c07a5922ea8154186fcaf9";
+    /**
+     * @var string Signing secret from Slack App, used for authentication
+     */
+    protected $signingSecret;
 
     /**
      * @var string Slack authentication type

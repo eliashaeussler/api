@@ -8,7 +8,7 @@ namespace EliasHaeussler\Api\Routing;
 use EliasHaeussler\Api\Controller\BaseController;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\EmptyControllerException;
-use EliasHaeussler\Api\Exception\EmptyFunctionException;
+use EliasHaeussler\Api\Exception\EmptyParametersException;
 use EliasHaeussler\Api\Exception\InvalidControllerException;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
@@ -33,7 +33,7 @@ class PageRouter
     /**
      * @var string|null
      */
-    protected $function;
+    protected $parameters;
 
     /**
      * @var BaseController|null
@@ -47,19 +47,19 @@ class PageRouter
      * @throws ClassNotFoundException
      * @throws EmptyControllerException
      * @throws InvalidControllerException
-     * @throws EmptyFunctionException
+     * @throws EmptyParametersException
      */
     public function __construct()
     {
         $this->getRequest();
-        $this->mapController();
+        $this->initializeController();
     }
 
     /**
      * @todo documentation needed
      *
      * @throws EmptyControllerException
-     * @throws EmptyFunctionException
+     * @throws EmptyParametersException
      * @internal
      */
     protected function getRequest()
@@ -74,12 +74,12 @@ class PageRouter
         }
 
         if (empty($uriComponents[1])) {
-            throw new EmptyFunctionException(sprintf(
+            throw new EmptyParametersException(sprintf(
                 "No controller function given. Please provide a valid function for the controller \"%s\".",
                 $this->namespace
             ));
         } else {
-            $this->function = $uriComponents[1];
+            $this->parameters = $uriComponents[1];
         }
     }
 
@@ -89,19 +89,23 @@ class PageRouter
      * @throws EmptyControllerException
      * @throws InvalidControllerException
      * @throws ClassNotFoundException
-     * @throws EmptyFunctionException
+     * @throws EmptyParametersException
      * @internal
      */
-    protected function mapController()
+    protected function initializeController()
     {
         if (!$this->namespace) {
-            throw new EmptyControllerException("No controller given. Please provide a valid controller.", 1543532177);
+            throw new EmptyControllerException(
+                "No controller given. Please provide a valid controller.",
+                1543532177
+            );
         }
-        if (!$this->function) {
-            throw new EmptyFunctionException(sprintf(
-                "No controller function given. Please provide a valid function for the controller \"%s\".",
+
+        if (!$this->parameters) {
+            throw new EmptyParametersException(sprintf(
+                "No controller parameters given. Please provide valid parameters for the controller \"%s\".",
                 $this->namespace
-            ));
+            ), 1544226733);
         }
 
         // Generate controller class name
@@ -109,10 +113,13 @@ class PageRouter
         $controllerClass = "EliasHaeussler\\Api\\Controller\\" . $controllerName;
 
         if (!class_exists($controllerClass)) {
-            throw new InvalidControllerException(sprintf("No controller \"%s\" could be found.", $controllerName), 1543532513);
+            throw new InvalidControllerException(sprintf(
+                "Requested controller \"%s\" could not be found.",
+                $controllerName
+            ), 1543532513);
         }
 
-        $this->controller = GeneralUtility::makeInstance($controllerClass, $this->function);
+        $this->controller = GeneralUtility::makeInstance($controllerClass, $this->parameters);
     }
 
     /**

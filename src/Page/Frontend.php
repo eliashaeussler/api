@@ -24,9 +24,9 @@ class Frontend
      */
     public static function error(\Exception $object): string
     {
-        $err_header = sprintf('<div class="error__header">Error: %s</div>', get_class($object));
-        $err_body = sprintf('<div class="error__body">%s [%s]</div>', $object->getMessage(), $object->getCode());
-        $content = sprintf('<div class="error">%s%s</div>', $err_header, $err_body);
+        $errorHeader = sprintf('<div class="error__header">Error: %s</div>', get_class($object));
+        $errorBody = sprintf('<div class="error__body">%s [%s]</div>', $object->getMessage(), $object->getCode());
+        $content = sprintf('<div class="error">%s%s</div>', $errorHeader, $errorBody);
 
         return self::bootstrap($content);
     }

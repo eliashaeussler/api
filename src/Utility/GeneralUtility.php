@@ -6,8 +6,6 @@
 namespace EliasHaeussler\Api\Utility;
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
-use EliasHaeussler\Api\Exception\InvalidClassHierarchyException;
-use EliasHaeussler\Api\Singleton;
 
 /**
  * @todo documentation needed
@@ -70,7 +68,10 @@ class GeneralUtility
             return self::$instances[$className];
 
         } else {
-            throw new ClassNotFoundException(sprintf("The class \"%s\" could not be found.", $className), 1543534319);
+            throw new ClassNotFoundException(sprintf(
+                "The class \"%s\" could not be found.",
+                $className
+            ), 1543534319);
         }
     }
 }
