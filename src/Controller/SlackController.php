@@ -21,12 +21,26 @@ class SlackController extends BaseController
     /** @var string Signing secret from Slack App, used for authentication */
     const SIGNING_SECRET = "0d5b309cb4c07a5922ea8154186fcaf9";
 
-    /** @var string Slack authentication type */
-    const AUTH_TYPE = "Bearer";
+    /**
+     * @var string Slack authentication type
+     */
+    protected $authType;
 
-    /** @var string Slack authentication token */
-    const AUTH_TOKEN = "xoxp-33584152470-238146475475-491173017538-ab45b16cf4769b6fc4d56a8e9bf83489";
+    /**
+     * @var string Slack authentication token
+     */
+    protected $authToken;
 
+
+    /**
+     * @todo add doc
+     */
+    protected function initializeRequest()
+    {
+        $this->signingSecret = getenv("SLACK_SIGNING_SECRET");
+        $this->authType = getenv("SLACK_AUTH_TYPE");
+        $this->authToken = getenv("SLACK_AUTH_TOKEN");
+    }
 
     /**
      * @todo add doc
@@ -51,7 +65,7 @@ class SlackController extends BaseController
             CURLOPT_POSTFIELDS => $data,
             CURLOPT_HTTPHEADER => [
                 "Content-Type: " . "application/json; charset=utf-8",
-                "Authorization: " . sprintf("%s %s", self::AUTH_TYPE, self::AUTH_TOKEN),
+                "Authorization: " . sprintf("%s %s", $this->authType, $this->authToken),
                 "Content-Length: " . strlen($data),
             ],
         ]);
@@ -72,11 +86,14 @@ class SlackController extends BaseController
     protected function prepareCall()
     {
         // Get timestamp and signature from request
-        $req_timestamp = $this->getRequestHeader("X-Slack-Request-Timestamp");
-        $req_signature = $this->getRequestHeader("X-Slack-Signature");
+        $requestTimestamp = $this->getRequestHeader("X-Slack-Request-Timestamp");
+        $requestSignature = $this->getRequestHeader("X-Slack-Signature");
 
-        if (!$this->authenticated($req_timestamp, $req_signature)) {
-            throw new AuthenticationException("Authentication failed. Please contact your Slack admin.", 1543541836);
+        if (!$this->isRequestVerified($requestTimestamp, $requestSignature)) {
+            throw new AuthenticationException(
+                "Authentication failed. Please contact your Slack admin.",
+                1543541836
+            );
         }
     }
 
@@ -122,21 +139,23 @@ class SlackController extends BaseController
      * @param string $signature
      * @return bool
      * @throws \Exception
+     * @see https://api.slack.com/docs/verifying-requests-from-slack
      */
-    protected function authenticated(string $timestamp, string $signature): bool
+    protected function isRequestVerified(string $timestamp, string $signature): bool
     {
         // Check if request is older than 5 minutes
-        $cur_time = new \DateTime();
-        $req_time = (new \DateTime())->setTimestamp((int) $timestamp);
-        $interval = $req_time->diff($cur_time);
-        if ($interval->format('%i') >= 5) return false;
+        $validInterval = 5;
+        $currentTime = new \DateTime();
+        $requestTime = (new \DateTime())->setTimestamp((int) $timestamp);
+        $interval = $requestTime->diff($currentTime);
+        if ($interval->format('%i') >= $validInterval) return false;
 
         // Test if request is authenticated
-        $version_number = "v0";
-        $base_string = implode(":", [$version_number, $timestamp, $this->requestBody]);
-        $hash_string = hash_hmac("sha256", $base_string, self::SIGNING_SECRET);
-        $calc_signature = sprintf("%s=%s", $version_number, $hash_string);
-        if ($calc_signature !== $signature) return false;
+        $apiVersionNumber = "v0";
+        $baseString = implode(":", [$apiVersionNumber, $timestamp, $this->requestBody]);
+        $hashString = hash_hmac("sha256", $baseString, $this->signingSecret);
+        $calculatedSignature = sprintf("%s=%s", $apiVersionNumber, $hashString);
+        if ($calculatedSignature != $signature) return false;
 
         return true;
     }
