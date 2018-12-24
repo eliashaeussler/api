@@ -64,7 +64,8 @@ class PageRouter
      */
     protected function getRequest()
     {
-        $uriComponents = GeneralUtility::trimExplode('/', $_SERVER['REQUEST_URI']);
+        $plainUri = strtok($_SERVER['REQUEST_URI'], "?");
+        $uriComponents = GeneralUtility::trimExplode('/', $plainUri);
         $this->uri = implode('/', $uriComponents);
 
         if (empty($uriComponents[0])) {
