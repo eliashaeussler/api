@@ -1,2 +1,6 @@
+# Composer packages
 /vendor
+
+# Environment variables
 /.env
+/*.env.*
