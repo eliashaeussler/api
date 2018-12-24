@@ -110,11 +110,11 @@ class SlackController extends BaseController
      */
     public function call()
     {
+        // Check if request is valid
+        $this->prepareCall();
+
         switch ($this->route) {
             case self::ROUTE_LUNCH:
-                // Check if request is valid
-                $this->prepareCall();
-
                 // Set data to be sent during call
                 $data = $this->prepareDataForCall();
 
