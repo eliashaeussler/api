@@ -87,7 +87,7 @@ class PageRouter
 
         if (empty($uriComponents[1])) {
             throw new EmptyParametersException(sprintf(
-                "No controller function given. Please provide a valid function for the controller \"%s\".",
+                "No controller parameters given. Please provide valid parameters for the controller \"%s\".",
                 $this->namespace
             ));
         } else {
