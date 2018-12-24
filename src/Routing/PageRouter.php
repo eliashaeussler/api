@@ -5,6 +5,7 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Routing;
 
+use Dotenv\Dotenv;
 use EliasHaeussler\Api\Controller\BaseController;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\EmptyControllerException;
@@ -51,8 +52,18 @@ class PageRouter
      */
     public function __construct()
     {
+        $this->loadEnvironment();
         $this->getRequest();
         $this->initializeController();
+    }
+
+    /**
+     * @todo add doc
+     */
+    protected function loadEnvironment()
+    {
+        $loader = new Dotenv(ROOT_PATH);
+        $loader->load();
     }
 
     /**
