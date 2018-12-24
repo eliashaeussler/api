@@ -75,6 +75,7 @@ class SlackController extends BaseController
      * @todo add doc
      *
      * @throws InvalidRequestException
+     * @throws AuthenticationException
      */
     protected function initializeRequest()
     {
@@ -86,7 +87,9 @@ class SlackController extends BaseController
 
         // Store data from request body and user-specific environment variables
         $this->storeRequestData();
-        if ($this->isRequestValid() && $this->isUserAuthenticated()) {
+        if ($this->matchesRoute(self::ROUTE_AUTH)) {
+            $this->processUserAuthentication();
+        } else if ($this->isRequestValid() && $this->isUserAuthenticated()) {
             $this->loadUserEnvironment();
         } else {
             $this->showUserAuthenticationUri();
@@ -107,10 +110,6 @@ class SlackController extends BaseController
     public function call()
     {
         switch ($this->route) {
-            case self::ROUTE_AUTH:
-                $this->processUserAuthentication();
-                break;
-
             case self::ROUTE_LUNCH:
                 // Check if request is valid
                 $this->prepareCall();
