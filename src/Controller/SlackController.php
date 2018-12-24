@@ -380,6 +380,7 @@ class SlackController extends BaseController
      * @todo add doc
      *
      * @throws AuthenticationException
+     * @throws InvalidRequestException
      */
     protected function processUserAuthentication()
     {
@@ -397,25 +398,8 @@ class SlackController extends BaseController
             "code" => $_GET['code'],
         ], false);
 
-        if (!$result) {
-            throw new AuthenticationException(
-                "Error during generation of access token. Please contact your Slack admin.",
-                1545669514
-            );
-        }
-
+        $this->checkApiResult($result);
         $result = json_decode($result, true);
-
-        // Check for valid result from Slack
-        if (!$result["ok"]) {
-            throw new AuthenticationException(
-                sprintf(
-                    "Error during generation of access token. Message from Slack: \"%s\"",
-                    $result['error']
-                ),
-                1545669514
-            );
-        }
 
         // Save authentication credentials
         $fileName = ROOT_PATH . "/" . sprintf(self::ENV_FILENAME_PATTERN, $result["user_id"]);
@@ -429,6 +413,32 @@ class SlackController extends BaseController
             "Yay, the authentication was successful.",
             "Please re-send your command and everything should be fine."
         );
+    }
+
+    /**
+     * @todo add doc
+     *
+     * @param string $result
+     * @throws InvalidRequestException
+     */
+    public function checkApiResult(string $result)
+    {
+        if (!$result) {
+            throw new InvalidRequestException(
+                "Empty result due to an error during API request. Please contact your Slack admin.",
+                1545669514
+            );
+        }
+
+        $result = json_decode($result, true);
+
+        // Check for valid result from Slack
+        if (!$result["ok"]) {
+            throw new InvalidRequestException(
+                sprintf("Error during API request: \"%s\"", $result['error']),
+                1545669514
+            );
+        }
     }
 
     /**
