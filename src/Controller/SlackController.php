@@ -41,9 +41,9 @@ class SlackController extends BaseController
      */
     protected function initializeRequest()
     {
-        $this->signingSecret = getenv("SLACK_SIGNING_SECRET");
-        $this->authType = getenv("SLACK_AUTH_TYPE");
-        $this->authToken = getenv("SLACK_AUTH_TOKEN");
+        $this->signingSecret = getenv("SLACK_SIGNING_SECRET") ?: "";
+        $this->authType = getenv("SLACK_AUTH_TYPE") ?: "";
+        $this->authToken = getenv("SLACK_AUTH_TOKEN") ?: "";
     }
 
     /**
