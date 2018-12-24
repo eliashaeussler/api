@@ -9,6 +9,7 @@ use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
+use EliasHaeussler\Api\Page\Frontend;
 
 /**
  * @todo documentation needed
@@ -423,7 +424,11 @@ class SlackController extends BaseController
         ];
         $this->writeToFile($fileName, $result, $mappings);
 
-        // @todo handle next step
+        // Show success message
+        echo Frontend::message(
+            "Yay, the authentication was successful.",
+            "Please re-send your command and everything should be fine."
+        );
     }
 
     /**
