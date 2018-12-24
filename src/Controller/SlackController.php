@@ -21,6 +21,16 @@ class SlackController extends BaseController
     const API_URL = "https://slack.com/api/";
 
     /**
+     * @var string Client ID of Slack App
+     */
+    protected $clientId;
+
+    /**
+     * @var string Client secret of Slack App
+     */
+    protected $clientSecret;
+
+    /**
      * @var string Signing secret from Slack App, used for authentication
      */
     protected $signingSecret;
@@ -41,6 +51,8 @@ class SlackController extends BaseController
      */
     protected function initializeRequest()
     {
+        $this->clientId = getenv("SLACK_CLIENT_ID") ?: "";
+        $this->clientSecret = getenv("SLACK_CLIENT_SECRET") ?: "";
         $this->signingSecret = getenv("SLACK_SIGNING_SECRET") ?: "";
         $this->authType = getenv("SLACK_AUTH_TYPE") ?: "";
         $this->authToken = getenv("SLACK_AUTH_TOKEN") ?: "";
