@@ -81,6 +81,17 @@ abstract class BaseController
     /**
      * @todo add doc
      *
+     * @param string $route
+     * @return bool
+     */
+    protected function matchesRoute(string $route)
+    {
+        return trim(strtolower($route)) == $this->route;
+    }
+
+    /**
+     * @todo add doc
+     *
      * @return mixed
      */
     abstract public function call();
@@ -134,6 +145,6 @@ abstract class BaseController
      */
     public function setRoute(string $route)
     {
-        $this->route = $route;
+        $this->route = trim(strtolower($route));
     }
 }
