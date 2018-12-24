@@ -358,7 +358,7 @@ class SlackController extends BaseController
     protected function showUserAuthenticationUri()
     {
         $uri = $this->buildUserAuthenticationUri();
-        echo "Please " . $this->buildUri($uri, "authenticate") . " first.";
+        echo ":warning: Please " . $this->buildUri($uri, "authenticate") . " first to use this command.";
     }
 
     /**
