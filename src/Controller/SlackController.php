@@ -433,7 +433,7 @@ class SlackController extends BaseController
         // Check for valid result from Slack
         if (!$result["ok"]) {
             throw new InvalidRequestException(
-                sprintf("Error during API request: \"%s\"", $result['error']),
+                sprintf("Error during API request: \"%s\". Please contact your Slack admin.", $result['error']),
                 1545669514
             );
         }
