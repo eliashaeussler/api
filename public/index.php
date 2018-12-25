@@ -19,7 +19,7 @@ try {
 } catch (\Exception $e) {
     $message = Frontend::error($e);
 
-    if ($router && ($controller = $router->getController())) {
+    if (isset($router) && ($controller = $router->getController())) {
         echo $controller->buildMessage($message, Frontend::MESSAGE_TYPE_ERROR);
     } else {
         echo $message;
