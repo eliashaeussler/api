@@ -10,6 +10,7 @@ use Dotenv\Exception\InvalidPathException;
 use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Page\Frontend;
+use EliasHaeussler\Api\Routing\PageRouter;
 
 /**
  * @todo documentation needed
@@ -88,6 +89,8 @@ class SlackController extends BaseController
 
         // Store data from request body and user-specific environment variables
         $this->storeRequestData();
+        $this->setAccessType();
+
         if ($this->matchesRoute(self::ROUTE_AUTH)) {
             $this->processUserAuthentication();
         } else if ($this->isRequestValid() && $this->isUserAuthenticated()) {
@@ -181,6 +184,27 @@ class SlackController extends BaseController
         return sprintf("<%s|%s>", $uri, $text);
     }
 
+    public function buildMessage(string $message, string $type = Frontend::MESSAGE_TYPE_NOTICE): string
+    {
+        if (PageRouter::getAccess() != PageRouter::ACCESS_TYPE_CLI) {
+            return parent::buildMessage($message, $type);
+        }
+
+        // Set correct content header
+        header("Content-Type: application/json");
+
+        // Remove header from message
+        if ($type == Frontend::MESSAGE_TYPE_ERROR) {
+            $messageBody = implode("\r\n", array_splice(explode("\r\n", $message), 1));
+            $message = ":no_entry: " . $messageBody;
+        }
+
+        return json_encode([
+            "response_type" => $type == Frontend::MESSAGE_TYPE_ERROR ? "ephemeral" : "in_channel",
+            "text" => $message,
+        ]);
+    }
+
     /**
      * @todo add doc
      *
@@ -242,6 +266,16 @@ class SlackController extends BaseController
     protected function storeRequestData()
     {
         parse_str($this->requestBody, $this->requestData);
+    }
+
+    /**
+     * @todo add doc
+     */
+    protected function setAccessType()
+    {
+        if (strpos($_SERVER["HTTP_USER_AGENT"], "Slackbot") !== false) {
+            PageRouter::setAccess(PageRouter::ACCESS_TYPE_CLI);
+        }
     }
 
     /**
@@ -360,7 +394,7 @@ class SlackController extends BaseController
     protected function showUserAuthenticationUri()
     {
         $uri = $this->buildUserAuthenticationUri();
-        echo ":warning: Please " . $this->buildUri($uri, "authenticate") . " first to use this command.";
+        echo $this->buildMessage(":warning: Please " . $this->buildUri($uri, "authenticate") . " first to use this command.");
     }
 
     /**
