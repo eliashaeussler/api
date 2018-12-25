@@ -411,7 +411,7 @@ class SlackController extends BaseController
         $this->writeToFile($fileName, $result, $mappings);
 
         // Show success message
-        echo Frontend::message(
+        echo Frontend::success(
             "Yay, the authentication was successful.",
             "Please re-send your command and everything should be fine."
         );
