@@ -4,6 +4,7 @@
  */
 
 define("ROOT_PATH", dirname(__DIR__));
+define("ASSETS_PATH", ROOT_PATH . "/assets");
 include_once ROOT_PATH . '/vendor/autoload.php';
 
 use EliasHaeussler\Api\Page\Frontend;
