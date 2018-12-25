@@ -7,9 +7,10 @@ namespace EliasHaeussler\Api\Controller;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
-use EliasHaeussler\Api\Controller\Method\LunchControllerMethod;
+use EliasHaeussler\Api\Method\BaseMethod;
 use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
+use EliasHaeussler\Api\Method\Slack\LunchMethod;
 use EliasHaeussler\Api\Page\Frontend;
 use EliasHaeussler\Api\Routing\PageRouter;
 
@@ -35,8 +36,10 @@ class SlackController extends BaseController
     /** @var string Route for authentication */
     const ROUTE_AUTH = "authenticate";
 
-    /** @var string Route for "lunch" function */
-    const ROUTE_LUNCH = "lunch";
+    /** @var array Classes for each available route */
+    const ROUTE_MAPPINGS = [
+        "lunch" => LunchMethod::class,
+    ];
 
     /**
      * @var string Client ID of Slack App
@@ -119,11 +122,11 @@ class SlackController extends BaseController
             $this->prepareCall();
         }
 
-        switch ($this->route) {
-            case self::ROUTE_LUNCH:
-                $method = new LunchControllerMethod($this);
-                $method->processRequest();
-                break;
+        if (array_key_exists($this->route, self::ROUTE_MAPPINGS)) {
+            /** @var BaseMethod $method */
+            $class = self::ROUTE_MAPPINGS[$this->route];
+            $method = new $class($this);
+            $method->processRequest();
         }
     }
 

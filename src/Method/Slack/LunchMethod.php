@@ -3,18 +3,19 @@
  * Copyright (c) 2018 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
  */
 declare(strict_types=1);
-namespace EliasHaeussler\Api\Controller\Method;
+namespace EliasHaeussler\Api\Method\Slack;
 
 use EliasHaeussler\Api\Controller\SlackController;
+use EliasHaeussler\Api\Method\BaseMethod;
 use EliasHaeussler\Api\Page\Frontend;
 
 /**
  * @todo add doc
  *
- * @package EliasHaeussler\Api\Controller\Slack
+ * @package EliasHaeussler\Api\Method\Slack
  * @author Elias Häußler <mail@elias-haeussler.de>
  */
-class LunchControllerMethod
+class LunchMethod extends BaseMethod
 {
     /** @var array List of available emojis to be set in request */
     const EMOJI_LIST = [
@@ -43,11 +44,6 @@ class LunchControllerMethod
     protected $controller;
 
     /**
-     * @var array Data to be send in request
-     */
-    protected $requestData;
-
-    /**
      * @var bool Defines whether the status to be set is already set
      */
     protected $statusAlreadySet = false;
@@ -64,18 +60,7 @@ class LunchControllerMethod
 
 
     /**
-     * @todo add doc
-     *
-     * @param SlackController $controller
-     */
-    public function __construct(SlackController $controller)
-    {
-        $this->controller = $controller;
-    }
-
-    /**
-     * @todo add doc
-     *
+     * @inheritdoc
      * @throws \EliasHaeussler\Api\Exception\InvalidRequestException
      * @throws \Exception
      */
