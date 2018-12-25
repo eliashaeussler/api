@@ -13,6 +13,7 @@ use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Method\Slack\LunchMethod;
 use EliasHaeussler\Api\Page\Frontend;
 use EliasHaeussler\Api\Routing\PageRouter;
+use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
  * @todo documentation needed
@@ -125,7 +126,7 @@ class SlackController extends BaseController
         if (array_key_exists($this->route, self::ROUTE_MAPPINGS)) {
             /** @var BaseMethod $method */
             $class = self::ROUTE_MAPPINGS[$this->route];
-            $method = new $class($this);
+            $method = GeneralUtility::makeInstance($class, $this);
             $method->processRequest();
         }
     }
