@@ -7,6 +7,7 @@ namespace EliasHaeussler\Api\Controller;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
+use EliasHaeussler\Api\Controller\Method\LunchControllerMethod;
 use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Page\Frontend;
@@ -120,13 +121,8 @@ class SlackController extends BaseController
 
         switch ($this->route) {
             case self::ROUTE_LUNCH:
-                // Set data to be sent during call
-                $data = $this->prepareDataForCall();
-
-                // Send API call
-                $result = $this->api("users.profile.set", $data);
-
-                // @todo continue with $result
+                $method = new LunchControllerMethod($this);
+                $method->processRequest();
                 break;
         }
     }
@@ -223,41 +219,6 @@ class SlackController extends BaseController
                 1543541836
             );
         }
-    }
-
-    /**
-     * @todo add doc
-     *
-     * @return string
-     */
-    protected function prepareDataForCall(): string
-    {
-        // List of available emojis for status
-        $emojis = [
-            ":pancakes:",
-            ":cut_of_meat:",
-            ":hamburger:",
-            ":pizza:",
-            ":stuffed_flatbread:",
-            ":shallow_pan_of_food:",
-            ":stew:",
-            ":green_salad:",
-            ":curry:",
-            ":ramen:",
-            ":spaghetti:",
-        ];
-
-        // @todo check whether to set or REset the status
-
-        // Status update
-        $data = [
-            "profile" => [
-                "status_text" => "I'm having lunch!",
-                "status_emoji" => $emojis[array_rand($emojis)],
-            ],
-        ];
-
-        return json_encode($data);
     }
 
     /**
@@ -405,7 +366,7 @@ class SlackController extends BaseController
     protected function buildUserAuthenticationUri()
     {
         $parameters = [
-            "scope" => "users.profile:write",
+            "scope" => "users.profile:write,users.profile:read",
             "client_id" => $this->clientId,
             "state" => $this->authState,
         ];
@@ -441,6 +402,7 @@ class SlackController extends BaseController
         $fileName = ROOT_PATH . "/" . sprintf(self::ENV_FILENAME_PATTERN, $result["user_id"]);
         $mappings = [
             "access_token" => "SLACK_AUTH_TOKEN",
+            "scope" => "SLACK_AUTH_SCOPE",
         ];
         $this->writeToFile($fileName, $result, $mappings);
 
@@ -495,5 +457,30 @@ class SlackController extends BaseController
 
         fwrite($handler, $content);
         fclose($handler);
+    }
+
+    /**
+     * @todo add doc
+     *
+     * @return string
+     */
+    public function getAuthToken(): string
+    {
+        return $this->authToken;
+    }
+
+    /**
+     * @todo add doc
+     *
+     * @param string $key
+     * @return array|string
+     */
+    public function getRequestData(string $key = "")
+    {
+        if ($key) {
+            return $this->requestData[$key] ?: "";
+        } else {
+            return $this->requestData;
+        }
     }
 }
