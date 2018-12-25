@@ -8,7 +8,11 @@ body {
 }
 
 .message {
-    background: #e9e9e9;
+    background: rgba(204, 204, 204, 0.4);
+}
+
+.message--success {
+    background: rgba(111, 160, 43, 0.4);
 }
 
 .message--warning {
@@ -22,6 +26,14 @@ body {
 .message__header,
 .message__body {
     padding: 1.25rem 1.5rem;
+}
+
+.message__header {
+    background: rgba(204, 204, 204, 0.7);
+}
+
+.message--success .message__header {
+    background: rgba(111, 160, 43, 0.7);
 }
 
 .message--warning .message__header {
