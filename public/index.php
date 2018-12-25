@@ -14,6 +14,13 @@ try {
     /** @var PageRouter $router */
     $router = GeneralUtility::makeInstance(PageRouter::class);
     $router->route();
+
 } catch (\Exception $e) {
-    echo Frontend::error($e);
+    $message = Frontend::error($e);
+
+    if ($router && ($controller = $router->getController())) {
+        echo $controller->buildMessage($message, Frontend::MESSAGE_TYPE_ERROR);
+    } else {
+        echo $message;
+    }
 }

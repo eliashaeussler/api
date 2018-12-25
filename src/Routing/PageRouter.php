@@ -21,6 +21,17 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
  */
 class PageRouter
 {
+    /** @var int CLI as access device type of current request */
+    const ACCESS_TYPE_CLI = 0;
+
+    /** @var int Browser as access device type of current request */
+    const ACCESS_TYPE_BROWSER = 1;
+
+    /**
+     * @var int Current access type
+     */
+    protected static $access = self::ACCESS_TYPE_BROWSER;
+
     /**
      * @var string
      */
@@ -142,5 +153,37 @@ class PageRouter
         if ($this->controller) {
             $this->controller->call();
         }
+    }
+
+    /**
+     * @return int
+     */
+    public static function getAccess(): int
+    {
+        return self::$access;
+    }
+
+    /**
+     * @param int $access
+     */
+    public static function setAccess(int $access)
+    {
+        self::$access = $access;
+    }
+
+    /**
+     * @return BaseController|null
+     */
+    public function getController(): BaseController
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @param BaseController|null $controller
+     */
+    public function setController(BaseController $controller)
+    {
+        $this->controller = $controller;
     }
 }

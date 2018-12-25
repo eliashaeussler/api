@@ -5,6 +5,8 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Controller;
 
+use EliasHaeussler\Api\Page\Frontend;
+
 /**
  * @todo documentation
  *
@@ -41,6 +43,18 @@ abstract class BaseController
         $this->setRoute($route);
 
         $this->initializeRequest();
+    }
+
+    /**
+     * @todo add doc
+     *
+     * @param string $message
+     * @param string $type
+     * @return string
+     */
+    public function buildMessage(string $message, string $type = Frontend::MESSAGE_TYPE_NOTICE): string
+    {
+        return $message;
     }
 
     /**

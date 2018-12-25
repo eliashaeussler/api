@@ -5,6 +5,8 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Page;
 
+use EliasHaeussler\Api\Routing\PageRouter;
+
 /**
  * @todo doc
  *
@@ -47,11 +49,16 @@ class Frontend
      */
     public static function message(string $header, string $body, string $type = self::MESSAGE_TYPE_NOTICE): string
     {
-        $messageHeader = sprintf('<div class="message__header">%s</div>', $header);
-        $messageBody = sprintf('<div class="message__body">%s</div>', $body);
-        $message = sprintf('<div class="message message--%s">%s%s</div>', $type, $messageHeader, $messageBody);
+        if (PageRouter::getAccess() == PageRouter::ACCESS_TYPE_CLI){
+            return $header . "\r\n" . $body;
 
-        return self::bootstrap($message);
+        } else {
+            $messageHeader = sprintf('<div class="message__header">%s</div>', $header);
+            $messageBody = sprintf('<div class="message__body">%s</div>', $body);
+            $message = sprintf('<div class="message message--%s">%s%s</div>', $type, $messageHeader, $messageBody);
+
+            return self::bootstrap($message);
+        }
     }
 
     /**
