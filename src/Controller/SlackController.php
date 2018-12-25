@@ -196,7 +196,7 @@ class SlackController extends BaseController
         }
 
         return json_encode([
-            "response_type" => $type == Frontend::MESSAGE_TYPE_ERROR ? "ephemeral" : "in_channel",
+            "response_type" => "ephemeral",
             "text" => $message,
         ]);
     }
