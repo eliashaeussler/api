@@ -48,6 +48,13 @@ abstract class BaseController
     /**
      * @todo add doc
      *
+     * @return mixed
+     */
+    abstract public function call();
+
+    /**
+     * @todo add doc
+     *
      * @param string $message
      * @param string $type
      * @return string
@@ -102,13 +109,6 @@ abstract class BaseController
     {
         return trim(strtolower($route)) == $this->route;
     }
-
-    /**
-     * @todo add doc
-     *
-     * @return mixed
-     */
-    abstract public function call();
 
     /**
      * @return string
