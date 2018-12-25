@@ -120,13 +120,9 @@ class LunchControllerMethod
             "profile" => [
                 "status_text" => $this->statusAlreadySet ? "" : self::STATUS_MESSAGE,
                 "status_emoji" => $this->statusAlreadySet ? "" : $this->emoji,
+                "status_expiration" => $this->statusAlreadySet ? "" : $this->setExpiration(),
             ],
         ];
-
-        // Add expiration date if status is not already set
-        if (!$this->statusAlreadySet) {
-            $this->requestData["profile"]["status_expiration"] = $this->setExpiration();
-        }
     }
 
     /**
