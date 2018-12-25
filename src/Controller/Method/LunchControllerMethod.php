@@ -120,7 +120,7 @@ class LunchControllerMethod
             "profile" => [
                 "status_text" => $this->statusAlreadySet ? "" : self::STATUS_MESSAGE,
                 "status_emoji" => $this->statusAlreadySet ? "" : $this->emoji,
-                "status_expiration" => $this->statusAlreadySet ? "" : $this->setExpiration(),
+                "status_expiration" => $this->statusAlreadySet ? "" : $this->calculateExpiration(),
             ],
         ];
     }
@@ -154,7 +154,7 @@ class LunchControllerMethod
      * @return int
      * @throws \Exception
      */
-    protected function setExpiration(): int
+    protected function calculateExpiration(): int
     {
         $now = new \DateTime();
         $expiration = (int) $this->controller->getRequestData("text") ?: self::DEFAULT_EXPIRATION;
