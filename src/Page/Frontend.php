@@ -82,7 +82,8 @@ class Frontend
         } else {
             $messageHeader = sprintf('<div class="message__header">%s</div>', $header);
             $messageBody = sprintf('<div class="message__body">%s</div>', $body);
-            $message = sprintf('<div class="message message--%s">%s%s</div>', $type, $messageHeader, $messageBody);
+            $copyright = sprintf('<div class="copyright">&copy; %s Elias Häußler. All rights reserved.</div>', date("Y"));
+            $message = sprintf('<div class="message message--%s">%s</div>%s', $type, $messageHeader . $messageBody, $copyright);
 
             return self::bootstrap($message);
         }
