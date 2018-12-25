@@ -111,7 +111,9 @@ class SlackController extends BaseController
     public function call()
     {
         // Check if request is valid
-        $this->prepareCall();
+        if (!$this->matchesRoute(self::ROUTE_AUTH)) {
+            $this->prepareCall();
+        }
 
         switch ($this->route) {
             case self::ROUTE_LUNCH:
