@@ -12,7 +12,8 @@
   "require": {
     "ext-curl": "*",
     "ext-json": "*",
-    "vlucas/phpdotenv": "^2.5"
+    "vlucas/phpdotenv": "^2.5",
+    "twig/twig": "^2.6"
   },
   "autoload": {
     "psr-4": {

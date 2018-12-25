@@ -5,7 +5,9 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Page;
 
+use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Routing\PageRouter;
+use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
  * @todo doc
@@ -27,6 +29,26 @@ class Frontend
     /** @var string Message type for error messages */
     const MESSAGE_TYPE_ERROR = "error";
 
+    /**
+     * @var Template Page template
+     */
+    protected static $template;
+
+
+    /**
+     * @todo add doc
+     *
+     * @internal Internally used to initialize template when rendering messages
+     */
+    public static function initializeTemplate()
+    {
+        if (!self::$template) {
+            try {
+                self::$template = GeneralUtility::makeInstance(Template::class);
+            } catch (ClassNotFoundException $e) {
+            }
+        }
+    }
 
     /**
      * @todo add doc
@@ -36,7 +58,12 @@ class Frontend
      */
     public static function bootstrap(string $content): string
     {
-        return sprintf('<div class="page">%s</div>', $content);
+        self::initializeTemplate();
+
+        $body = sprintf('<div class="page">%s</div>', $content);
+        return self::$template ? self::$template->renderTemplate([
+            "body" => $body
+        ]) : $body;
     }
 
     /**

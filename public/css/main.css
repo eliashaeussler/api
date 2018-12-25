@@ -1,0 +1,39 @@
+/*
+ * Copyright (c) 2018 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
+ */
+
+body {
+    padding: 0.5rem;
+    font-family: Inconsolata, monospace;
+}
+
+.message {
+    background: #e9e9e9;
+}
+
+.message--warning {
+    background: rgba(255, 217, 70, 0.4);
+}
+
+.message--error {
+    background: rgba(255, 123, 83, 0.4);
+}
+
+.message__header,
+.message__body {
+    padding: 1.25rem 1.5rem;
+}
+
+.message--warning .message__header {
+    background: rgba(255, 217, 70, 0.7);
+}
+
+.message--error .message__header {
+    background: rgba(255, 123, 83, 0.7);
+}
+
+.copyright {
+    margin-top: 1rem;
+    color: #ccc;
+    font-size: 0.75rem;
+}
