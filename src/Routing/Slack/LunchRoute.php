@@ -3,19 +3,19 @@
  * Copyright (c) 2018 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
  */
 declare(strict_types=1);
-namespace EliasHaeussler\Api\Method\Slack;
+namespace EliasHaeussler\Api\Routing\Slack;
 
 use EliasHaeussler\Api\Controller\SlackController;
-use EliasHaeussler\Api\Method\BaseMethod;
 use EliasHaeussler\Api\Page\Frontend;
+use EliasHaeussler\Api\Routing\BaseRoute;
 
 /**
  * @todo add doc
  *
- * @package EliasHaeussler\Api\Method\Slack
+ * @package EliasHaeussler\Api\Routing\Slack
  * @author Elias Häußler <mail@elias-haeussler.de>
  */
-class LunchMethod extends BaseMethod
+class LunchRoute extends BaseRoute
 {
     /** @var array List of available emojis to be set in request */
     const EMOJI_LIST = [

@@ -3,17 +3,17 @@
  * Copyright (c) 2018 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
  */
 declare(strict_types=1);
-namespace EliasHaeussler\Api\Method;
+namespace EliasHaeussler\Api\Routing;
 
 use EliasHaeussler\Api\Controller\BaseController;
 
 /**
  * @todo add doc
  *
- * @package EliasHaeussler\Api\Method
+ * @package EliasHaeussler\Api\Routing
  * @author Elias Häußler <mail@elias-haeussler.de>
  */
-abstract class BaseMethod
+abstract class BaseRoute
 {
     /**
      * @var BaseController Controller

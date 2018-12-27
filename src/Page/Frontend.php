@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Page;
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
-use EliasHaeussler\Api\Routing\PageRouter;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\RoutingUtility;
 
 /**
  * @todo doc
@@ -76,7 +76,7 @@ class Frontend
      */
     public static function message(string $header, string $body, string $type = self::MESSAGE_TYPE_NOTICE): string
     {
-        if (PageRouter::getAccess() == PageRouter::ACCESS_TYPE_CLI){
+        if (RoutingUtility::getAccess() == RoutingUtility::ACCESS_TYPE_CLI) {
             return $header . "\r\n" . $body;
 
         } else {

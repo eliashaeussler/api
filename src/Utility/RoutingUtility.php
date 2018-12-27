@@ -3,7 +3,7 @@
  * Copyright (c) 2018 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
  */
 declare(strict_types=1);
-namespace EliasHaeussler\Api\Routing;
+namespace EliasHaeussler\Api\Utility;
 
 use Dotenv\Dotenv;
 use EliasHaeussler\Api\Controller\BaseController;
@@ -11,15 +11,14 @@ use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\EmptyControllerException;
 use EliasHaeussler\Api\Exception\EmptyParametersException;
 use EliasHaeussler\Api\Exception\InvalidControllerException;
-use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
  * @todo add documentation here
  *
- * @package EliasHaeussler\Api
+ * @package EliasHaeussler\Api\Utility
  * @author Elias Häußler <mail@elias-haeussler.de>
  */
-class PageRouter
+class RoutingUtility
 {
     /** @var int CLI as access device type of current request */
     const ACCESS_TYPE_CLI = 0;
