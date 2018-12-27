@@ -7,13 +7,13 @@ namespace EliasHaeussler\Api\Controller;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
-use EliasHaeussler\Api\Method\BaseMethod;
 use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
-use EliasHaeussler\Api\Method\Slack\LunchMethod;
 use EliasHaeussler\Api\Page\Frontend;
-use EliasHaeussler\Api\Routing\PageRouter;
+use EliasHaeussler\Api\Routing\BaseRoute;
+use EliasHaeussler\Api\Routing\Slack\LunchRoute;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\RoutingUtility;
 
 /**
  * @todo documentation needed
@@ -39,7 +39,7 @@ class SlackController extends BaseController
 
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [
-        "lunch" => LunchMethod::class,
+        "lunch" => LunchRoute::class,
     ];
 
     /**
@@ -124,7 +124,7 @@ class SlackController extends BaseController
         }
 
         if (array_key_exists($this->route, self::ROUTE_MAPPINGS)) {
-            /** @var BaseMethod $method */
+            /** @var BaseRoute $method */
             $class = self::ROUTE_MAPPINGS[$this->route];
             $method = GeneralUtility::makeInstance($class, $this);
             $method->processRequest();
@@ -186,7 +186,7 @@ class SlackController extends BaseController
 
     public function buildMessage(string $message, string $type = Frontend::MESSAGE_TYPE_NOTICE): string
     {
-        if (PageRouter::getAccess() != PageRouter::ACCESS_TYPE_CLI) {
+        if (RoutingUtility::getAccess() != RoutingUtility::ACCESS_TYPE_CLI) {
             return parent::buildMessage($message, $type);
         }
 
@@ -239,7 +239,7 @@ class SlackController extends BaseController
     protected function setAccessType()
     {
         if (strpos($_SERVER["HTTP_USER_AGENT"], "Slackbot") !== false) {
-            PageRouter::setAccess(PageRouter::ACCESS_TYPE_CLI);
+            RoutingUtility::setAccess(RoutingUtility::ACCESS_TYPE_CLI);
         }
     }
 

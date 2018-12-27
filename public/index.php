@@ -8,12 +8,12 @@ define("ASSETS_PATH", ROOT_PATH . "/assets");
 include_once ROOT_PATH . '/vendor/autoload.php';
 
 use EliasHaeussler\Api\Page\Frontend;
-use EliasHaeussler\Api\Routing\PageRouter;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\RoutingUtility;
 
 try {
-    /** @var PageRouter $router */
-    $router = GeneralUtility::makeInstance(PageRouter::class);
+    /** @var RoutingUtility $router */
+    $router = GeneralUtility::makeInstance(RoutingUtility::class);
     $router->route();
 
 } catch (\Exception $e) {
