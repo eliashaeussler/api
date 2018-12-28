@@ -10,6 +10,7 @@ use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
+use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
  * Lunch router for Slack API controller.
@@ -172,8 +173,6 @@ class LunchCommandRoute extends BaseRoute
 
     /**
      * Show help text for this command.
-     *
-     * @throws ClassNotFoundException if the `Message` class is not available
      */
     protected function showHelpText()
     {
@@ -182,7 +181,13 @@ class LunchCommandRoute extends BaseRoute
                    "Type `/lunch` again if you're *back earlier* and want to reset your status.\r\n" .
                    "You can also set a *custom duration* for your lunch break by typing `/lunch [duration]` while " .
                    "`[duration]` should be replaced with a number indicating your lunch break *in minutes*.";
+        $attachments = [
+            $this->controller->buildAttachmentForBotMessage(
+                "api.elias-haeussler.de",
+                sprintf("Version: *%s*", GeneralUtility::getGitCommit())
+            ),
+        ];
 
-        echo $this->controller->buildMessage(Message::MESSAGE_TYPE_NOTICE, $message);
+        echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_NOTICE, $message, $attachments);
     }
 }

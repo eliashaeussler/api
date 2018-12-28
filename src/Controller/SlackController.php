@@ -195,26 +195,55 @@ class SlackController extends BaseController
      */
     public function buildMessage(string $type, $arg1, ...$_): string
     {
-        if (RoutingUtility::getAccess() != RoutingUtility::ACCESS_TYPE_BOT) {
-            return parent::buildMessage($type, $arg1, ...$_);
+        if (RoutingUtility::getAccess() == RoutingUtility::ACCESS_TYPE_BOT) {
+            return $this->buildBotMessage($type, $arg1);
         }
 
+        return parent::buildMessage($type, $arg1, ...$_);
+    }
+
+    /**
+     * Build message for Bot.
+     *
+     * @param string $type Message type
+     * @param string $message Message
+     * @param array $attachments Attachments
+     * @return string The rendered message
+     */
+    public function buildBotMessage(string $type, string $message, array $attachments = []): string
+    {
         // Set correct content header
         header("Content-Type: application/json");
 
-        // Get message
+        // Set message
         if ($type == Message::MESSAGE_TYPE_ERROR) {
             /** @var \Exception $message */
-            $message = $arg1;
             $message = ":no_entry: " . $message->getMessage();
-        } else {
-            $message = $arg1;
         }
 
         return json_encode([
             "response_type" => "ephemeral",
             "text" => $message,
+            "attachments" => $attachments,
         ]);
+    }
+
+    /**
+     * Generate attachment for bot message.
+     *
+     * @param string $header Header text
+     * @param string $body Body text
+     * @param string $preText Additional pre text
+     * @return array Attachment for bot message
+     */
+    public function buildAttachmentForBotMessage(string $header, string $body, string $preText = ""): array
+    {
+        return [
+            "title" => $header,
+            "pretext" => $preText,
+            "text" => $body,
+            "mrkdwn_in" => ["fields"],
+        ];
     }
 
     /**
