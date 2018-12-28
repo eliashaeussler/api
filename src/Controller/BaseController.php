@@ -71,9 +71,9 @@ abstract class BaseController
      */
     public function call()
     {
-        if (array_key_exists($this->route, self::ROUTE_MAPPINGS)) {
+        if (array_key_exists($this->route, $this::ROUTE_MAPPINGS)) {
             /** @var BaseRoute $method */
-            $method = GeneralUtility::makeInstance(self::ROUTE_MAPPINGS[$this->route], $this);
+            $method = GeneralUtility::makeInstance($this::ROUTE_MAPPINGS[$this->route], $this);
             $method->processRequest();
         }
     }
@@ -146,7 +146,7 @@ abstract class BaseController
 
         // Normalize HTTP headers by removing "HTTP_" prefix
         array_walk($httpHeaders, function (&$value, $header) use (&$headers) {
-            $header = preg_replace(self::REQUEST_HEADER_PREFIX_PATTERN, "", $header);
+            $header = preg_replace($this::REQUEST_HEADER_PREFIX_PATTERN, "", $header);
             $headers[$header] = $value;
         }, ARRAY_FILTER_USE_KEY);
 
@@ -198,7 +198,7 @@ abstract class BaseController
     public function getRequestHeader(string $header, bool $useRawInput = false): string
     {
         $normalizedHeader = strtoupper($header);
-        $normalizedHeader = preg_replace(self::REQUEST_HEADER_PREFIX_PATTERN, "", $normalizedHeader);
+        $normalizedHeader = preg_replace($this::REQUEST_HEADER_PREFIX_PATTERN, "", $normalizedHeader);
         if (!$useRawInput) {
             $normalizedHeader = str_replace("-", "_", $normalizedHeader);
         }
