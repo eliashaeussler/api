@@ -11,7 +11,7 @@ use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
-use EliasHaeussler\Api\Routing\Slack\LunchRoute;
+use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\RoutingUtility;
 
@@ -41,7 +41,7 @@ class SlackController extends BaseController
 
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [
-        "lunch" => LunchRoute::class,
+        "lunch" => LunchCommandRoute::class,
     ];
 
     /** @var string Client ID of Slack App */
