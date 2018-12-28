@@ -86,4 +86,14 @@ class GeneralUtility
     {
         return getenv($name) ?: "";
     }
+
+    /**
+     * Get latest Git commit on which the API is currently running.
+     *
+     * @return string Latest Git commit
+     */
+    public static function getGitCommit()
+    {
+        return exec('git log --pretty="%h" -n1 HEAD');
+    }
 }
