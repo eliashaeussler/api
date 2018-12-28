@@ -25,7 +25,7 @@ use EliasHaeussler\Api\Routing\BaseRoute;
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
-class LunchRoute extends BaseRoute
+class LunchCommandRoute extends BaseRoute
 {
     /** @var array List of available emojis to be set in request */
     const EMOJI_LIST = [
