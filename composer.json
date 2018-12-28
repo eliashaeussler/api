@@ -13,7 +13,8 @@
     "ext-curl": "*",
     "ext-json": "*",
     "vlucas/phpdotenv": "^2.5",
-    "twig/twig": "^2.6"
+    "twig/twig": "^2.6",
+    "doctrine/dbal": "^2.9"
   },
   "autoload": {
     "psr-4": {
