@@ -80,11 +80,12 @@ class GeneralUtility
      * Get value of an environment variable.
      *
      * @param string $name Name of the environment variable
+     * @param mixed $default Default variable if environment variable is not available
      * @return string|array The value of the given environment variable
      */
-    public static function getEnvironmentVariable(string $name)
+    public static function getEnvironmentVariable(string $name, $default = "")
     {
-        return getenv($name) ?: "";
+        return getenv($name) ?: $default;
     }
 
     /**
