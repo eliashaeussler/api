@@ -12,8 +12,8 @@ use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
+use EliasHaeussler\Api\Service\RoutingService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
-use EliasHaeussler\Api\Utility\RoutingUtility;
 
 /**
  * Slack API controller.
@@ -195,7 +195,7 @@ class SlackController extends BaseController
      */
     public function buildMessage(string $type, $arg1, ...$_): string
     {
-        if (RoutingUtility::getAccess() == RoutingUtility::ACCESS_TYPE_BOT) {
+        if (RoutingService::getAccess() == RoutingService::ACCESS_TYPE_BOT) {
             return $this->buildBotMessage($type, $arg1);
         }
 
@@ -305,9 +305,9 @@ class SlackController extends BaseController
     {
         $userAgent = $this->getRequestHeader("User-Agent");
         $accessType = strpos($userAgent, "Slackbot") !== false
-            ? RoutingUtility::ACCESS_TYPE_BOT
-            : RoutingUtility::ACCESS_TYPE_BROWSER;
-        RoutingUtility::setAccess($accessType);
+            ? RoutingService::ACCESS_TYPE_BOT
+            : RoutingService::ACCESS_TYPE_BROWSER;
+        RoutingService::setAccess($accessType);
     }
 
     /**

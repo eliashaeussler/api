@@ -9,12 +9,12 @@ include_once ROOT_PATH . '/vendor/autoload.php';
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Frontend\Message;
+use EliasHaeussler\Api\Service\RoutingService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
-use EliasHaeussler\Api\Utility\RoutingUtility;
 
 try {
-    /** @var RoutingUtility $router */
-    $router = GeneralUtility::makeInstance(RoutingUtility::class);
+    /** @var RoutingService $router */
+    $router = GeneralUtility::makeInstance(RoutingService::class);
     $router->route();
 
 } catch (\Exception $e) {
