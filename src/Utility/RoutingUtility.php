@@ -5,6 +5,9 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Utility;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
 use Dotenv\Dotenv;
 use EliasHaeussler\Api\Controller\BaseController;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
@@ -34,6 +37,9 @@ class RoutingUtility
     /** @var int Current access type */
     protected static $access = self::ACCESS_TYPE_BROWSER;
 
+    /** @var Connection Database connection */
+    protected $database;
+
     /** @var string Plain request URI without query string */
     protected $uri;
 
@@ -55,7 +61,8 @@ class RoutingUtility
      * instance of this class will throw an error. This will also be the case if the provided API controller cannot be
      * resolved to a concrete API controller class.
      *
-     * @throws ClassNotFoundException if the API controller class is not available
+     * @throws ClassNotFoundException if either the `Database` class or API controller class is not available
+     * @throws DBALException if the database connection cannot be established
      * @throws EmptyControllerException if no API controller has been provided
      * @throws EmptyParametersException if not API controller parameters have been provided
      * @throws InvalidControllerException if the requested API controller class could not be found
@@ -63,6 +70,7 @@ class RoutingUtility
     public function __construct()
     {
         $this->loadEnvironment();
+        $this->initializeDatabase();
         $this->analyzeRequestUri();
         $this->initializeController();
     }
@@ -76,6 +84,25 @@ class RoutingUtility
     {
         $loader = new Dotenv(ROOT_PATH);
         $loader->load();
+    }
+
+    /**
+     * Initialize database connection.
+     *
+     * @throws DBALException if the database connection cannot be established
+     */
+    protected function initializeDatabase()
+    {
+        $parameters = [
+            "host" => GeneralUtility::getEnvironmentVariable("DB_HOST", "localhost"),
+            "user" => GeneralUtility::getEnvironmentVariable("DB_USER"),
+            "password" => GeneralUtility::getEnvironmentVariable("DB_PASS"),
+            "dbname" => GeneralUtility::getEnvironmentVariable("DB_NAME"),
+            "port" => (int) GeneralUtility::getEnvironmentVariable("DB_PORT", 3306),
+            "driver" => GeneralUtility::getEnvironmentVariable("DB_DRIVER", "pdo_mysql"),
+        ];
+
+        $this->database = DriverManager::getConnection($parameters);
     }
 
     /**
@@ -149,6 +176,16 @@ class RoutingUtility
         if ($this->controller) {
             $this->controller->call();
         }
+    }
+
+    /**
+     * Get database connection
+     *
+     * @return Connection Database connection
+     */
+    public function getDatabase(): Connection
+    {
+        return $this->database;
     }
 
     /**
