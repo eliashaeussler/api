@@ -7,7 +7,7 @@ namespace EliasHaeussler\Api\Frontend;
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Utility\GeneralUtility;
-use EliasHaeussler\Api\Utility\RoutingUtility;
+use EliasHaeussler\Api\Service\RoutingService;
 
 /**
  * Frontend rendering class.
@@ -60,7 +60,7 @@ class Message
      */
     public function message(string $header, string $body, string $type = self::MESSAGE_TYPE_NOTICE): string
     {
-        if (RoutingUtility::getAccess() == RoutingUtility::ACCESS_TYPE_BOT) {
+        if (RoutingService::getAccess() == RoutingService::ACCESS_TYPE_BOT) {
             return $header . "\r\n" . $body;
 
         } else {

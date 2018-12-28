@@ -3,7 +3,7 @@
  * Copyright (c) 2018 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
  */
 declare(strict_types=1);
-namespace EliasHaeussler\Api\Utility;
+namespace EliasHaeussler\Api\Service;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -14,6 +14,7 @@ use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\EmptyControllerException;
 use EliasHaeussler\Api\Exception\EmptyParametersException;
 use EliasHaeussler\Api\Exception\InvalidControllerException;
+use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
  * API request routing utility.
@@ -22,11 +23,11 @@ use EliasHaeussler\Api\Exception\InvalidControllerException;
  * request will be analyzed and a concrete API controller will be initialized, if available. After that, the API
  * request will be processed within the API controller.
  *
- * @package EliasHaeussler\Api\Utility
+ * @package EliasHaeussler\Api\Service
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
-class RoutingUtility
+class RoutingService
 {
     /** @var int Bot as access device type of current request */
     const ACCESS_TYPE_BOT = 0;
