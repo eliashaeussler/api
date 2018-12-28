@@ -229,7 +229,7 @@ class SlackController extends BaseController
      */
     public function buildMessageUri(string $uri, string $text = ""): string
     {
-        return sprintf("<%s|%s>", $uri, trim($text) ? $uri : $text);
+        return sprintf("<%s|%s>", $uri, trim($text) ? $text : $uri);
     }
 
     /**
