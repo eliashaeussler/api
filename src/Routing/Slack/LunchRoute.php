@@ -107,7 +107,7 @@ class LunchRoute extends BaseRoute
             );
         }
 
-        echo $this->controller->buildMessage($message, Message::MESSAGE_TYPE_SUCCESS);
+        echo $this->controller->buildMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
     }
 
     /**
