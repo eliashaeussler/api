@@ -8,27 +8,29 @@ namespace EliasHaeussler\Api\Controller;
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use EliasHaeussler\Api\Exception\AuthenticationException;
+use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
-use EliasHaeussler\Api\Page\Frontend;
-use EliasHaeussler\Api\Routing\BaseRoute;
+use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\Slack\LunchRoute;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\RoutingUtility;
 
 /**
- * @todo documentation needed
+ * Slack API controller.
+ *
+ * This API controller converts API requests to valid requests for the Slack API and processes them. Each available
+ * route is mapped to an appropriate routing class which should be an instance of `BaseRoute` class.
  *
  * @package EliasHaeussler\Api\Controller
  * @author Elias Häußler <mail@elias-haeussler.de>
+ * @license MIT
  */
 class SlackController extends BaseController
 {
-    /**
-     * @var string Base API uri of Slack
-     */
+    /** @var string Base API uri of Slack */
     const API_URI = "https://slack.com/api/";
 
-    /** @var string Base Authentication uri of Slack */
+    /** @var string Base authentication uri of Slack */
     const AUTHORIZE_URI = "https://slack.com/oauth/authorize";
 
     /** @var string File name pattern of user-based .env files */
@@ -42,55 +44,41 @@ class SlackController extends BaseController
         "lunch" => LunchRoute::class,
     ];
 
-    /**
-     * @var string Client ID of Slack App
-     */
+    /** @var string Client ID of Slack App */
     protected $clientId;
 
-    /**
-     * @var string Client secret of Slack App
-     */
+    /** @var string Client secret of Slack App */
     protected $clientSecret;
 
-    /**
-     * @var string Signing secret from Slack App, used for authentication
-     */
+    /** @var string Signing secret from Slack App, used for authentication */
     protected $signingSecret;
 
-    /**
-     * @var string Slack authentication type
-     */
+    /** @var string Slack authentication type */
     protected $authType;
 
-    /**
-     * @var string Slack authentication token
-     */
+    /** @var string Slack authentication token */
     protected $authToken;
 
-    /**
-     * @var string Slack authentication state string
-     */
+    /** @var string Slack authentication state string */
     protected $authState;
 
-    /**
-     * @var array Data from Slack API, passed in request
-     */
+    /** @var array Data from Slack API, passed in request */
     protected $requestData;
 
 
     /**
-     * @todo add doc
-     *
-     * @throws InvalidRequestException
-     * @throws AuthenticationException
+     * @inheritdoc
+     * @throws AuthenticationException if provided authentication state is invalid
+     * @throws InvalidRequestException if user authentication or API request failed
+     * @throws ClassNotFoundException if the `Message` class is not available
      */
     protected function initializeRequest()
     {
         // Set base app credentials and authentication settings
-        $this->clientId = getenv("SLACK_CLIENT_ID") ?: "";
-        $this->clientSecret = getenv("SLACK_CLIENT_SECRET") ?: "";
-        $this->signingSecret = getenv("SLACK_SIGNING_SECRET") ?: "";
-        $this->authState = getenv("SLACK_AUTH_STATE") ?: "";
+        $this->clientId = GeneralUtility::getEnvironmentVariable("SLACK_CLIENT_ID");
+        $this->clientSecret = GeneralUtility::getEnvironmentVariable("SLACK_CLIENT_SECRET");
+        $this->signingSecret = GeneralUtility::getEnvironmentVariable("SLACK_SIGNING_SECRET");
+        $this->authState = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_STATE");
 
         // Store data from request body and user-specific environment variables
         $this->storeRequestData();
@@ -105,16 +93,14 @@ class SlackController extends BaseController
         }
 
         // Set user-specific authentication settings
-        $this->authType = getenv("SLACK_AUTH_TYPE") ?: "";
-        $this->authToken = getenv("SLACK_AUTH_TOKEN") ?: "";
+        $this->authType = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_TYPE");
+        $this->authToken = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_TOKEN");
     }
 
     /**
-     * @todo add doc
-     *
-     * @return mixed|void
-     * @throws AuthenticationException
-     * @throws \Exception
+     * @inheritdoc
+     * @throws AuthenticationException if the authentication process failed
+     * @throws ClassNotFoundException if the routing class is not available
      */
     public function call()
     {
@@ -123,25 +109,28 @@ class SlackController extends BaseController
             $this->prepareCall();
         }
 
-        if (array_key_exists($this->route, self::ROUTE_MAPPINGS)) {
-            /** @var BaseRoute $method */
-            $class = self::ROUTE_MAPPINGS[$this->route];
-            $method = GeneralUtility::makeInstance($class, $this);
-            $method->processRequest();
-        }
+        // Call concrete API route
+        parent::call();
     }
 
     /**
-     * @todo add doc
+     * Call the Slack API with given function and data.
      *
-     * @param string $function
-     * @param string|array $data
-     * @param bool $json
-     * @param bool $authorize
-     * @return bool|string
+     * Calls a specific function of the Slack API with the data provided to this method. Data can be provided as string
+     * or array. When providing data as string, make sure that it is already JSON-encoded if `$json` is set to `true`.
+     * Array data will be encoded as JSON if `$json` is set to `true`. Authorization headers can be send if `$authorize`
+     * is set to `true`.
+     *
+     * @param string $function Slack API function
+     * @param string|array $data Additional data to be sent during API request
+     * @param bool $json Define whether to use JSON or POST to send data
+     * @param bool $authorize Define whether to send authorization headers
+     * @return bool|string The API result on success or `false` on failure
+     * @see https://api.slack.com/web#methods
      */
     public function api(string $function, $data, bool $json = true, bool $authorize = true)
     {
+        // Convert input data to required format
         if ($json && is_array($data)) {
             $data = json_encode($data);
         }
@@ -158,8 +147,10 @@ class SlackController extends BaseController
             CURLOPT_POSTFIELDS => $data,
         ]);
 
-        // Add authorization, if requested to do so
-        $this->addApiHeaders($ch, $data, $json, $authorize);
+        // Build headers for API request
+        if ($json || $authorize) {
+            $this->addApiHeaders($ch, $data, $json, $authorize);
+        }
 
         // Send API call and store result
         $result = curl_exec($ch);
@@ -169,34 +160,55 @@ class SlackController extends BaseController
     }
 
     /**
-     * @todo add doc
+     * Add HTTP headers to an open API request.
      *
-     * @param string $uri
-     * @param string $text
-     * @return string
+     * Adds authorization and content length headers to an open API request. This will only take effect if the
+     * appropriate variable (namely `$json` and `$authorize`) is set to `true`.
+     *
+     * @param resource $ch Open API request as cURL resource
+     * @param string|array $data Additional data to be sent during API request
+     * @param bool $json Define whether to use JSON as content type
+     * @param bool $authorize Define whether to send authorization headers
+     * @internal Used in `SlackController::api` to build HTTP headers for API request
      */
-    public function buildUri(string $uri, string $text = ""): string
+    protected function addApiHeaders(&$ch, $data, bool $json = true, bool $authorize = true)
     {
-        if (empty(trim($text))) {
-            $text = $uri;
+        $httpHeader = $json
+            ? ["Content-Type" => "application/json; charset=utf-8"]
+            : [];
+
+        if ($authorize) {
+            $httpHeader["Authorization"] = $this->authType . " " . $this->authToken;
+
+            if ($json) {
+                $httpHeader["Content-Length"] = strlen($data);
+            }
         }
 
-        return sprintf("<%s|%s>", $uri, $text);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array_map(function ($key, $value) {
+            return $key . ": " . $value;
+        }, array_keys($httpHeader), $httpHeader));
     }
 
-    public function buildMessage(string $message, string $type = Frontend::MESSAGE_TYPE_NOTICE): string
+    /**
+     * @inheritdoc
+     */
+    public function buildMessage(string $type, $arg1, ...$_): string
     {
-        if (RoutingUtility::getAccess() != RoutingUtility::ACCESS_TYPE_CLI) {
-            return parent::buildMessage($message, $type);
+        if (RoutingUtility::getAccess() != RoutingUtility::ACCESS_TYPE_BOT) {
+            return parent::buildMessage($type, $arg1, ...$_);
         }
 
         // Set correct content header
         header("Content-Type: application/json");
 
-        // Remove header from message
-        if ($type == Frontend::MESSAGE_TYPE_ERROR) {
-            $messageBody = implode("\r\n", array_splice(explode("\r\n", $message), 1));
-            $message = ":no_entry: " . $messageBody;
+        // Get message
+        if ($type == Message::MESSAGE_TYPE_ERROR) {
+            /** @var \Exception $message */
+            $message = $arg1;
+            $message = ":no_entry: " . $message->getMessage();
+        } else {
+            $message = $arg1;
         }
 
         return json_encode([
@@ -206,10 +218,31 @@ class SlackController extends BaseController
     }
 
     /**
-     * @todo add doc
+     * Build URI inside message to API result.
      *
-     * @throws AuthenticationException
-     * @throws \Exception
+     * Builds an URI inside a message to an API result. This means, the URI will be printed directly in Slack and needs
+     * therefore converted to the necessary format. If `$text` is not set or empty, the URI will be used as text.
+     *
+     * @param string $uri The URI to be linked inside the message
+     * @param string $text The URI text to be shown for the URI
+     * @return string The generated ready-to-use URI for the appropriate message in Slack
+     */
+    public function buildMessageUri(string $uri, string $text = ""): string
+    {
+        return sprintf("<%s|%s>", $uri, trim($text) ? $uri : $text);
+    }
+
+    /**
+     * Check if request is verified before processing API request.
+     *
+     * Checks whether the current request is verified by walking through the authentication process of Slack. This
+     * method is called right before the API request is being processed and will stop the process from being started
+     * if the request is not verified.
+     *
+     * THEREFORE, IT IS VERY IMPORTANT TO ALWAYS CALL THIS METHOD BEFORE PROCESSING ANY API REQUEST!
+     *
+     * @throws AuthenticationException if the current request could not be verified
+     * @throws \Exception if the difference between request send and receive time could not be calculated
      */
     protected function prepareCall()
     {
@@ -226,7 +259,7 @@ class SlackController extends BaseController
     }
 
     /**
-     * @todo add doc
+     * Store raw request data by converting it into an array of data.
      */
     protected function storeRequestData()
     {
@@ -234,17 +267,24 @@ class SlackController extends BaseController
     }
 
     /**
-     * @todo add doc
+     * Set access type of current API request.
+     *
+     * The access type is defined by the user agent of the current request. If the request was generated by Slack, the
+     * user agent will be any type of "Slackbot".
      */
     protected function setAccessType()
     {
-        if (strpos($_SERVER["HTTP_USER_AGENT"], "Slackbot") !== false) {
-            RoutingUtility::setAccess(RoutingUtility::ACCESS_TYPE_CLI);
-        }
+        $userAgent = $this->getRequestHeader("User-Agent");
+        $accessType = strpos($userAgent, "Slackbot") !== false
+            ? RoutingUtility::ACCESS_TYPE_BOT
+            : RoutingUtility::ACCESS_TYPE_BROWSER;
+        RoutingUtility::setAccess($accessType);
     }
 
     /**
-     * @todo add doc
+     * Load user-specific environment variables.
+     *
+     * Overloads the current environment variables with the user-specific variables.
      */
     protected function loadUserEnvironment()
     {
@@ -252,16 +292,20 @@ class SlackController extends BaseController
             $envFile = sprintf(self::ENV_FILENAME_PATTERN, $this->requestData['user_id']);
             $loader = new Dotenv(ROOT_PATH, $envFile);
             $loader->overload();
+
         } catch (InvalidPathException $e) {
             // Do not handle exception as default environment will be used as fallback
         }
     }
 
     /**
-     * @todo add doc
+     * Check whether the current request is valid.
      *
-     * @return bool
-     * @throws InvalidRequestException
+     * Checks whether the request data is set and has been initialized yet. If not, an exception will be thrown. If the
+     * request data is already set but does not include a user id, the request is marked as invalid.
+     *
+     * @return bool `true` if the request is valid, `false` otherwise
+     * @throws InvalidRequestException if the request data is not set or has not been initialized yet
      */
     protected function isRequestValid(): bool
     {
@@ -276,34 +320,43 @@ class SlackController extends BaseController
     }
 
     /**
-     * @todo add doc
+     * Check whether the current user is already authenticated.
      *
-     * @return bool
+     * Checks whether the current user is already authenticated by testing if the appropriate .env file exists.
+     *
+     * @return bool `true` if the user is already authenticated, `false` otherwise
      */
     protected function isUserAuthenticated(): bool
     {
         $fileName = ROOT_PATH . "/" . sprintf(self::ENV_FILENAME_PATTERN, $this->requestData['user_id']);
+
         return file_exists($fileName);
     }
 
     /**
-     * @todo add doc
+     * Check whether the provided state is valid.
      *
-     * @param string $expected
-     * @return bool
+     * Checks whether the request state, provided by GET parameter, equals the expected state.
+     *
+     * @return bool `true` if the requested state equals the expected state
      */
-    protected function isValidAuthState(string $expected): bool
+    protected function isValidAuthState(): bool
     {
-        return $expected ? $_GET['state'] == $expected : true;
+        return $_GET['state'] == $this->authState;
     }
 
     /**
-     * @todo add doc
+     * Check whether API request can be verified.
      *
-     * @param string $timestamp
-     * @param string $signature
-     * @return bool
-     * @throws \Exception
+     * Checks whether the current API request can be verified. This is done in multiple steps. At first, the time
+     * difference between request and current time is checked. If the difference is larger than five minutes, the
+     * request cannot be verified. In the second step, a signature will be calculated an compared with a delivered
+     * signature. If both signatures do not match, the request cannot be verified as well.
+     *
+     * @param string $timestamp Timestamp of the API request, sent by Slack as HTTP header
+     * @param string $signature Signature of the API request, sent by Slack as HTTP header
+     * @return bool `true` if the request can be verified, `false` otherwise
+     * @throws \Exception if the difference between request send and receive time could not be calculated
      * @see https://api.slack.com/docs/verifying-requests-from-slack
      */
     protected function isRequestVerified(string $timestamp, string $signature): bool
@@ -326,66 +379,48 @@ class SlackController extends BaseController
     }
 
     /**
-     * @todo add doc
+     * Show message for necessary user authentication.
      *
-     * @param resource $ch
-     * @param string|array $data
-     * @param bool $json
-     * @param bool $authorize
-     * @internal Used in `SlackController::api` to build HTTP headers for API request
-     */
-    protected function addApiHeaders(&$ch, $data, bool $json, bool $authorize)
-    {
-        $httpHeader = $json
-            ? ["Content-Type" => "application/json; charset=utf-8"]
-            : [];
-
-        if ($authorize) {
-            $httpHeader["Authorization"] = $this->authType . " " . $this->authToken;
-
-            if ($json) {
-                $httpHeader["Content-Length"] = strlen($data);
-            }
-        }
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array_map(function ($key, $value) {
-            return $key . ": " . $value;
-        }, array_keys($httpHeader), $httpHeader));
-    }
-
-    /**
-     * @todo add doc
+     * @throws ClassNotFoundException if the `Frontend` class is not available
      */
     protected function showUserAuthenticationUri()
     {
         $uri = $this->buildUserAuthenticationUri();
-        echo $this->buildMessage(":warning: Please " . $this->buildUri($uri, "authenticate") . " first to use this command.");
+        echo $this->buildMessage(
+            Message::MESSAGE_TYPE_WARNING,
+            ":warning: Please " . $this->buildMessageUri($uri, "authenticate") . " first to use this command."
+        );
     }
 
     /**
-     * @todo add doc
+     * Build URI for necessary user authentication.
      *
-     * @return string
+     * @param array $scopes Necessary scopes to be used in authentication process
+     * @return string URI for user authentication
      */
-    protected function buildUserAuthenticationUri()
+    protected function buildUserAuthenticationUri(array $scopes = ["users.profile:write", "users.profile:read"])
     {
-        $parameters = [
-            "scope" => "users.profile:write,users.profile:read",
+        return self::AUTHORIZE_URI . "?" . http_build_query([
+            "scope" => implode(",", $scopes),
             "client_id" => $this->clientId,
             "state" => $this->authState,
-        ];
-        return self::AUTHORIZE_URI . "?" . http_build_query($parameters);
+        ]);
     }
 
     /**
-     * @todo add doc
+     * Process requested user authentication.
      *
-     * @throws AuthenticationException
-     * @throws InvalidRequestException
+     * Processes the requested user authentication. In general, this method uses a provided code together with the
+     * app credentials to request an access token at the Slack API. This will then be stored locally and used for
+     * further API requests to authenticate the user at the Slack API.
+     *
+     * @throws AuthenticationException if provided authentication state is invalid
+     * @throws InvalidRequestException if API request failed
+     * @throws ClassNotFoundException if the `Frontend` class is not available
      */
     protected function processUserAuthentication()
     {
-        if (!$this->isValidAuthState($this->authState)) {
+        if (!$this->isValidAuthState()) {
             throw new AuthenticationException(
                 "Authentication failed due to an invalid state provided. Please contact your Slack admin.",
                 1545662028
@@ -411,17 +446,20 @@ class SlackController extends BaseController
         $this->writeToFile($fileName, $result, $mappings);
 
         // Show success message
-        echo Frontend::success(
+        echo $this->buildMessage(
+            Message::MESSAGE_TYPE_SUCCESS,
             "Yay, the authentication was successful.",
             "Please re-send your command and everything should be fine."
         );
     }
 
     /**
-     * @todo add doc
+     * Check if result from API request is valid.
      *
-     * @param string $result
-     * @throws InvalidRequestException
+     * Checks if the provided, raw JSON-encoded result from an API request is valid and contains a valid answer.
+     *
+     * @param string $result Raw result from API request, parsed as JSON
+     * @throws InvalidRequestException if API request failed or contains an invalid answer
      */
     public function checkApiResult(string $result)
     {
@@ -444,29 +482,32 @@ class SlackController extends BaseController
     }
 
     /**
-     * @todo add doc
+     * Write user-specific environment variables to file.
      *
-     * @param string $fileName
-     * @param array $result
-     * @param array $mappings
+     * @param string $fileName File name of user-specific .env file
+     * @param array $apiResult Result from API request
+     * @param array $mappings Data mappings for contents of .env file in format `"resultKey" => "envVariable"`
      */
-    protected function writeToFile(string $fileName, array $result, array $mappings)
+    protected function writeToFile(string $fileName, array $apiResult, array $mappings)
     {
+        // Open file handler
         $handler = fopen($fileName, "w");
 
+        // Set content
         $content = "";
         foreach ($mappings as $resKey => $envKey) {
-            $content .= $envKey . "=" . $result[$resKey] . "\r\n";
+            $content .= sprintf("%s=%s\r\n", $envKey, $apiResult[$resKey]);
         }
 
+        // Write content to file and close handler
         fwrite($handler, $content);
         fclose($handler);
     }
 
     /**
-     * @todo add doc
+     * Get Slack authentication token
      *
-     * @return string
+     * @return string Slack authentication token
      */
     public function getAuthToken(): string
     {
@@ -474,17 +515,16 @@ class SlackController extends BaseController
     }
 
     /**
-     * @todo add doc
+     * Get data from API request.
      *
-     * @param string $key
-     * @return array|string
+     * Returns data from API request, either a specific key, if provided, or all available data. This method returns
+     * an empty string, if no request data is available for the given key.
+     *
+     * @param string $key Key of API request to return. Optional.
+     * @return array|string API request data
      */
     public function getRequestData(string $key = "")
     {
-        if ($key) {
-            return $this->requestData[$key] ?: "";
-        } else {
-            return $this->requestData;
-        }
+        return $key ? ($this->requestData[$key] ?? "") : $this->requestData;
     }
 }
