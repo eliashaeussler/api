@@ -51,6 +51,9 @@ class LunchCommandRoute extends BaseRoute
     /** @var SlackController Slack API Controller */
     protected $controller;
 
+    /** @var mixed Provided API request parameters */
+    protected $requestParameters;
+
     /** @var bool Defines whether the status has already been set */
     protected $statusAlreadySet = false;
 
@@ -68,6 +71,9 @@ class LunchCommandRoute extends BaseRoute
      */
     protected function initializeRequest()
     {
+        // Set provided request parameters
+        $this->requestParameters = $this->controller->getRequestData("text");
+
         // Check whether to set or reset current status
         $this->statusAlreadySet = $this->checkIfStatusIsSet();
 
@@ -149,7 +155,7 @@ class LunchCommandRoute extends BaseRoute
     protected function calculateExpiration(): int
     {
         $now = new \DateTime();
-        $expiration = (int) $this->controller->getRequestData("text") ?: self::DEFAULT_EXPIRATION;
+        $expiration = (int) $this->requestParameters ?: self::DEFAULT_EXPIRATION;
         $this->expiration = $now->getTimestamp() + $expiration * 60;
 
         return $this->expiration;
