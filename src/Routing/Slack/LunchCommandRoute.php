@@ -48,6 +48,9 @@ class LunchCommandRoute extends BaseRoute
     /** @var int Default status expiration in minutes */
     const DEFAULT_EXPIRATION = 45;
 
+    /** @var string API request parameter for showing the help */
+    const REQUEST_PARAMETER_HELP = "help";
+
     /** @var SlackController Slack API Controller */
     protected $controller;
 
@@ -72,7 +75,7 @@ class LunchCommandRoute extends BaseRoute
     protected function initializeRequest()
     {
         // Set provided request parameters
-        $this->requestParameters = $this->controller->getRequestData("text");
+        $this->requestParameters = trim($this->controller->getRequestData("text"));
 
         // Check whether to set or reset current status
         $this->statusAlreadySet = $this->checkIfStatusIsSet();
@@ -96,6 +99,12 @@ class LunchCommandRoute extends BaseRoute
      */
     public function processRequest()
     {
+        // Show help text if request parameter starts with "help" keyword
+        if (stripos($this->requestParameters, self::REQUEST_PARAMETER_HELP) === 0) {
+            echo $this->showHelpText();
+            return;
+        }
+
         // Send API call
         $result = $this->controller->api("users.profile.set", $this->requestData);
         $this->controller->checkApiResult($result);
@@ -159,5 +168,21 @@ class LunchCommandRoute extends BaseRoute
         $this->expiration = $now->getTimestamp() + $expiration * 60;
 
         return $this->expiration;
+    }
+
+    /**
+     * Show help text for this command.
+     *
+     * @throws ClassNotFoundException if the `Message` class is not available
+     */
+    protected function showHelpText()
+    {
+        $message = "Tell your colleagues and team members that you're *doing your lunch break* right now " .
+                   "by typing `/lunch`. This will update your status for " . self::DEFAULT_EXPIRATION . " minutes. " .
+                   "Type `/lunch` again if you're *back earlier* and want to reset your status.\r\n" .
+                   "You can also set a *custom duration* for your lunch break by typing `/lunch [duration]` while " .
+                   "`[duration]` should be replaced with a number indicating your lunch break *in minutes*.";
+
+        echo $this->controller->buildMessage(Message::MESSAGE_TYPE_NOTICE, $message);
     }
 }
