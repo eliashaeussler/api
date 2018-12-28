@@ -7,7 +7,8 @@ define("ROOT_PATH", dirname(__DIR__));
 define("ASSETS_PATH", ROOT_PATH . "/assets");
 include_once ROOT_PATH . '/vendor/autoload.php';
 
-use EliasHaeussler\Api\Page\Frontend;
+use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\RoutingUtility;
 
@@ -17,11 +18,16 @@ try {
     $router->route();
 
 } catch (\Exception $e) {
-    $message = Frontend::error($e);
+    try {
+        if (isset($router) && ($controller = $router->getController())) {
+            echo $controller->buildMessage(Message::MESSAGE_TYPE_ERROR, $e);
+        } else {
+            /** @var Message $message */
+            $message = GeneralUtility::makeInstance(Message::class);
+            echo $message->error($e);
+        }
 
-    if (isset($router) && ($controller = $router->getController())) {
-        echo $controller->buildMessage($message, Frontend::MESSAGE_TYPE_ERROR);
-    } else {
-        echo $message;
+    } catch (ClassNotFoundException $e) {
+        echo $e->getMessage();
     }
 }

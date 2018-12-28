@@ -6,14 +6,24 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Routing\Slack;
 
 use EliasHaeussler\Api\Controller\SlackController;
-use EliasHaeussler\Api\Page\Frontend;
+use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Exception\InvalidRequestException;
+use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
 
 /**
- * @todo add doc
+ * Lunch router for Slack API controller.
+ *
+ * This class defines the concrete router for the "lunch" route inside the Slack API controller. It enables Slack users
+ * to set or unset their status message with a notice to the current working state. If a user starts his lunch break,
+ * he can used the Slash Command `/lunch` with optional parameter `duration` (in minutes) to update his Slack status.
+ * The Slack API will then call this API which routes the request to this class which will call the Slack API back with
+ * a specific API call. Disabling the status is possible by sending the `/lunch` command again, but it will expire by
+ * default after either the given duration or a default time.
  *
  * @package EliasHaeussler\Api\Routing\Slack
  * @author Elias Häußler <mail@elias-haeussler.de>
+ * @license MIT
  */
 class LunchRoute extends BaseRoute
 {
@@ -38,61 +48,23 @@ class LunchRoute extends BaseRoute
     /** @var int Default status expiration in minutes */
     const DEFAULT_EXPIRATION = 45;
 
-    /**
-     * @var SlackController Controller
-     */
+    /** @var SlackController Slack API Controller */
     protected $controller;
 
-    /**
-     * @var bool Defines whether the status to be set is already set
-     */
+    /** @var bool Defines whether the status has already been set */
     protected $statusAlreadySet = false;
 
-    /**
-     * @var string Selected emoji for status
-     */
+    /** @var string Selected emoji for status */
     protected $emoji = ":pizza:";
 
-    /**
-     * @var int Timestamp of status expiration
-     */
+    /** @var int Timestamp of status expiration */
     protected $expiration;
 
 
     /**
      * @inheritdoc
-     * @throws \EliasHaeussler\Api\Exception\InvalidRequestException
-     * @throws \Exception
-     */
-    public function processRequest()
-    {
-        $this->initializeRequest();
-
-        // Send API call
-        $result = $this->controller->api("users.profile.set", $this->requestData);
-        $this->controller->checkApiResult($result);
-
-        // Show success message
-        if ($this->statusAlreadySet) {
-            $message = ":rocket: Welcome back to work!";
-        } else {
-            $expiration = new \DateTime();
-            $expiration->setTimestamp($this->expiration);
-            $message = sprintf(
-                "%s Your lunch break will expire at %s. Bon appétit!",
-                $this->emoji,
-                $expiration->format("H:i")
-            );
-        }
-
-        echo $this->controller->buildMessage($message, Frontend::MESSAGE_TYPE_SUCCESS);
-    }
-
-    /**
-     * @todo add doc
-     *
-     * @throws \EliasHaeussler\Api\Exception\InvalidRequestException
-     * @throws \Exception
+     * @throws InvalidRequestException if API request failed or contains an invalid answer
+     * @throws \Exception if calculating the status expiration failed
      */
     protected function initializeRequest()
     {
@@ -111,10 +83,38 @@ class LunchRoute extends BaseRoute
     }
 
     /**
-     * @todo add doc
+     * @inheritdoc
+     * @throws InvalidRequestException if API request failed or contains an invalid answer
+     * @throws ClassNotFoundException if the `Message` class is not available
+     * @throws \Exception if setting the status expiration failed
+     */
+    public function processRequest()
+    {
+        // Send API call
+        $result = $this->controller->api("users.profile.set", $this->requestData);
+        $this->controller->checkApiResult($result);
+
+        // Show success message
+        if ($this->statusAlreadySet) {
+            $message = ":rocket: Welcome back to work!";
+        } else {
+            $expiration = new \DateTime();
+            $expiration->setTimestamp($this->expiration);
+            $message = sprintf(
+                "%s Your lunch break will expire at %s. Bon appétit!",
+                $this->emoji,
+                $expiration->format("H:i")
+            );
+        }
+
+        echo $this->controller->buildMessage($message, Message::MESSAGE_TYPE_SUCCESS);
+    }
+
+    /**
+     * Check whether the status has already been set and is still active.
      *
-     * @return bool
-     * @throws \EliasHaeussler\Api\Exception\InvalidRequestException
+     * @return bool `true` if the status has already been set and is still active, `false` otherwise
+     * @throws InvalidRequestException if API request failed or contains an invalid answer
      */
     protected function checkIfStatusIsSet(): bool
     {
@@ -134,10 +134,17 @@ class LunchRoute extends BaseRoute
     }
 
     /**
-     * @todo add doc
+     * Calculate status expiration.
      *
-     * @return int
-     * @throws \Exception
+     * Calculates the status expiration by considering multiple data:
+     *
+     * 1. Slack parameter
+     * 2. Default expiration
+     *
+     * Note that expiration needs to be provided in minutes.
+     *
+     * @return int Calculated exiration in minutes
+     * @throws \Exception if the expiration cannot be calculated
      */
     protected function calculateExpiration(): int
     {

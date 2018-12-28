@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>{{ title }}</title>
+    <title>API – Elias Häußler</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,31 @@
 </head>
 
 <body>
-    {{ body|raw }}
+    <div class="page-wrapper">
+        <main class="page">
+            {% if message %}
+            <div class="message{% if message.type %} message--{{ message.type }}{% endif %}">
+                {% if message.header %}
+                <div class="message__header">{{ message.header }}</div>
+                {% endif %}
+
+                {% if message.body %}
+                <div class="message__body">{{ message.body }}</div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </main>
+
+        <footer class="page-footer">
+            <div class="page-footer__copyright">
+                &copy; {{ year }} <a href="https://www.elias-haeussler.de" target="_blank">Elias Häußler</a>.
+                All rights reserved.
+            </div>
+            <div class="page-footer__version">
+                {{ commit }}
+            </div>
+        </footer>
+    </div>
 </body>
 
 </html>

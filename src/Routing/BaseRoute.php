@@ -8,36 +8,47 @@ namespace EliasHaeussler\Api\Routing;
 use EliasHaeussler\Api\Controller\BaseController;
 
 /**
- * @todo add doc
+ * Base request router.
  *
  * @package EliasHaeussler\Api\Routing
  * @author Elias Häußler <mail@elias-haeussler.de>
+ * @license MIT
  */
 abstract class BaseRoute
 {
-    /**
-     * @var BaseController Controller
-     */
+    /** @var BaseController Controller */
     protected $controller;
 
-    /**
-     * @var array Data to be send in request
-     */
+    /** @var array Data to be send in request */
     protected $requestData;
 
 
     /**
-     * @todo add doc
+     * Initialize request router for current API controller.
      *
-     * @param $controller
+     * Initializes the router for the current API request with the appropriate API controller. This includes
+     * processing the concrete initialization by calling `static::initializeRequest`.
+     *
+     * @param BaseController $controller API controller for current route
      */
-    public function __construct($controller)
+    final public function __construct(BaseController $controller)
     {
         $this->controller = $controller;
+
+        $this->initializeRequest();
     }
 
     /**
-     * @todo add doc
+     * Initialize routing for API request.
+     *
+     * Defines necessary variables for the routing of the API request and ensures that it can be processed without errors.
+     */
+    abstract protected function initializeRequest();
+
+    /**
+     * Process routing of API request.
+     *
+     * This method processes the concrete API request and prints the result of it.
      */
     abstract public function processRequest();
 }

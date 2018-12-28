@@ -3,7 +3,12 @@
  */
 
 body {
-    padding: 0.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.page-wrapper {
+    padding: 1rem;
     font-family: Inconsolata, monospace;
 }
 
@@ -30,6 +35,8 @@ body {
 
 .message__header {
     background: rgba(204, 204, 204, 0.7);
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .message--success .message__header {
@@ -44,8 +51,18 @@ body {
     background: rgba(255, 123, 83, 0.7);
 }
 
-.copyright {
+.page-footer {
     margin-top: 1rem;
     color: #ccc;
     font-size: 0.75rem;
+    display: flex;
+}
+
+.page-footer__version {
+    margin-left: auto;
+    padding-left: 1rem;
+}
+
+.page-footer a {
+    color: inherit;
 }
