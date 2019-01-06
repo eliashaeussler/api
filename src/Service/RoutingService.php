@@ -5,10 +5,7 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Service;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
-use Dotenv\Dotenv;
 use EliasHaeussler\Api\Controller\BaseController;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\EmptyControllerException;
@@ -37,9 +34,6 @@ class RoutingService
 
     /** @var int Current access type */
     protected static $access = self::ACCESS_TYPE_BROWSER;
-
-    /** @var Connection Database connection */
-    protected $database;
 
     /** @var string Plain request URI without query string */
     protected $uri;
@@ -81,19 +75,13 @@ class RoutingService
      * Initialize database connection.
      *
      * @throws DBALException if the database connection cannot be established
+     * @throws ClassNotFoundException if the `ConnectionService` class is not available
      */
     protected function initializeDatabase()
     {
-        $parameters = [
-            "host" => GeneralUtility::getEnvironmentVariable("DB_HOST", "localhost"),
-            "user" => GeneralUtility::getEnvironmentVariable("DB_USER"),
-            "password" => GeneralUtility::getEnvironmentVariable("DB_PASS"),
-            "dbname" => GeneralUtility::getEnvironmentVariable("DB_NAME"),
-            "port" => (int) GeneralUtility::getEnvironmentVariable("DB_PORT", 3306),
-            "driver" => GeneralUtility::getEnvironmentVariable("DB_DRIVER", "pdo_mysql"),
-        ];
-
-        $this->database = DriverManager::getConnection($parameters);
+        /** @var ConnectionService $connectionService */
+        $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
+        $connectionService->connect();
     }
 
     /**
@@ -170,16 +158,6 @@ class RoutingService
         if ($this->controller) {
             $this->controller->call();
         }
-    }
-
-    /**
-     * Get database connection
-     *
-     * @return Connection Database connection
-     */
-    public function getDatabase(): Connection
-    {
-        return $this->database;
     }
 
     /**

@@ -78,6 +78,35 @@ class GeneralUtility
     }
 
     /**
+     * Replace first occurrence of search string with replacement string.
+     *
+     * @param string $haystack The input string
+     * @param string $needle The search pattern
+     * @param string $replacement The replacement string
+     * @return string The replaced input string
+     */
+    public static function replaceFirst(string $haystack, string $needle, string $replacement): string
+    {
+        if (($pos = strpos($haystack, $needle)) !== false) {
+            return substr_replace($haystack, $replacement, $pos, strlen($needle));
+        } else {
+            return $haystack;
+        }
+    }
+
+    /**
+     * Get normalized name of current API controller without namespace and class suffix.
+     *
+     * @param string $class Class name of the API controller
+     * @return string Normalized name of current API controller
+     */
+    public static function getControllerName(string $class)
+    {
+        $controller = ($pos = strrpos($class, "\\")) ? substr($class, $pos + 1) : $pos;
+        return implode("", preg_split("/Controller$/", $controller, -1, PREG_SPLIT_NO_EMPTY));
+    }
+
+    /**
      * Load API environment.
      *
      * Reads the environment variables of the current environment in order to use them in the API request.
