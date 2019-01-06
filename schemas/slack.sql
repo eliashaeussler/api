@@ -1,0 +1,7 @@
+CREATE TABLE `slack_auth` (
+  `user` VARCHAR(20) NOT NULL UNIQUE,
+  `token` VARCHAR(255) NOT NULL DEFAULT '',
+  `scope` VARCHAR(255) NOT NULL DEFAULT '',
+
+  PRIMARY KEY (`user`)
+);

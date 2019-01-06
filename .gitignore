@@ -1,6 +1,8 @@
 # Composer packages
 /vendor
 
+# Databases
+*.db
+
 # Environment variables
-/.env
-/*.env.*
+/*.env

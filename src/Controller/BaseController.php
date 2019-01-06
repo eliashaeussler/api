@@ -162,18 +162,6 @@ abstract class BaseController
     }
 
     /**
-     * Get normalized name of current API controller without namespace and class suffix.
-     *
-     * @return string Normalized name of current API controller
-     */
-    protected function getControllerName()
-    {
-        $class = static::class;
-        $controller = ($pos = strrpos($class, "\\")) ? substr($class, $pos + 1) : $pos;
-        return implode("", preg_split("/Controller$/", $controller, -1, PREG_SPLIT_NO_EMPTY));
-    }
-
-    /**
      * Check if given route matches the current route.
      *
      * @param string $route Route to be checked against the current route

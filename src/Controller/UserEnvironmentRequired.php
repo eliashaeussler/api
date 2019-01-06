@@ -24,7 +24,7 @@ trait UserEnvironmentRequired
      */
     protected function initializeEnvironment()
     {
-        $envFile = sprintf("%s.env", $this->getControllerName());
+        $envFile = sprintf("%s.env", GeneralUtility::getControllerName(static::class));
         GeneralUtility::loadEnvironment($envFile);
     }
 }
