@@ -5,13 +5,13 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Controller;
 
-use Dotenv\Dotenv;
-use Dotenv\Exception\InvalidPathException;
+use Doctrine\DBAL\Connection;
 use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
+use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Service\RoutingService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
@@ -46,6 +46,9 @@ class SlackController extends BaseController
         "lunch" => LunchCommandRoute::class,
     ];
 
+    /** @var Connection Database connection */
+    protected $database;
+
     /** @var string Client ID of Slack App */
     protected $clientId;
 
@@ -77,11 +80,15 @@ class SlackController extends BaseController
      */
     protected function initializeRequest()
     {
+        // Get database connection
+        $this->database = GeneralUtility::makeInstance(ConnectionService::class)->getDatabase();
+
         // Set base app credentials and authentication settings
         $this->clientId = GeneralUtility::getEnvironmentVariable("SLACK_CLIENT_ID");
         $this->clientSecret = GeneralUtility::getEnvironmentVariable("SLACK_CLIENT_SECRET");
         $this->signingSecret = GeneralUtility::getEnvironmentVariable("SLACK_SIGNING_SECRET");
         $this->authState = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_STATE");
+        $this->authType = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_TYPE");
 
         // Store data from request body and user-specific environment variables
         $this->storeRequestData();
@@ -90,14 +97,10 @@ class SlackController extends BaseController
         if ($this->matchesRoute(self::ROUTE_AUTH)) {
             $this->processUserAuthentication();
         } else if ($this->isRequestValid() && $this->isUserAuthenticated()) {
-            $this->loadUserEnvironment();
+            $this->loadUserData();
         } else {
             $this->showUserAuthenticationUri();
         }
-
-        // Set user-specific authentication settings
-        $this->authType = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_TYPE");
-        $this->authToken = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_TOKEN");
     }
 
     /**
@@ -315,20 +318,30 @@ class SlackController extends BaseController
     }
 
     /**
-     * Load user-specific environment variables.
+     * Load user data from database.
      *
-     * Overloads the current environment variables with the user-specific variables.
+     * Loads the available user data from the database and stores them locally.
+     *
+     * @throws AuthenticationException if user data is missing in the database
      */
-    protected function loadUserEnvironment()
+    protected function loadUserData()
     {
-        try {
-            $envFile = sprintf(self::ENV_FILENAME_PATTERN, $this->requestData['user_id']);
-            $loader = new Dotenv(ROOT_PATH, $envFile);
-            $loader->overload();
+        $queryBuilder = $this->database->createQueryBuilder();
+        $result = $queryBuilder->select("*")
+            ->from("slack_auth")
+            ->where("user = :user_id")
+            ->setParameter("user_id", $this->requestData['user_id'])
+            ->execute()
+            ->fetch();
 
-        } catch (InvalidPathException $e) {
-            // Do not handle exception as default environment will be used as fallback
+        if (empty($result)) {
+            throw new AuthenticationException(
+                "Authentication failed due to missing user data. Please contact your Slack admin.",
+                1546798472
+            );
         }
+
+        $this->authToken = $result['token'];
     }
 
     /**
@@ -355,15 +368,21 @@ class SlackController extends BaseController
     /**
      * Check whether the current user is already authenticated.
      *
-     * Checks whether the current user is already authenticated by testing if the appropriate .env file exists.
+     * Checks whether the current user is already authenticated by testing if an appropriate database entry exists.
      *
      * @return bool `true` if the user is already authenticated, `false` otherwise
      */
     protected function isUserAuthenticated(): bool
     {
-        $fileName = ROOT_PATH . "/" . sprintf(self::ENV_FILENAME_PATTERN, $this->requestData['user_id']);
+        $queryBuilder = $this->database->createQueryBuilder();
+        $result = $queryBuilder->select("COUNT(*) AS count")
+            ->from("slack_auth")
+            ->where("user = :user_id")
+            ->setParameter("user_id", $this->requestData['user_id'])
+            ->execute()
+            ->fetch();
 
-        return file_exists($fileName);
+        return $result['count'] > 0;
     }
 
     /**
@@ -471,19 +490,29 @@ class SlackController extends BaseController
         $result = json_decode($result, true);
 
         // Save authentication credentials
-        $fileName = ROOT_PATH . "/" . sprintf(self::ENV_FILENAME_PATTERN, $result["user_id"]);
-        $mappings = [
-            "access_token" => "SLACK_AUTH_TOKEN",
-            "scope" => "SLACK_AUTH_SCOPE",
-        ];
-        $this->writeToFile($fileName, $result, $mappings);
+        $queryBuilder = $this->database->createQueryBuilder();
+        $dbResult = $queryBuilder->insert("slack_auth")
+            ->values([
+                "token" => $result["access_token"],
+                "scope" => $result["scope"],
+            ])
+            ->execute()
+            ->rowCount();
 
-        // Show success message
-        echo $this->buildMessage(
-            Message::MESSAGE_TYPE_SUCCESS,
-            "Yay, the authentication was successful.",
-            "Please re-send your command and everything should be fine."
-        );
+        // Show status message
+        if ($dbResult > 0) {
+            echo $this->buildMessage(
+                Message::MESSAGE_TYPE_SUCCESS,
+                "Yay, the authentication was successful.",
+                "Please re-send your command and everything should be fine."
+            );
+        } else {
+            echo $this->buildMessage(
+                Message::MESSAGE_TYPE_WARNING,
+                "Damn, something went wrong...",
+                "We couldn't store your authentication data. Please contact your Slack admin."
+            );
+        }
     }
 
     /**
@@ -512,29 +541,6 @@ class SlackController extends BaseController
                 1545669514
             );
         }
-    }
-
-    /**
-     * Write user-specific environment variables to file.
-     *
-     * @param string $fileName File name of user-specific .env file
-     * @param array $apiResult Result from API request
-     * @param array $mappings Data mappings for contents of .env file in format `"resultKey" => "envVariable"`
-     */
-    protected function writeToFile(string $fileName, array $apiResult, array $mappings)
-    {
-        // Open file handler
-        $handler = fopen($fileName, "w");
-
-        // Set content
-        $content = "";
-        foreach ($mappings as $resKey => $envKey) {
-            $content .= sprintf("%s=%s\r\n", $envKey, $apiResult[$resKey]);
-        }
-
-        // Write content to file and close handler
-        fwrite($handler, $content);
-        fclose($handler);
     }
 
     /**
