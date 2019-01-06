@@ -213,11 +213,11 @@ class SlackController extends BaseController
      * Build message for Bot.
      *
      * @param string $type Message type
-     * @param string $message Message
+     * @param string|\Exception $message Message
      * @param array $attachments Attachments
      * @return string The rendered message
      */
-    public function buildBotMessage(string $type, string $message, array $attachments = []): string
+    public function buildBotMessage(string $type, $message, array $attachments = []): string
     {
         // Set correct content header
         header("Content-Type: application/json");
