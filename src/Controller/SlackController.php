@@ -493,9 +493,11 @@ class SlackController extends BaseController
         $queryBuilder = $this->database->createQueryBuilder();
         $dbResult = $queryBuilder->insert("slack_auth")
             ->values([
+                "user" => ":user",
                 "token" => ":token",
                 "scope" => ":scope",
             ])
+            ->setParameter("user", $result["user_id"])
             ->setParameter("token", $result["access_token"])
             ->setParameter("scope", $result["scope"])
             ->execute()
