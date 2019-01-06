@@ -16,6 +16,9 @@
     "twig/twig": "^2.6",
     "doctrine/dbal": "^2.9"
   },
+  "require-dev": {
+    "symfony/console": "^4.2"
+  },
   "autoload": {
     "psr-4": {
       "EliasHaeussler\\Api\\": "src/"
