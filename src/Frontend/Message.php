@@ -13,7 +13,7 @@ use EliasHaeussler\Api\Service\RoutingService;
  * Frontend rendering class.
  *
  * This class enables the rendering of messages in the Frontend using a Frontend template renderer. This template
- * renderer is provided through the `Template` class.
+ * renderer is provided through the {@see Template} class.
  *
  * @package EliasHaeussler\Api\Frontend
  * @author Elias Häußler <mail@elias-haeussler.de>
@@ -40,7 +40,7 @@ class Message
     /**
      * Initialize Frontend template for Frontend message rendering.
      *
-     * @throws ClassNotFoundException if the `Template` class is not available
+     * @throws ClassNotFoundException if the {@see Template} class is not available
      */
     public function __construct()
     {

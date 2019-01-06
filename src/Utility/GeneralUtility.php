@@ -52,8 +52,8 @@ class GeneralUtility
      *
      * @param string $delimiter Boundary string
      * @param string $string Input string
-     * @param string $trimCharacters Trim characters to be passed to `trim`
-     * @param int $limit Limit to be passed to `explode`
+     * @param string $trimCharacters Trim characters to be passed to {@see trim()}
+     * @param int $limit Limit to be passed to {@see explode()}
      * @return array Array with string components
      */
     public static function trimExplode(

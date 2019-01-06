@@ -56,7 +56,7 @@ class RoutingService
      * instance of this class will throw an error. This will also be the case if the provided API controller cannot be
      * resolved to a concrete API controller class.
      *
-     * @throws ClassNotFoundException if either the `Database` class or API controller class is not available
+     * @throws ClassNotFoundException if either the {@see ConnectionService} class or API controller class is not available
      * @throws DBALException if the database connection cannot be established
      * @throws EmptyControllerException if no API controller has been provided
      * @throws EmptyParametersException if not API controller parameters have been provided
@@ -75,7 +75,7 @@ class RoutingService
      * Initialize database connection.
      *
      * @throws DBALException if the database connection cannot be established
-     * @throws ClassNotFoundException if the `ConnectionService` class is not available
+     * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
      */
     protected function initializeDatabase()
     {

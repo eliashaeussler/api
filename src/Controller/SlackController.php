@@ -19,7 +19,7 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
  * Slack API controller.
  *
  * This API controller converts API requests to valid requests for the Slack API and processes them. Each available
- * route is mapped to an appropriate routing class which should be an instance of `BaseRoute` class.
+ * route is mapped to an appropriate routing class which should be an instance of {@see BaseRoute} class.
  *
  * @package EliasHaeussler\Api\Controller
  * @author Elias Häußler <mail@elias-haeussler.de>
@@ -76,7 +76,7 @@ class SlackController extends BaseController
      *
      * @throws AuthenticationException if provided authentication state is invalid
      * @throws InvalidRequestException if user authentication or API request failed
-     * @throws ClassNotFoundException if the `Message` class is not available
+     * @throws ClassNotFoundException if the {@see Message} class is not available
      */
     protected function initializeRequest()
     {
@@ -176,7 +176,7 @@ class SlackController extends BaseController
      * @param string|array $data Additional data to be sent during API request
      * @param bool $json Define whether to use JSON as content type
      * @param bool $authorize Define whether to send authorization headers
-     * @internal Used in `SlackController::api` to build HTTP headers for API request
+     * @internal Used in {@see SlackController::api} to build HTTP headers for API request
      */
     protected function addApiHeaders(&$ch, $data, bool $json = true, bool $authorize = true)
     {
@@ -433,7 +433,7 @@ class SlackController extends BaseController
     /**
      * Show message for necessary user authentication.
      *
-     * @throws ClassNotFoundException if the `Frontend` class is not available
+     * @throws ClassNotFoundException if the {@see Frontend} class is not available
      */
     protected function showUserAuthenticationUri()
     {
@@ -468,7 +468,7 @@ class SlackController extends BaseController
      *
      * @throws AuthenticationException if provided authentication state is invalid
      * @throws InvalidRequestException if API request failed
-     * @throws ClassNotFoundException if the `Frontend` class is not available
+     * @throws ClassNotFoundException if the {@see Frontend} class is not available
      */
     protected function processUserAuthentication()
     {

@@ -27,7 +27,7 @@ abstract class BaseRoute
      * Initialize request router for current API controller.
      *
      * Initializes the router for the current API request with the appropriate API controller. This includes
-     * processing the concrete initialization by calling `static::initializeRequest`.
+     * processing the concrete initialization by calling {@see initializeRequest()}.
      *
      * @param BaseController $controller API controller for current route
      */
