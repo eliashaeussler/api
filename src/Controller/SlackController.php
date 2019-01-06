@@ -500,8 +500,7 @@ class SlackController extends BaseController
             ->setParameter("user", $result["user_id"])
             ->setParameter("token", $result["access_token"])
             ->setParameter("scope", $result["scope"])
-            ->execute()
-            ->rowCount();
+            ->execute();
 
         // Show status message
         if ($dbResult > 0) {
