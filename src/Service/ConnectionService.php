@@ -56,7 +56,7 @@ class ConnectionService
      *
      * DB_USER => Database user
      * DB_PASS => Password for database user
-     * DB_PATH => Path to SQLite database file (defaults to `api.db`). Note that the file must be in the root folder!
+     * DB_PATH => Path to SQLite database file (defaults to `main.db`). Note that the file must be in the root folder!
      *
      * @throws DBALException if the database connection cannot be established
      */
@@ -66,7 +66,7 @@ class ConnectionService
         $parameters = [
             "user" => GeneralUtility::getEnvironmentVariable("DB_USER"),
             "password" => GeneralUtility::getEnvironmentVariable("DB_PASS"),
-            "path" => ROOT_PATH . "/" . GeneralUtility::getEnvironmentVariable("DB_PATH", "api.db"),
+            "path" => ROOT_PATH . "/" . GeneralUtility::getEnvironmentVariable("DB_PATH", "main.db"),
             "driver" => "pdo_sqlite",
         ];
 
