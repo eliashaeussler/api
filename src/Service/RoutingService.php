@@ -17,7 +17,7 @@ use EliasHaeussler\Api\Exception\InvalidControllerException;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
- * API request routing utility.
+ * API request routing service.
  *
  * This class controls the routing of each API request. It serves as entry point and handles all API requests. Each
  * request will be analyzed and a concrete API controller will be initialized, if available. After that, the API
@@ -80,10 +80,12 @@ class RoutingService
      * Load API environment.
      *
      * Reads the environment variables of the current environment in order to use them in the API request.
+     *
+     * @param string $file File name of the .env file
      */
-    protected function loadEnvironment()
+    protected function loadEnvironment(string $file = ".env")
     {
-        $loader = new Dotenv(ROOT_PATH);
+        $loader = new Dotenv(ROOT_PATH, $file);
         $loader->load();
     }
 
@@ -119,16 +121,19 @@ class RoutingService
      */
     protected function analyzeRequestUri()
     {
+        // Get URI components
         $plainUri = strtok($_SERVER['REQUEST_URI'], "?");
         $uriComponents = GeneralUtility::trimExplode('/', $plainUri);
         $this->uri = implode('/', $uriComponents);
 
+        // Set controller
         if (empty($uriComponents[0])) {
             throw new EmptyControllerException("No controller given. Please provide a valid controller.", 1543532177);
         } else {
             $this->namespace = $uriComponents[0];
         }
 
+        // Set controller parameters
         if (empty($uriComponents[1])) {
             throw new EmptyParametersException(sprintf(
                 "No controller parameters given. Please provide valid parameters for the controller \"%s\".",
@@ -137,6 +142,10 @@ class RoutingService
         } else {
             $this->parameters = $uriComponents[1];
         }
+
+        // Load environment variables
+        $envFile = sprintf("%s.env", $this->namespace);
+        $this->loadEnvironment($envFile);
     }
 
     /**
