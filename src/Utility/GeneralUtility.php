@@ -103,7 +103,11 @@ class GeneralUtility
     public static function getControllerName(string $class)
     {
         $controller = ($pos = strrpos($class, "\\")) ? substr($class, $pos + 1) : $pos;
-        return implode("", preg_split("/Controller$/", $controller, -1, PREG_SPLIT_NO_EMPTY));
+        if ($controller === false) {
+            return $class;
+        } else {
+            return implode("", preg_split("/Controller$/", $controller, -1, PREG_SPLIT_NO_EMPTY));
+        }
     }
 
     /**
