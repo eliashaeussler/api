@@ -97,7 +97,7 @@ class LunchCommandRoute extends BaseRoute
      * {@inheritdoc}
      *
      * @throws InvalidRequestException if API request failed or contains an invalid answer
-     * @throws ClassNotFoundException if the `Message` class is not available
+     * @throws ClassNotFoundException if the {@see Message} class is not available
      * @throws \Exception if setting the status expiration failed
      */
     public function processRequest()
@@ -161,7 +161,7 @@ class LunchCommandRoute extends BaseRoute
      *
      * Note that expiration needs to be provided in minutes.
      *
-     * @return int Calculated exiration in minutes
+     * @return int Calculated expiration in minutes
      * @throws \Exception if the expiration cannot be calculated
      */
     protected function calculateExpiration(): int

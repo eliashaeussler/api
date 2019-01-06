@@ -40,7 +40,7 @@ abstract class BaseController
      *
      * Initializes the current API request for the selected controller by reading the request body and HTTP headers and
      * defining the selected route. Finally, the concrete controller initialization will be processed. This is done by
-     * calling `static::initializeRequest()`.
+     * calling {@see initializeRequest()}.
      *
      * @param string $route API request route
      */
@@ -82,15 +82,15 @@ abstract class BaseController
     /**
      * Build message for Frontend.
      *
-     * Calls the appropriate method in `Message` class to build a message in the Frontend. Note that it's required
-     * to pass all necessary arguments to this method if they are required by the appropriate method in `Message`
+     * Calls the appropriate method in {@see Message} class to build a message in the Frontend. Note that it's required
+     * to pass all necessary arguments to this method if they are required by the appropriate method in {@see Message}
      * class. The first parameter `$type` defines the name of the method to be used for building the message.
      *
-     * @param string $type Message type, will be used to call the appropriate method in `Message` class
-     * @param mixed $arg1 First argument to be passed to appropriate method in `Message` class. Required.
-     * @param array $_ More arguments to be passed to appropriate method in `Message` class. Optional.
+     * @param string $type Message type, will be used to call the appropriate method in {@see Message} class
+     * @param mixed $arg1 First argument to be passed to appropriate method in {@see Message} class. Required.
+     * @param array $_ More arguments to be passed to appropriate method in {@see Message} class. Optional.
      * @return string The generated message, if successful, or an empty string, if the build process failed
-     * @throws ClassNotFoundException if the `Message` class is not available
+     * @throws ClassNotFoundException if the {@see Message} class is not available
      */
     public function buildMessage(string $type, $arg1, ...$_): string
     {
