@@ -61,14 +61,14 @@ class SlackController extends BaseController
     /** @var string Slack authentication type */
     protected $authType;
 
-    /** @var string Slack authentication token */
-    protected $authToken;
-
     /** @var string Slack authentication state string */
     protected $authState;
 
     /** @var array Data from Slack API, passed in request */
     protected $requestData;
+
+    /** @var string Slack authentication token */
+    protected $authToken = "";
 
 
     /**
