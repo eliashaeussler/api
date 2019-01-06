@@ -70,23 +70,11 @@ class RoutingService
      */
     public function __construct()
     {
-        $this->loadEnvironment();
-        $this->initializeDatabase();
-        $this->analyzeRequestUri();
-        $this->initializeController();
-    }
+        GeneralUtility::loadEnvironment();
 
-    /**
-     * Load API environment.
-     *
-     * Reads the environment variables of the current environment in order to use them in the API request.
-     *
-     * @param string $file File name of the .env file
-     */
-    protected function loadEnvironment(string $file = ".env")
-    {
-        $loader = new Dotenv(ROOT_PATH, $file);
-        $loader->load();
+        $this->analyzeRequestUri();
+        $this->initializeDatabase();
+        $this->initializeController();
     }
 
     /**
@@ -142,10 +130,6 @@ class RoutingService
         } else {
             $this->parameters = $uriComponents[1];
         }
-
-        // Load environment variables
-        $envFile = sprintf("%s.env", $this->namespace);
-        $this->loadEnvironment($envFile);
     }
 
     /**
