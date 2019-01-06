@@ -121,7 +121,8 @@ class Message
     public function error(\Exception $object): string
     {
         $header = sprintf("Error: %s", get_class($object));
-        $body = sprintf("%s [%s]", $object->getMessage(), $object->getCode());
+        $body = $object->getMessage();
+        if (($code = $object->getCode()) > 0) $body .= " [" . $code . "]";
 
         return $this->message($header, $body, self::MESSAGE_TYPE_ERROR);
     }
