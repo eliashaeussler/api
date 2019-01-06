@@ -50,6 +50,7 @@ abstract class BaseController
 
         $this->readRequestBody();
         $this->readRequestHeaders();
+        $this->initializeEnvironment();
         $this->initializeRequest();
     }
 
@@ -151,6 +152,25 @@ abstract class BaseController
         }, ARRAY_FILTER_USE_KEY);
 
         $this->requestHeaders = $headers;
+    }
+
+    /**
+     * Initialize user environment.
+     */
+    protected function initializeEnvironment()
+    {
+    }
+
+    /**
+     * Get normalized name of current API controller without namespace and class suffix.
+     *
+     * @return string Normalized name of current API controller
+     */
+    protected function getControllerName()
+    {
+        $class = static::class;
+        $controller = ($pos = strrpos($class, "\\")) ? substr($class, $pos + 1) : $pos;
+        return implode("", preg_split("/Controller$/", $controller, -1, PREG_SPLIT_NO_EMPTY));
     }
 
     /**

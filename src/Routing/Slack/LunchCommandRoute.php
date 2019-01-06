@@ -69,7 +69,8 @@ class LunchCommandRoute extends BaseRoute
 
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @throws InvalidRequestException if API request failed or contains an invalid answer
      * @throws \Exception if calculating the status expiration failed
      */
@@ -93,7 +94,8 @@ class LunchCommandRoute extends BaseRoute
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @throws InvalidRequestException if API request failed or contains an invalid answer
      * @throws ClassNotFoundException if the `Message` class is not available
      * @throws \Exception if setting the status expiration failed

@@ -27,6 +27,8 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
  */
 class SlackController extends BaseController
 {
+    use UserEnvironmentRequired;
+
     /** @var string Base API uri of Slack */
     const API_URI = "https://slack.com/api/";
 
@@ -67,7 +69,8 @@ class SlackController extends BaseController
 
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @throws AuthenticationException if provided authentication state is invalid
      * @throws InvalidRequestException if user authentication or API request failed
      * @throws ClassNotFoundException if the `Message` class is not available
@@ -98,7 +101,8 @@ class SlackController extends BaseController
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @throws AuthenticationException if the authentication process failed
      * @throws ClassNotFoundException if the routing class is not available
      */
@@ -191,7 +195,7 @@ class SlackController extends BaseController
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildMessage(string $type, $arg1, ...$_): string
     {
