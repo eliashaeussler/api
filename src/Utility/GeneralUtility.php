@@ -5,6 +5,7 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Utility;
 
+use Dotenv\Dotenv;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 
 /**
@@ -74,6 +75,20 @@ class GeneralUtility
         }
 
         return $values;
+    }
+
+    /**
+     * Load API environment.
+     *
+     * Reads the environment variables of the current environment in order to use them in the API request.
+     *
+     * @param string $file File name of the .env file
+     * @param bool $silent Define whether to not throw errors if .env file could not be found
+     */
+    public static function loadEnvironment(string $file = ".env", bool $silent = false)
+    {
+        $loader = new Dotenv(ROOT_PATH, $file);
+        $loader->{$silent ? "safeLoad" : "load"}();
     }
 
     /**
