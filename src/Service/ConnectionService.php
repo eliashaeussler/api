@@ -116,7 +116,9 @@ class ConnectionService
         foreach ($files as $schemaFile)
         {
             // Get contents of schema file
-            $contents = file_get_contents($schemaFile);
+            $contents = @file_get_contents($schemaFile);
+            if (!$contents) continue;
+
             $schemaCount = preg_match_all("/CREATE TABLE(.*?)\(\n(?:.*?)\);/ims", $contents, $schemas, PREG_SET_ORDER);
 
             if ($schemaCount === false || $schemaCount == 0) {
