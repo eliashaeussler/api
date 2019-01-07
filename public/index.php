@@ -22,7 +22,7 @@ try {
 
 } catch (\Exception $e) {
 
-    if ($e instanceof DBALException) {
+    if ($e instanceof DBALException && !getenv("DEBUG_EXCEPTIONS")) {
         $e = new DatabaseException(
             sprintf(
                 "Sorry, but there was a problem during interaction with the database in %s:%s.",
@@ -43,6 +43,9 @@ try {
 
     } catch (ClassNotFoundException $e) {
         echo $e->getMessage();
+        if (getenv("DEBUG_EXCEPTIONS")) {
+            echo "\n" . $e->getTraceAsString();
+        }
     }
 
 }
