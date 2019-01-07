@@ -13,6 +13,9 @@ use EliasHaeussler\Api\Command\DatabaseCommand;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use Symfony\Component\Console\Application;
 
+// Load environment variables
+GeneralUtility::loadEnvironment();
+
 // Create application
 $app = new Application("Elias Häußler API console", GeneralUtility::getGitCommit());
 
