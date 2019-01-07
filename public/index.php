@@ -32,6 +32,12 @@ try {
         );
     }
 
+    // Use custom exception handler if debugging is enabled
+    if (GeneralUtility::isDebugEnabled()) {
+        GeneralUtility::registerExceptionHandler()->handleException($e);
+        exit();
+    }
+
     try {
         if (isset($router) && ($controller = $router->getController())) {
             echo $controller->buildMessage(Message::MESSAGE_TYPE_ERROR, $e);
