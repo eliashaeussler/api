@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Command;
 
 use Doctrine\DBAL\DBALException;
-use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use Symfony\Component\Console\Command\Command;
@@ -93,11 +92,11 @@ class DatabaseSchemaCommand extends Command
                     ]);
                     $output->write("</error>");
 
-                } catch (ClassNotFoundException $e) {
+                } catch (\Exception $e) {
 
                     $output->write("<error>");
                     $output->writeln([
-                        "There was a problem initializing the Connection service class:",
+                        "There was a problem during the command execution:",
                         $e->getMessage(),
                     ]);
                     $output->write("</error>");
