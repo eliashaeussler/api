@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Database schema console command.
  *
- * This command makes it possible to run several database actions including updating the database schemas.
+ * This command makes it possible to run several actions according database schema.
  *
  * @package EliasHaeussler\Api\Command
  * @author Elias Häußler <mail@elias-haeussler.de>
@@ -38,8 +38,8 @@ class DatabaseSchemaCommand extends Command
     {
         // Base configuration
         $this->setName("database:schema")
-            ->setDescription("Execute database commands")
-            ->setHelp("This command allows you to maintain the database by executing necessary commands.");
+            ->setDescription("Modify database schema")
+            ->setHelp("This command allows you to maintain the database schema.");
 
         // Arguments
         $this->addArgument(
