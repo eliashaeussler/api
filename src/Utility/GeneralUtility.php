@@ -145,4 +145,15 @@ class GeneralUtility
     {
         return exec('git log --pretty="%h" -n1 HEAD');
     }
+
+    /**
+     * Check whether debugging is enabled.
+     *
+     * @return bool `true` if debugging is enabled, `false` otherwise
+     */
+    public static function isDebugEnabled(): bool
+    {
+        GeneralUtility::loadEnvironment();
+        return !!static::getEnvironmentVariable("DEBUG_EXCEPTIONS", false);
+    }
 }
