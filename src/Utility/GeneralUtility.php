@@ -7,6 +7,8 @@ namespace EliasHaeussler\Api\Utility;
 
 use Dotenv\Dotenv;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
 /**
  * General utility functions.
@@ -144,6 +146,28 @@ class GeneralUtility
     public static function getGitCommit()
     {
         return exec('git log --pretty="%h" -n1 HEAD');
+    }
+
+    /**
+     * Register custom exception handler.
+     *
+     * Registers an alternative exception handler to be used for handling exceptions in the frontend. Note that this
+     * will only applied if debugging is enabled.
+     *
+     * @return Run The exception handler
+     */
+    public static function registerExceptionHandler(): Run
+    {
+        $handler = new PrettyPageHandler();
+        foreach (["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME", "DB_PORT"] as $key) {
+            $handler->blacklist("_ENV", $key);
+            $handler->blacklist("_SERVER", $key);
+        }
+        $whoops = new Run();
+        $whoops->pushHandler($handler);
+        $whoops->register();
+
+        return $whoops;
     }
 
     /**
