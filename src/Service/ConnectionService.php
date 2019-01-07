@@ -49,14 +49,16 @@ class ConnectionService
     }
 
     /**
-     * Connect to SQLite database.
+     * Connect to database.
      *
      * Note that it's not possible to pass custom database credentials. You need to define them in your global
      * environment. This can be done using a .env file. Requested environment variables:
      *
+     * DB_HOST => Database host (defaults to `localhost`)
      * DB_USER => Database user
      * DB_PASS => Password for database user
-     * DB_PATH => Path to SQLite database file (defaults to `main.db`). Note that the file must be in the root folder!
+     * DB_NAME => Database name
+     * DB_PORT => Database port (defaults to `3306`)
      *
      * @throws DBALException if the database connection cannot be established
      */
@@ -64,10 +66,12 @@ class ConnectionService
     {
         // Define connection parameters
         $parameters = [
+            "host" => GeneralUtility::getEnvironmentVariable("DB_HOST", "localhost"),
             "user" => GeneralUtility::getEnvironmentVariable("DB_USER"),
-            "password" => GeneralUtility::getEnvironmentVariable("DB_PASS"),
-            "path" => ROOT_PATH . "/" . GeneralUtility::getEnvironmentVariable("DB_PATH", "main.db"),
-            "driver" => "pdo_sqlite",
+            "password" => GeneralUtility::getEnvironmentVariable("DB_PASSWORD"),
+            "dbname" => GeneralUtility::getEnvironmentVariable("DB_NAME"),
+            "port" => GeneralUtility::getEnvironmentVariable("DB_PORT", 3306),
+            "driver" => "pdo_mysql",
         ];
 
         // Try to establish connection
