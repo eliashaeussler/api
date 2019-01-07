@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Database console command.
+ * Database schema console command.
  *
  * This command makes it possible to run several database actions including updating the database schemas.
  *
@@ -24,11 +24,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
-class DatabaseCommand extends Command
+class DatabaseSchemaCommand extends Command
 {
     /** @var array Available command actions */
     const AVAILABLE_ACTIONS = [
-        "schema:update",
+        "update",
     ];
 
 
@@ -38,7 +38,7 @@ class DatabaseCommand extends Command
     protected function configure()
     {
         // Base configuration
-        $this->setName("database")
+        $this->setName("database:schema")
             ->setDescription("Execute database commands")
             ->setHelp("This command allows you to maintain the database by executing necessary commands.");
 
@@ -68,7 +68,7 @@ class DatabaseCommand extends Command
             //
             // Update database schema
             //
-            case "schema:update":
+            case "update":
                 try {
 
                     // Update database schema
