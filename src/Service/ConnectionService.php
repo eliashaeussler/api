@@ -8,7 +8,9 @@ namespace EliasHaeussler\Api\Service;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
+use EliasHaeussler\Api\Exception\InvalidFileException;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
@@ -65,7 +67,6 @@ class ConnectionService
      */
     public function connect()
     {
-        // Define connection parameters
         $parameters = [
             "host" => GeneralUtility::getEnvironmentVariable("DB_HOST", "localhost"),
             "user" => GeneralUtility::getEnvironmentVariable("DB_USER"),
@@ -74,12 +75,26 @@ class ConnectionService
             "port" => GeneralUtility::getEnvironmentVariable("DB_PORT", 3306),
             "driver" => "pdo_mysql",
         ];
+        $this->database = $this->establishConnection($parameters);
+    }
 
-        // Try to establish connection
-        $this->database = DriverManager::getConnection($parameters);
+    /**
+     * Establish database connection with given parameters.
+     *
+     * Tries to establish a database connection with the given parameters. Configuration of the parameters must follow
+     * DBAL requirements.
+     *
+     * @param array $parameters Database connection parameters
+     * @return Connection The established database connection
+     * @throws DBALException if the database connection cannot be established
+     * @see https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
+     */
+    protected function establishConnection(array $parameters): Connection
+    {
+        $con = DriverManager::getConnection($parameters);
+        $con->connect();
 
-        // Connect to database
-        $this->database->connect();
+        return $con;
     }
 
     /**
@@ -182,6 +197,101 @@ class ConnectionService
 
                         throw $e;
 
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Migrate legacy SQLite database files to current MySQL database.
+     *
+     * @param array|string $files The database files to be used for migration
+     * @throws InvalidFileException if no files are provided for migration
+     * @throws FileNotFoundException if any of the specified files does not exist
+     * @throws DBALException if any database connection cannot be established
+     * @throws DatabaseException if connection to any database was not successful
+     */
+    public function migrate($files)
+    {
+        if (!$files) {
+            throw new InvalidFileException(
+                "No files provided for migration. You must at least provide one database file.",
+                1546890034
+            );
+        }
+
+        // Normalize files to array
+        if (!is_array($files)) {
+            $files = [$files];
+        }
+
+        // Create database schema first
+        $this->createSchema();
+
+        // Migrate SQLite databases
+        foreach ($files as $file)
+        {
+            // Get full path
+            $path = realpath($file);
+
+            if ($path === false) {
+                throw new FileNotFoundException(
+                    sprintf("The database file \"%s\" does not exist.", $path),
+                    1546890434
+                );
+            }
+
+            // Connect to database
+            $con = $this->establishConnection([
+                "path" => $path,
+                "driver" => "pdo_sqlite",
+            ]);
+
+            if (!$con->isConnected()) {
+                throw new DatabaseException(
+                    sprintf("Could not connect to database file \"%s\".", $path),
+                    1546890846
+                );
+            }
+
+            // Get database schema manager of current database
+            $scm = $this->database->getSchemaManager();
+
+            // Migrate data
+            foreach($con->getSchemaManager()->listTables() as $table)
+            {
+                // Create table in new database if it does not exist yet
+                if (!$scm->tablesExist([$table->getName()])) {
+                    $scm->createTable($table);
+                }
+
+                // Fetch all data
+                $queryBuilder = $con->createQueryBuilder();
+                $result = $queryBuilder->select("*")
+                    ->from($table->getName())
+                    ->execute()
+                    ->fetchAll();
+
+                if (!$result) {
+                    continue;
+                }
+
+                // Insert data into current database
+                foreach ($result as $row) {
+                    $insQueryBuilder = $this->database->createQueryBuilder();
+                    array_walk($row, function (&$v) {
+                        $v = $this->database->quote($v);
+                    });
+                    $insResult = $insQueryBuilder->insert($table->getName())
+                        ->values($row)
+                        ->execute();
+
+                    if (!$insResult) {
+                        throw new DatabaseException(
+                            sprintf("Failed to insert data from database file \"%s\".", $path),
+                            1546892040
+                        );
                     }
                 }
             }
