@@ -151,23 +151,20 @@ class GeneralUtility
     /**
      * Register custom exception handler.
      *
-     * Registers an alternative exception handler to be used for handling exceptions in the frontend. Note that this
-     * will only applied if debugging is enabled.
+     * Registers an alternative exception handler to be used for handling exceptions in the frontend.
      *
-     * @return Run The exception handler
+     * @throws ClassNotFoundException if the exception handler class is not available
      */
-    public static function registerExceptionHandler(): Run
+    public static function registerExceptionHandler()
     {
         $handler = new PrettyPageHandler();
         foreach (["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME", "DB_PORT"] as $key) {
             $handler->blacklist("_ENV", $key);
             $handler->blacklist("_SERVER", $key);
         }
-        $whoops = new Run();
+        $whoops = GeneralUtility::makeInstance(Run::class);
         $whoops->pushHandler($handler);
         $whoops->register();
-
-        return $whoops;
     }
 
     /**

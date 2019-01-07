@@ -32,13 +32,13 @@ try {
         );
     }
 
-    // Use custom exception handler if debugging is enabled
-    if (GeneralUtility::isDebugEnabled()) {
-        GeneralUtility::registerExceptionHandler()->handleException($e);
-        exit();
-    }
-
     try {
+        // Use custom exception handler if debugging is enabled
+        if (GeneralUtility::isDebugEnabled() && class_exists("\\Whoops\\Run")) {
+            GeneralUtility::registerExceptionHandler();
+            GeneralUtility::makeInstance(\Whoops\Run::class)->handleException($e);
+        }
+
         if (isset($router) && ($controller = $router->getController())) {
             echo $controller->buildMessage(Message::MESSAGE_TYPE_ERROR, $e);
         } else {
