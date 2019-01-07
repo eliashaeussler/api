@@ -22,7 +22,7 @@
                 {% endif %}
 
                 {% if message.body %}
-                <div class="message__body">{{ message.body }}</div>
+                <div class="message__body">{{ message.body|raw }}</div>
                 {% endif %}
             </div>
             {% endif %}

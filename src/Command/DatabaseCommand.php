@@ -89,6 +89,7 @@ class DatabaseCommand extends Command
                     $output->writeln([
                         "There was a problem with the database connection:",
                         $e->getMessage(),
+                        $e->getTraceAsString(),
                     ]);
                     $output->write("</error>");
 
