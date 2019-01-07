@@ -74,14 +74,11 @@ class RoutingService
     /**
      * Initialize database connection.
      *
-     * @throws DBALException if the database connection cannot be established
      * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
      */
     protected function initializeDatabase()
     {
-        /** @var ConnectionService $connectionService */
-        $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
-        $connectionService->connect();
+        GeneralUtility::makeInstance(ConnectionService::class);
     }
 
     /**
