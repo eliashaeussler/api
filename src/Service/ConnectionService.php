@@ -8,6 +8,7 @@ namespace EliasHaeussler\Api\Service;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
@@ -92,6 +93,7 @@ class ConnectionService
      *
      * @param string|array $controllers Name of one or more API controllers which will be used to identity the schema file
      * @throws DBALException if the database connection cannot be established
+     * @throws FileNotFoundException if a table schema file is not available
      */
     public function createSchema($controllers = "")
     {
@@ -121,7 +123,12 @@ class ConnectionService
         {
             // Get contents of schema file
             $contents = @file_get_contents($schemaFile);
-            if (!$contents) continue;
+            if (!$contents) {
+                throw new FileNotFoundException(
+                    sprintf("The schema file \"%s\" is not available.", $schemaFile),
+                    1546889136
+                );
+            }
 
             $schemaCount = preg_match_all("/CREATE TABLE(.*?)\(\n(?:.*?)\);/ims", $contents, $schemas, PREG_SET_ORDER);
 
