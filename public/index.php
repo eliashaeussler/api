@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2018 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
+ * Copyright (c) 2019 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
  */
 
 define("ROOT_PATH", dirname(__DIR__));
