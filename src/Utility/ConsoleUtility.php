@@ -54,6 +54,11 @@ class ConsoleUtility
      */
     public static function getGitCommit()
     {
-        return exec('git log --pretty="%h" -n1 HEAD');
+        $revision = exec('git log --pretty="%h" -n1 HEAD');
+        if (!$revision && @file_exists(ROOT_PATH . "/REVISION")) {
+            return file_get_contents(ROOT_PATH . "/REVISION");
+        } else {
+            return "";
+        }
     }
 }
