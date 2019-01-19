@@ -11,6 +11,7 @@ use Doctrine\DBAL\DriverManager;
 use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidFileException;
+use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
@@ -296,6 +297,34 @@ class ConnectionService
                 }
             }
         }
+    }
+
+    /**
+     * Export database.
+     *
+     * Creates a database dump for the current database and returns the dumped contents. Note that this
+     * method only returns the raw result of `mysqldump`. It does not save the contents to a file. This
+     * needs to be done by your own after calling the method.
+     *
+     * @return string The dumped database contents
+     */
+    public function export(): string
+    {
+        // Define script name and parameters
+        $scriptName = "mysqldump";
+        $parameters = [
+            "host" => $this->database->getHost(),
+            "user" => $this->database->getUsername(),
+            "password" => $this->database->getPassword(),
+            $this->database->getDatabase(),
+            "default-character-set" => "utf8",
+        ];
+
+        // Build command with parameters
+        $command = ConsoleUtility::buildCommand($scriptName, $parameters);
+
+        exec($command, $result);
+        return implode("\n", $result);
     }
 
     /**

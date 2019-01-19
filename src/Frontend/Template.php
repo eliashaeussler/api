@@ -5,7 +5,7 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Frontend;
 
-use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\ConsoleUtility;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TemplateWrapper;
@@ -65,7 +65,7 @@ class Template
 
         // Register Globals
         $this->environment->addGlobal("year", date("Y"));
-        $this->environment->addGlobal("commit", GeneralUtility::getGitCommit());
+        $this->environment->addGlobal("commit", ConsoleUtility::getGitCommit());
     }
 
     /**
