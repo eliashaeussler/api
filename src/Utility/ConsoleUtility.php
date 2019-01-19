@@ -37,7 +37,11 @@ class ConsoleUtility
             if (is_int($parameter)) {
                 $command .= " " . $value;
             } else {
-                $command .= sprintf(strlen($parameter) == 1 ? " -%s %s" : " --%s=%s", $parameter, $value);
+                $command .= sprintf(
+                    (strlen($parameter) == 1 ? " -%s '%s'" : " --%s='%s'"),
+                    $parameter,
+                    str_replace("'", "\\'", $value)
+                );
             }
         }
         return $command;
