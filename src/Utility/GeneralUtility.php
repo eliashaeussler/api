@@ -139,16 +139,6 @@ class GeneralUtility
     }
 
     /**
-     * Get latest Git commit on which the API is currently running.
-     *
-     * @return string Latest Git commit
-     */
-    public static function getGitCommit()
-    {
-        return exec('git log --pretty="%h" -n1 HEAD');
-    }
-
-    /**
      * Register custom exception handler.
      *
      * Registers an alternative exception handler to be used for handling exceptions in the frontend.

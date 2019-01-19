@@ -10,7 +10,7 @@ use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
-use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\ConsoleUtility;
 
 /**
  * Lunch router for Slack API controller.
@@ -186,7 +186,7 @@ class LunchCommandRoute extends BaseRoute
         $attachments = [
             $this->controller->buildAttachmentForBotMessage(
                 "api.elias-haeussler.de",
-                sprintf("Version: *%s*", GeneralUtility::getGitCommit())
+                sprintf("Version: *%s*", ConsoleUtility::getGitCommit())
             ),
         ];
 

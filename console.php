@@ -11,6 +11,7 @@ include_once ROOT_PATH . '/vendor/autoload.php';
 
 use EliasHaeussler\Api\Command\DatabaseMigrateCommand;
 use EliasHaeussler\Api\Command\DatabaseSchemaCommand;
+use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use Symfony\Component\Console\Application;
 
@@ -18,7 +19,7 @@ use Symfony\Component\Console\Application;
 GeneralUtility::loadEnvironment();
 
 // Create application
-$app = new Application("Elias Häußler API console", GeneralUtility::getGitCommit());
+$app = new Application("Elias Häußler API console", ConsoleUtility::getGitCommit());
 
 // Register commands
 $app->add(new DatabaseSchemaCommand());
