@@ -567,4 +567,14 @@ class SlackController extends BaseController
     {
         return $key ? ($this->requestData[$key] ?? "") : $this->requestData;
     }
+
+    /**
+     * Get database connection.
+     *
+     * @return Connection Database connection
+     */
+    public function getDatabase(): Connection
+    {
+        return $this->database;
+    }
 }

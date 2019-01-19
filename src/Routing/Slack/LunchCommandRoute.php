@@ -7,10 +7,12 @@ namespace EliasHaeussler\Api\Routing\Slack;
 
 use EliasHaeussler\Api\Controller\SlackController;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
+use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
  * Lunch router for Slack API controller.
@@ -52,6 +54,9 @@ class LunchCommandRoute extends BaseRoute
     /** @var string API request parameter for showing the help */
     const REQUEST_PARAMETER_HELP = "help";
 
+    /** @var string API request parameter for setting the default expiration time */
+    const REQUEST_PARAMETER_EXPIRE = "default";
+
     /** @var SlackController Slack API Controller */
     protected $controller;
 
@@ -65,22 +70,34 @@ class LunchCommandRoute extends BaseRoute
     protected $emoji = ":pizza:";
 
     /** @var int Timestamp of status expiration */
-    protected $expiration;
+    protected $expiration = 0;
+
+    /** @var int Expiration period */
+    protected $expirationPeriod = self::DEFAULT_EXPIRATION;
 
 
     /**
      * {@inheritdoc}
      *
+     * @throws DatabaseException if ensuring the availability of user data for the current user failed
      * @throws InvalidRequestException if API request failed or contains an invalid answer
      * @throws \Exception if calculating the status expiration failed
      */
     protected function initializeRequest()
     {
+        // Ensure user data is available in database
+        if (!$this->ensureUserDataIsAvailable()) {
+            throw new DatabaseException("User data for current user could not be generated.", 1547920929);
+        }
+
         // Set provided request parameters
         $this->requestParameters = trim($this->controller->getRequestData("text"));
 
         // Check whether to set or reset current status
         $this->statusAlreadySet = $this->checkIfStatusIsSet();
+
+        // Calculate expiration time
+        $this->calculateExpiration();
 
         // Status update
         $this->emoji = self::EMOJI_LIST[array_rand(self::EMOJI_LIST)];
@@ -88,7 +105,7 @@ class LunchCommandRoute extends BaseRoute
             "profile" => [
                 "status_text" => $this->statusAlreadySet ? "" : self::STATUS_MESSAGE,
                 "status_emoji" => $this->statusAlreadySet ? "" : $this->emoji,
-                "status_expiration" => $this->statusAlreadySet ? "" : $this->calculateExpiration(),
+                "status_expiration" => $this->statusAlreadySet ? "" : $this->expiration,
             ],
         ];
     }
@@ -105,6 +122,11 @@ class LunchCommandRoute extends BaseRoute
         // Show help text if request parameter starts with "help" keyword
         if (stripos($this->requestParameters, self::REQUEST_PARAMETER_HELP) === 0) {
             echo $this->showHelpText();
+            return;
+
+        // Set default expiration if request parameter starts with "expire" keyword
+        } else if (stripos($this->requestParameters, self::REQUEST_PARAMETER_EXPIRE) === 0) {
+            $this->setDefaultExpirationTime();
             return;
         }
 
@@ -157,7 +179,8 @@ class LunchCommandRoute extends BaseRoute
      * Calculates the status expiration by considering multiple data:
      *
      * 1. Slack parameter
-     * 2. Default expiration
+     * 2. Default user expiration (user setting)
+     * 3. Default expiration
      *
      * Note that expiration needs to be provided in minutes.
      *
@@ -166,11 +189,110 @@ class LunchCommandRoute extends BaseRoute
      */
     protected function calculateExpiration(): int
     {
-        $now = new \DateTime();
-        $expiration = (int) $this->requestParameters ?: self::DEFAULT_EXPIRATION;
-        $this->expiration = $now->getTimestamp() + $expiration * 60;
+        // Expiration time from request
+        $expiration = (int) $this->requestParameters;
+
+        // Select expiration time from user data in database if request time is not valid or set
+        if (!$expiration) {
+            $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
+            $result = $queryBuilder->select("default_expiration")
+                ->from("slack_userdata")
+                ->where("user = :user_id")
+                ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+                ->execute()
+                ->fetch();
+
+            if ($result && (int) $result["default_expiration"]) {
+                $expiration = (int) $result["default_expiration"];
+            } else {
+                // Use default expiration time if no expiration time is set in user data
+                $expiration = self::DEFAULT_EXPIRATION;
+            }
+        }
+
+        // Set expiration period
+        $this->expirationPeriod = $expiration;
+
+        // Calculate expiration time from current time on
+        $interval = \DateInterval::createFromDateString(sprintf("%s min", $expiration));
+        $this->expiration = (int) (new \DateTime())->add($interval)->format("U");
 
         return $this->expiration;
+    }
+
+    /**
+     * @param int $time
+     * @throws InvalidRequestException if `$time` is not set and the request does not contain a valid expiration time
+     */
+    protected function setDefaultExpirationTime(int $time = 0)
+    {
+        // Check if expiration time is set or delivered within request
+        if ($time == 0) {
+            $parameterComponents = GeneralUtility::trimExplode(" ", $this->requestParameters);
+            if (count($parameterComponents) > 1) {
+                $time = (int) $parameterComponents[1] ?: self::DEFAULT_EXPIRATION;
+            } else {
+                throw new InvalidRequestException("No default expiration time provided.", 1547919413);
+            }
+        }
+
+        // Check if expiration time is at least one minute
+        if ($time <= 0) {
+            throw new \InvalidArgumentException("Default expiration time must be at least 1 minute.", 1547919926);
+        }
+
+        // Update user data with default expiration time
+        $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
+        $result = $queryBuilder->update("slack_userdata")
+            ->set("default_expiration", ":expiration")
+            ->where("user = :user_id")
+            ->setParameter("expiration", $time)
+            ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+            ->execute();
+
+        // Show message depending on result of database update
+        if ($result) {
+            $message = sprintf(
+                ":alarm_clock: Your default expiration time was successfully set to *%s %s*.",
+                $time,
+                "minute" . ($time == 1 ? "" : "s")
+            );
+            echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
+        } else {
+            $message = sprintf(
+                ":thinking_face: Slow down, my friend! Your default expiration time is already set to *%s %s*.",
+                $time,
+                "minute" . ($time == 1 ? "" : "s")
+            );
+            echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_NOTICE, $message);
+        }
+    }
+
+    /**
+     * Ensures that user data for the current user is available in the database.
+     *
+     * @return bool `true` if user data is available, `false` otherwise
+     */
+    protected function ensureUserDataIsAvailable(): bool
+    {
+        $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
+        $result = $queryBuilder->select("*")
+            ->from("slack_userdata")
+            ->where("user = :user_id")
+            ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+            ->execute()
+            ->fetchAll();
+
+        if (!$result) {
+            $queryBuilder->resetQueryParts();
+            $result = $queryBuilder->insert("slack_userdata")
+                ->values(["user" => ":user_id"])
+                ->execute();
+
+            if ($result == 0) return false;
+        }
+
+        return true;
     }
 
     /**
@@ -179,10 +301,18 @@ class LunchCommandRoute extends BaseRoute
     protected function showHelpText()
     {
         $message = "Tell your colleagues and team members that you're *doing your lunch break* right now " .
-                   "by typing `/lunch`. This will update your status for " . self::DEFAULT_EXPIRATION . " minutes. " .
-                   "Type `/lunch` again if you're *back earlier* and want to reset your status.\r\n" .
+                   "by typing `/lunch`. This will update your status for " . $this->expirationPeriod . " minutes. " .
+                   "Type `/lunch` again if you're *back earlier* and want to reset your status.\n" .
                    "You can also set a *custom duration* for your lunch break by typing `/lunch [duration]` while " .
-                   "`[duration]` should be replaced with a number indicating your lunch break *in minutes*.";
+                   "`[duration]` should be replaced by a number indicating your lunch break *in minutes*.\n" .
+                   "It's also possible to set a *default duration time* for your lunch break. This can be done by " .
+                   "typing `/lunch default [duration]` while `[duration]` should be replaced by a number " .
+                   "*in minutes*. Your current setting is " .
+                   $this->expirationPeriod . " minute" . ($this->expirationPeriod == 1 ? "" : "s") . ", " .
+                   ($this->expirationPeriod == self::DEFAULT_EXPIRATION
+                       ? "which is the default setting."
+                       : "the default setting is " . self::DEFAULT_EXPIRATION . " minutes."
+                   );
         $attachments = [
             $this->controller->buildAttachmentForBotMessage(
                 "api.elias-haeussler.de",
