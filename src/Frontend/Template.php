@@ -65,7 +65,8 @@ class Template
 
         // Register Globals
         $this->environment->addGlobal("year", date("Y"));
-        $this->environment->addGlobal("commit", ConsoleUtility::getGitCommit());
+        $this->environment->addGlobal("commit", ConsoleUtility::describeHistory());
+        $this->environment->addGlobal("version", ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION));
     }
 
     /**

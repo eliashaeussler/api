@@ -22,8 +22,9 @@ TARGET_PATH=${TARGET_PATH}
 # Exit if there are unstaged files
 [[ -n "$(git status --porcelain)" ]] && echo "Working directory is not clean. Exiting." && exit 1
 
-# Get current Git revision
+# Get current Git revision and version
 revision=$(git --git-dir="${ROOT_PATH}/.git" log --pretty="%h" -n1 HEAD)
+version=$(git --git-dir="${ROOT_PATH}/.git" describe --tags)
 
 # Install dependencies
 echo "Install dependencies via Composer..."
@@ -50,8 +51,9 @@ rsync -ar --delete --delete-excluded "${ROOT_PATH}"/ ${TARGET_HOST}:${TARGET_PAT
 ssh ${TARGET_HOST} -T << __EOF
     set -e
 
-    # Create revision file
+    # Create revision and version file
     echo "${revision}" >| ${TARGET_PATH}/cache/REVISION
+    echo "${version}" >| ${TARGET_PATH}/cache/VERSION
 
     echo "Production: Update live system with new release..."
     rsync -ar --delete ${TARGET_PATH}/cache/ ${TARGET_PATH}/release/

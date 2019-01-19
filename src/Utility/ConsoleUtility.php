@@ -14,6 +14,12 @@ namespace EliasHaeussler\Api\Utility;
  */
 class ConsoleUtility
 {
+    /** @var int Git revision as history type */
+    const HISTORY_TYPE_REVISION = 1;
+
+    /** @var int Git version as history type */
+    const HISTORY_TYPE_VERSION = 2;
+
     /**
      * Build a console command by a given script name and optional parameters.
      *
@@ -48,19 +54,35 @@ class ConsoleUtility
     }
 
     /**
-     * Get latest Git commit on which the API is currently running.
+     * Describe history of Git commit on which the API is currently running.
      *
-     * @return string Latest Git commit
+     * @param int $mode Type of description, should be one of `HISTORY_TYPE_` constants
+     * @return string Description of history
      */
-    public static function getGitCommit(): string
+    public static function describeHistory(int $mode = self::HISTORY_TYPE_REVISION): string
     {
-        $command = sprintf('git --git-dir=%s/.git log --pretty="%%h" -n1 HEAD 2> /dev/null', ROOT_PATH);
-        $revision = exec($command);
+        // Get command and file name (as fallback) for history description mode
+        switch ($mode) {
+            case self::HISTORY_TYPE_VERSION:
+                $command = sprintf("git --git-dir=%s/.git describe --tags 2> /dev/null", ROOT_PATH);
+                $fileName = ROOT_PATH . "/VERSION";
+                break;
 
-        if ($revision) {
-            return $revision;
-        } else if (@file_exists(ROOT_PATH . "/REVISION")) {
-            return trim(fgets(fopen(ROOT_PATH . "/REVISION", 'r')));
+            case self::HISTORY_TYPE_REVISION:
+            default:
+                $command = sprintf('git --git-dir=%s/.git log --pretty="%%h" -n1 HEAD 2> /dev/null', ROOT_PATH);
+                $fileName = ROOT_PATH . "/REVISION";
+                break;
+        }
+
+        // Execute command
+        $commandResult = exec($command);
+
+        // Return result of use file name as fallback if result is empty
+        if ($commandResult) {
+            return $commandResult;
+        } else if (@file_exists($fileName)) {
+            return trim(fgets(fopen($fileName, 'r')));
         } else {
             return "";
         }

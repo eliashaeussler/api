@@ -20,7 +20,7 @@ use Symfony\Component\Console\Application;
 GeneralUtility::loadEnvironment();
 
 // Create application
-$app = new Application("Elias Häußler API console", ConsoleUtility::getGitCommit());
+$app = new Application("Elias Häußler API console", ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION));
 
 // Register commands
 $app->add(new DatabaseExportCommand());

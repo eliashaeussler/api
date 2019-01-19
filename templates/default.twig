@@ -34,7 +34,11 @@
                 All rights reserved.
             </div>
             <div class="page-footer__version">
-                {{ commit }}
+                {% if version %}
+                    {{ version }}
+                {% elseif commit %}
+                    {{ commit }}
+                {% endif %}
             </div>
         </footer>
     </div>

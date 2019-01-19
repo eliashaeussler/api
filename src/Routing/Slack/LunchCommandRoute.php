@@ -186,7 +186,7 @@ class LunchCommandRoute extends BaseRoute
         $attachments = [
             $this->controller->buildAttachmentForBotMessage(
                 "api.elias-haeussler.de",
-                sprintf("Version: *%s*", ConsoleUtility::getGitCommit())
+                sprintf("Version: *%s*", ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION))
             ),
         ];
 
