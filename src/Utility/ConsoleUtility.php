@@ -52,10 +52,14 @@ class ConsoleUtility
      *
      * @return string Latest Git commit
      */
-    public static function getGitCommit()
+    public static function getGitCommit(): string
     {
-        $revision = exec('git log --pretty="%h" -n1 HEAD');
-        if (!$revision && @file_exists(ROOT_PATH . "/REVISION")) {
+        $command = sprintf('git --git-dir=%s/.git log --pretty="%%h" -n1 HEAD 2> /dev/null', ROOT_PATH);
+        $revision = exec($command);
+
+        if ($revision) {
+            return $revision;
+        } else if (@file_exists(ROOT_PATH . "/REVISION")) {
             return file_get_contents(ROOT_PATH . "/REVISION");
         } else {
             return "";
