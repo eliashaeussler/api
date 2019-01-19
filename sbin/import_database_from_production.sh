@@ -16,8 +16,8 @@ TARGET_HOST=${TARGET_HOST}
 TARGET_PATH=${TARGET_PATH}
 
 # Exit if required variables are not set
-[[ -z ${TARGET_HOST} ]] && echo "TARGET_HOST not set. Exiting." && exit 1
-[[ -z ${TARGET_PATH} ]] && echo "TARGET_HOST not set. Exiting." && exit 1
+[[ -z "${TARGET_HOST}" ]] && echo "TARGET_HOST not set. Exiting." && exit 1
+[[ -z "${TARGET_PATH}" ]] && echo "TARGET_HOST not set. Exiting." && exit 1
 
 function create_dump() {
     dump_name="$(date -u +%Y-%m-%dT%H%M%SZ).sql.gz"
