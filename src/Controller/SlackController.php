@@ -414,11 +414,9 @@ class SlackController extends BaseController
     protected function isRequestVerified(string $timestamp, string $signature): bool
     {
         // Check if request is older than 5 minutes
-        $validInterval = 5;
-        $currentTime = new \DateTime();
-        $requestTime = (new \DateTime())->setTimestamp((int) $timestamp);
-        $interval = $requestTime->diff($currentTime);
-        if ($interval->format('%i') >= $validInterval) return false;
+        $interval = \DateInterval::createFromDateString("5 minutes");
+        $lowerBound = (new \DateTime())->sub($interval)->format('U');
+        if ($lowerBound > $timestamp) return false;
 
         // Test if request is authenticated
         $apiVersionNumber = "v0";
