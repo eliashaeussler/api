@@ -24,7 +24,7 @@ function create_dump() {
     dump_path="${exec_dir}/.ddev/import-db"
     dump_file="${dump_path}/${dump_name}"
 
-    ssh ${TARGET_HOST} -T "php ${TARGET_PATH}/console.php database:export &" | gzip > "${dump_file}"
+    ssh ${TARGET_HOST} -T "php ${TARGET_PATH}/release/console.php database:export &" | gzip > "${dump_file}"
     [[ ! -s "${dump_file}" ]] && rm ${dump_file} && echo "Database dump is empty. Exiting." >&2 && exit 1
 
     echo "${dump_file}"
