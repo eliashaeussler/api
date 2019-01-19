@@ -19,6 +19,9 @@ TARGET_PATH=${TARGET_PATH}
 [[ -z "${TARGET_HOST}" ]] && echo "TARGET_HOST not set. Exiting." && exit 1
 [[ -z "${TARGET_PATH}" ]] && echo "TARGET_HOST not set. Exiting." && exit 1
 
+# Exit if there are unstaged files
+[[ -n "$(git status --porcelain)" ]] && echo "Working directory is not clean. Exiting." && exit 1
+
 # Get current Git revision
 revision=$(git --git-dir="${exec_dir}/.git" log --pretty="%h" -n1 HEAD)
 
