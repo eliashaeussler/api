@@ -9,6 +9,7 @@ define("ROOT_PATH", __DIR__);
 define("ASSETS_PATH", ROOT_PATH . "/assets");
 include_once ROOT_PATH . '/vendor/autoload.php';
 
+use EliasHaeussler\Api\Command\DatabaseExportCommand;
 use EliasHaeussler\Api\Command\DatabaseMigrateCommand;
 use EliasHaeussler\Api\Command\DatabaseSchemaCommand;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
@@ -22,8 +23,9 @@ GeneralUtility::loadEnvironment();
 $app = new Application("Elias Häußler API console", ConsoleUtility::getGitCommit());
 
 // Register commands
-$app->add(new DatabaseSchemaCommand());
+$app->add(new DatabaseExportCommand());
 $app->add(new DatabaseMigrateCommand());
+$app->add(new DatabaseSchemaCommand());
 
 // Run application
 $app->run();
