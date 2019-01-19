@@ -3,12 +3,12 @@
 # Exit on first error
 set -e
 
-# Set execution path
-exec_dir="$(pwd "$(dirname "$0")")"
+# Global variables
+ROOT_PATH="$(pwd "$(dirname "$0")")"
 
 # Get variables
 set -a
-source "$exec_dir/production.env"
+source "$ROOT_PATH/production.env"
 set +a
 
 # Define default variables
@@ -21,7 +21,7 @@ TARGET_PATH=${TARGET_PATH}
 
 function create_dump() {
     dump_name="$(date -u +%Y-%m-%dT%H%M%SZ).sql.gz"
-    dump_path="${exec_dir}/.ddev/import-db"
+    dump_path="${ROOT_PATH}/.ddev/import-db"
     dump_file="${dump_path}/${dump_name}"
 
     ssh ${TARGET_HOST} -T "php ${TARGET_PATH}/release/console.php database:export &" | gzip > "${dump_file}"
@@ -44,3 +44,5 @@ dump=$(create_dump)
 # Import database
 echo "Importing dump with DDEV..."
 import_dump "$dump"
+
+echo "Done."

@@ -3,12 +3,12 @@
 # Exit on first error
 set -e
 
-# Set execution path
-exec_dir="$(pwd "$(dirname "$0")")"
+# Global variables
+ROOT_PATH="$(pwd "$(dirname "$0")")"
 
 # Get variables
 set -a
-source "$exec_dir/production.env"
+source "${ROOT_PATH}/production.env"
 set +a
 
 # Define default variables
@@ -23,7 +23,7 @@ TARGET_PATH=${TARGET_PATH}
 [[ -n "$(git status --porcelain)" ]] && echo "Working directory is not clean. Exiting." && exit 1
 
 # Get current Git revision
-revision=$(git --git-dir="${exec_dir}/.git" log --pretty="%h" -n1 HEAD)
+revision=$(git --git-dir="${ROOT_PATH}/.git" log --pretty="%h" -n1 HEAD)
 
 # Install dependencies
 echo "Install dependencies via Composer..."
@@ -35,7 +35,7 @@ ssh ${TARGET_HOST} -T "mkdir -p ${TARGET_PATH}/{cache,local,release}"
 
 # Transfer files to cache on production
 echo "Transfer files to production cache..."
-rsync -ar --delete --delete-excluded "${exec_dir}"/ ${TARGET_HOST}:${TARGET_PATH}/cache \
+rsync -ar --delete --delete-excluded "${ROOT_PATH}"/ ${TARGET_HOST}:${TARGET_PATH}/cache \
     --exclude /composer.json \
     --exclude /composer.lock \
     --exclude /.git \
