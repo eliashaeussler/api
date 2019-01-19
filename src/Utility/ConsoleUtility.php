@@ -60,7 +60,7 @@ class ConsoleUtility
         if ($revision) {
             return $revision;
         } else if (@file_exists(ROOT_PATH . "/REVISION")) {
-            return file_get_contents(ROOT_PATH . "/REVISION");
+            return trim(fgets(fopen(ROOT_PATH . "/REVISION", 'r')));
         } else {
             return "";
         }
