@@ -8,10 +8,12 @@ namespace EliasHaeussler\Api\Routing\Slack;
 use EliasHaeussler\Api\Controller\SlackController;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\DatabaseException;
+use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
+use EliasHaeussler\Api\Utility\DataUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
@@ -297,26 +299,24 @@ class LunchCommandRoute extends BaseRoute
 
     /**
      * Show help text for this command.
+     *
+     * @throws FileNotFoundException if the data file containing the help texts is not available
      */
     protected function showHelpText()
     {
-        $message = "Tell your colleagues and team members that you're *doing your lunch break* right now " .
-                   "by typing `/lunch`. This will update your status for " . $this->expirationPeriod . " minutes. " .
-                   "Type `/lunch` again if you're *back earlier* and want to reset your status.\n" .
-                   "You can also set a *custom duration* for your lunch break by typing `/lunch [duration]` while " .
-                   "`[duration]` should be replaced by a number indicating your lunch break *in minutes*.\n" .
-                   "It's also possible to set a *default duration time* for your lunch break. This can be done by " .
-                   "typing `/lunch default [duration]` while `[duration]` should be replaced by a number " .
-                   "*in minutes*. Your current setting is " .
-                   $this->expirationPeriod . " minute" . ($this->expirationPeriod == 1 ? "" : "s") . ", " .
-                   ($this->expirationPeriod == self::DEFAULT_EXPIRATION
-                       ? "which is the default setting."
-                       : "the default setting is " . self::DEFAULT_EXPIRATION . " minutes."
-                   );
+        $message = sprintf(
+            implode("\n", DataUtility::getData("slack", "lunch.help.text")),
+            self::DEFAULT_EXPIRATION,
+            $this->expirationPeriod,
+            $this->expirationPeriod == 1 ? "" : "s"
+        );
         $attachments = [
             $this->controller->buildAttachmentForBotMessage(
-                "api.elias-haeussler.de",
-                sprintf("Version: *%s*", ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION))
+                DataUtility::getData("slack", "lunch.help.header"),
+                sprintf(
+                    DataUtility::getData("slack", "lunch.help.version"),
+                    ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION)
+                )
             ),
         ];
 

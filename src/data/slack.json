@@ -1,0 +1,16 @@
+{
+  "lunch": {
+    "help": {
+      "text": [
+        "Use `/lunch` to tell your team members that you're at lunch break. Some examples:",
+        "",
+        "• `/lunch`: Start or end your lunch break (default: %s minutes, your setting: %s minute%s)",
+        "• `/lunch 30`: Start your lunch break for 30 minutes",
+        "• `/lunch default 30`: Set your default lunch break time to 30 minutes",
+        "• `/lunch default unset`: Unset your default lunch break time"
+      ],
+      "header": "api.elias-haeussler.de",
+      "version": "Version: *%s*"
+    }
+  }
+}
