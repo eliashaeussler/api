@@ -8,6 +8,7 @@ namespace EliasHaeussler\Api\Service;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\Schema;
 use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidFileException;
@@ -27,7 +28,7 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
 class ConnectionService
 {
     /** @var string Location of SQL database schema files */
-    const SCHEMA_PATH = ROOT_PATH . "/schemas";
+    const SCHEMA_PATH = SOURCE_PATH . "/schemas";
 
     /** @var string File pattern of SQL schema files */
     const SCHEMA_FILE_PATTERN = "*.sql";

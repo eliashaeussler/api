@@ -22,7 +22,7 @@ use Twig\TemplateWrapper;
 class Template
 {
     /** @var string Path containing Twig templates */
-    const TEMPLATE_PATH = ROOT_PATH . "/templates";
+    const TEMPLATE_PATH = SOURCE_PATH . "/templates";
 
     /** @var string File name of default Twig template */
     const DEFAULT_TEMPLATE = "default.twig";

@@ -6,7 +6,7 @@
 declare(strict_types=1);
 
 define("ROOT_PATH", __DIR__);
-define("ASSETS_PATH", ROOT_PATH . "/assets");
+define("SOURCE_PATH", ROOT_PATH . "/src");
 include_once ROOT_PATH . '/vendor/autoload.php';
 
 use EliasHaeussler\Api\Command\DatabaseExportCommand;
