@@ -8,7 +8,7 @@ ROOT_PATH="$(pwd "$(dirname "$0")")"
 
 # Get variables
 set -a
-source "$ROOT_PATH/production.env"
+source "$ROOT_PATH/remote.env"
 set +a
 
 # Define default variables
