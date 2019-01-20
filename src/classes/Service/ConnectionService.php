@@ -8,7 +8,7 @@ namespace EliasHaeussler\Api\Service;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\TableDiff;
 use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidFileException;
@@ -179,10 +179,22 @@ class ConnectionService
                         $schemaManager->renameTable($tableName, self::TEMPORARY_TABLE_PREFIX . $tableName);
 
                         // Re-create table with given schema
-                        $db->prepare($query)->execute();
+                        $db->exec($query);
 
                         // Restore result set
                         if ($resultSet) {
+                            // Re-create missing columns
+                            foreach (array_keys($resultSet[0]) as $column) {
+                                if (!$schemaManager->listTableDetails($tableName)->hasColumn($column)) {
+                                    $columnDetails = $schemaManager
+                                        ->listTableDetails(self::TEMPORARY_TABLE_PREFIX . $tableName)
+                                        ->getColumn($column);
+                                    $tableDiff = new TableDiff($tableName, [$columnDetails]);
+                                    $schemaManager->alterTable($tableDiff);
+                                }
+                            }
+
+                            // Insert result set
                             foreach ($resultSet as $result) {
                                 $db->insert($tableName, $result);
                             }
