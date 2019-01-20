@@ -25,9 +25,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DatabaseSchemaCommand extends Command
 {
+    /** @var string Update command action */
+    const ACTION_UPDATE = "update";
+
     /** @var array Available command actions */
     const AVAILABLE_ACTIONS = [
-        "update",
+        self::ACTION_UPDATE,
     ];
 
 
@@ -55,6 +58,13 @@ class DatabaseSchemaCommand extends Command
             InputOption::VALUE_OPTIONAL,
             "Database schema to be updated"
         );
+        $this->addOption(
+            "force",
+            "f",
+            InputOption::VALUE_OPTIONAL,
+            "Force updating of columns even if their values differ from the new schema",
+            false
+        );
     }
 
     /**
@@ -62,18 +72,22 @@ class DatabaseSchemaCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        switch ($input->getArgument("action")) {
+        try {
+            /** @var ConnectionService $connectionService */
+            $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
 
-            //
-            // Update database schema
-            //
-            case "update":
-                try {
+            switch ($input->getArgument("action")) {
+
+                //
+                // Update database schema
+                //
+                case self::ACTION_UPDATE:
 
                     // Update database schema
-                    /** @var ConnectionService $connectionService */
-                    $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
-                    $connectionService->createSchema($input->getOption("schema") ?: "");
+                    $connectionService->createSchema(
+                        $input->getOption("schema") ?: "",
+                        $input->getOption("force") === false
+                    );
 
                     // Show success message
                     $output->write("<info>");
@@ -81,28 +95,24 @@ class DatabaseSchemaCommand extends Command
                         "Database schemas updated successfully.",
                     ]);
                     $output->write("</info>");
+                    break;
+            }
+        } catch (DBALException $e) {
+            $output->write("<error>");
+            $output->writeln([
+                "There was a problem with the database connection:",
+                $e->getMessage(),
+                $e->getTraceAsString(),
+            ]);
+            $output->write("</error>");
 
-                } catch (DBALException $e) {
-
-                    $output->write("<error>");
-                    $output->writeln([
-                        "There was a problem with the database connection:",
-                        $e->getMessage(),
-                        $e->getTraceAsString(),
-                    ]);
-                    $output->write("</error>");
-
-                } catch (\Exception $e) {
-
-                    $output->write("<error>");
-                    $output->writeln([
-                        "There was a problem during the command execution:",
-                        $e->getMessage(),
-                    ]);
-                    $output->write("</error>");
-
-                }
-                break;
+        } catch (\Exception $e) {
+            $output->write("<error>");
+            $output->writeln([
+                "There was a problem during the command execution:",
+                $e->getMessage(),
+            ]);
+            $output->write("</error>");
         }
     }
 }

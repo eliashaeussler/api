@@ -109,30 +109,23 @@ class ConnectionService
      * old table schema will be restored and an exception will be thrown.
      *
      * @param string|array $controllers Name of one or more API controllers which will be used to identity the schema file
+     * @param bool $strictMode `true` if values of fields differing from the new schema should not be inserted, `false` otherwise
      * @throws DBALException if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
      */
-    public function createSchema($controllers = "")
+    public function createSchema($controllers = "", bool $strictMode = true)
     {
         if (!$this->database) {
             $this->connect();
         }
 
+        // Get database schema manager
         $db = $this->database;
         $schemaManager = $db->getSchemaManager();
 
-        // Define schema files
-        if ($controllers) {
-            $files = is_array($controllers) ? $controllers : [$controllers];
-            array_walk($files, function (&$controller) {
-                $file = strtolower(GeneralUtility::getControllerName($controller));
-                $controller = self::SCHEMA_PATH . "/" . GeneralUtility::replaceFirst(self::SCHEMA_FILE_PATTERN, "*", $file);
-            });
-
-        } else if (($allFiles = glob(self::SCHEMA_PATH . "/" . self::SCHEMA_FILE_PATTERN)) !== false) {
-            $files = $allFiles;
-
-        } else {
+        // Get list of schema files
+        $files = $this->getListOfSchemaFiles($controllers);
+        if (!$files) {
             return;
         }
 
@@ -171,7 +164,10 @@ class ConnectionService
                 } else {
 
                     // Fetch all data from table
-                    $resultSet = $queryBuilder->select("*")->from($tableName)->execute()->fetchAll();
+                    $resultSet = $queryBuilder->select("*")
+                        ->from($tableName)
+                        ->execute()
+                        ->fetchAll();
 
                     try {
 
@@ -182,20 +178,36 @@ class ConnectionService
                         $db->exec($query);
 
                         // Restore result set
-                        if ($resultSet) {
+                        if ($resultSet)
+                        {
+                            $newTable = $schemaManager->listTableDetails($tableName);
+                            $tempTable = $schemaManager->listTableDetails(self::TEMPORARY_TABLE_PREFIX . $tableName);
+
                             // Re-create missing columns
-                            foreach (array_keys($resultSet[0]) as $column) {
-                                if (!$schemaManager->listTableDetails($tableName)->hasColumn($column)) {
-                                    $columnDetails = $schemaManager
-                                        ->listTableDetails(self::TEMPORARY_TABLE_PREFIX . $tableName)
-                                        ->getColumn($column);
-                                    $tableDiff = new TableDiff($tableName, [$columnDetails]);
+                            foreach (array_keys($resultSet[0]) as $columnName)
+                            {
+                                if (!$schemaManager->listTableDetails($tableName)->hasColumn($columnName)) {
+                                    $column = $tempTable->getColumn($columnName);
+                                    $tableDiff = new TableDiff($tableName, [$column]);
                                     $schemaManager->alterTable($tableDiff);
                                 }
                             }
 
                             // Insert result set
-                            foreach ($resultSet as $result) {
+                            foreach ($resultSet as $result)
+                            {
+                                if (!$strictMode) {
+                                    array_walk($result, function (&$value, $field) use ($newTable, $db) {
+                                        try {
+                                            $value = $newTable->getColumn($field)
+                                                ->getType()
+                                                ->convertToPHPValue($value, $db->getDatabasePlatform());
+                                        } catch (DBALException $e) {
+                                            $value = null;
+                                        }
+                                    });
+                                }
+
                                 $db->insert($tableName, $result);
                             }
                         }
@@ -338,6 +350,36 @@ class ConnectionService
 
         exec($command, $result);
         return implode("\n", $result);
+    }
+
+    /**
+     * Get list of schema files.
+     *
+     * Returns an array including the file names of available schema files. The search mode for schema files can be
+     * modified by providing a list of controller class names. If set, only the appropriate schema files will be returned.
+     *
+     * @param array|string $controllers Name of one or more API controllers which will be used to identity the schema file
+     * @return array List of schema files
+     */
+    protected function getListOfSchemaFiles($controllers = ""): array
+    {
+        $files = [];
+
+        // Get schema files for specified controllers
+        if ($controllers) {
+            $files = is_array($controllers) ? $controllers : [$controllers];
+            array_walk($files, function (&$controller) {
+                $file = strtolower(GeneralUtility::getControllerName($controller));
+                $fileName = GeneralUtility::replaceFirst(self::SCHEMA_FILE_PATTERN, "*", $file);
+                $controller = self::SCHEMA_PATH . "/" . $fileName;
+            });
+
+        // Get all available schema files
+        } else if (($allFiles = glob(self::SCHEMA_PATH . "/" . self::SCHEMA_FILE_PATTERN)) !== false) {
+            $files = $allFiles;
+        }
+
+        return $files;
     }
 
     /**
