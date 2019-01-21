@@ -10,6 +10,9 @@ xdebug_enabled: true
 additional_hostnames: []
 additional_fqdns: []
 provider: default
+hooks:
+  post-start:
+    - exec: "composer install -d /var/www/html"
 
 
 # This config.yaml was created with ddev version v1.3.0 
