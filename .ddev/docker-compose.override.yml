@@ -2,5 +2,6 @@ version: '3.6'
 
 services:
   web:
+    command: /bin/bash -c "composer install -d /var/www/html && /start.sh"
     environment:
       PHP_IDE_CONFIG: serverName=$DDEV_HOSTNAME
