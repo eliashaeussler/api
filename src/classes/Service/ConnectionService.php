@@ -8,6 +8,9 @@ namespace EliasHaeussler\Api\Service;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\Comparator;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\TableDiff;
 use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
@@ -132,15 +135,7 @@ class ConnectionService
         foreach ($files as $schemaFile)
         {
             // Get contents of schema file
-            $contents = @file_get_contents($schemaFile);
-            if (!$contents) {
-                throw new FileNotFoundException(
-                    sprintf("The schema file \"%s\" is not available.", $schemaFile),
-                    1546889136
-                );
-            }
-
-            $schemaCount = preg_match_all("/CREATE TABLE(.*?)\(\n(?:.*?)\);/ims", $contents, $schemas, PREG_SET_ORDER);
+            $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $schemas);
 
             if ($schemaCount === false || $schemaCount == 0) {
                 continue;
@@ -154,12 +149,13 @@ class ConnectionService
                 // Get table name
                 $query = $currentSchema[0];
                 $tableName = trim($currentSchema[1], " `");
+                $tempTableName = self::TEMPORARY_TABLE_PREFIX . $tableName;
 
                 // Create table schema
                 if (!$schemaManager->tablesExist([$tableName])) {
 
                     // Create table if not exists yet
-                    $db->prepare($query)->execute();
+                    $db->exec($query);
 
                 } else {
 
@@ -172,7 +168,7 @@ class ConnectionService
                     try {
 
                         // Mark table as temporary
-                        $schemaManager->renameTable($tableName, self::TEMPORARY_TABLE_PREFIX . $tableName);
+                        $schemaManager->renameTable($tableName, $tempTableName);
 
                         // Re-create table with given schema
                         $db->exec($query);
@@ -181,16 +177,18 @@ class ConnectionService
                         if ($resultSet)
                         {
                             $newTable = $schemaManager->listTableDetails($tableName);
-                            $tempTable = $schemaManager->listTableDetails(self::TEMPORARY_TABLE_PREFIX . $tableName);
+                            $tempTable = $schemaManager->listTableDetails($tempTableName);
 
                             // Re-create missing columns
                             foreach (array_keys($resultSet[0]) as $columnName)
                             {
-                                if (!$schemaManager->listTableDetails($tableName)->hasColumn($columnName)) {
-                                    $column = $tempTable->getColumn($columnName);
-                                    $tableDiff = new TableDiff($tableName, [$column]);
-                                    $schemaManager->alterTable($tableDiff);
+                                if ($newTable->hasColumn($columnName)) {
+                                    continue;
                                 }
+
+                                $column = $tempTable->getColumn($columnName);
+                                $tableDiff = new TableDiff($tableName, [$column]);
+                                $schemaManager->alterTable($tableDiff);
                             }
 
                             // Insert result set
@@ -213,18 +211,124 @@ class ConnectionService
                         }
 
                         // Drop temporary table
-                        $schemaManager->dropTable(self::TEMPORARY_TABLE_PREFIX . $tableName);
+                        $schemaManager->dropTable($tempTableName);
 
                     } catch (DBALException $e) {
 
                         // Restore new table with temporary table if an error occurs
                         $schemaManager->dropTable($tableName);
-                        $schemaManager->renameTable(self::TEMPORARY_TABLE_PREFIX . $tableName, $tableName);
+                        $schemaManager->renameTable($tempTableName, $tableName);
 
                         throw $e;
 
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * @todo add doc
+     *
+     * @param bool $dropFields
+     * @param bool $dropTables
+     * @param string $controllers
+     * @throws DBALException
+     * @throws FileNotFoundException
+     */
+    public function dropUnusedComponents(bool $dropFields = true, bool $dropTables = false, $controllers = "")
+    {
+        if (!$this->database) {
+            $this->connect();
+        }
+
+        // Get database schema manager
+        $db = $this->database;
+        $schemaManager = $db->getSchemaManager();
+
+        // Get list of schema files
+        $files = $this->getListOfSchemaFiles($controllers);
+        if (!$files) {
+            return;
+        }
+
+        foreach ($files as $schemaFile)
+        {
+            // Get contents of schema file
+            $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $schemas);
+
+            if ($schemaCount === false || $schemaCount == 0) {
+                continue;
+            }
+
+            // Normalize schemas
+            array_walk($schemas, function (&$schema) {
+                $table = strtolower(trim($schema[1], " `"));
+                $schema[1] = $table;
+            });
+
+            // Drop tables
+            if ($dropTables) {
+                foreach ($schemaManager->listTables() as $table) {
+                    $normalizedTableName = strtolower(trim($table->getName()));
+                    if (!in_array($normalizedTableName, array_column($schemas, 1))) {
+                        $schemaManager->dropTable($table->getName());
+                    }
+                }
+            }
+
+            if (!$dropFields) {
+                return;
+            }
+
+            // Drop fields
+            foreach ($schemas as $schema)
+            {
+                // Get table name
+                $query = $schema[0];
+                $tableName = $schema[1];
+                $tempTableName = self::TEMPORARY_TABLE_PREFIX . $tableName;
+
+                // Rename table name in query to create temporary table
+                $query = preg_replace(
+                    sprintf("/(CREATE TABLE.*?)%s/", $tableName),
+                    "$1" . $tempTableName,
+                    $query
+                );
+
+                // Create temporary table
+                $db->exec($query);
+
+                // Define schemas
+                $currentTable = $schemaManager->listTableDetails($tableName);
+                $definedTable = $schemaManager->listTableDetails($tempTableName);
+                $currentSchema = new Schema([$currentTable]);
+                $definedSchema = new Schema([$definedTable]);
+                $definedSchema->renameTable($tempTableName, $tableName);
+
+                // Compare tables
+                $comparator = new Comparator();
+                $schemaDiff = $comparator->compare($currentSchema, $definedSchema);
+
+                // Remove fields
+                $tableDiff = new TableDiff($tableName);
+                foreach ($schemaDiff->changedTables as $key => $currentSchema) {
+                    if ($currentSchema->name == $tableName) {
+                        $tableDiff->removedColumns = $currentSchema->removedColumns;
+                    }
+                }
+                $schemaDiff = new SchemaDiff();
+                $schemaDiff->changedTables[$tableName] = $tableDiff;
+                $sql = $schemaDiff->toSql($db->getDatabasePlatform());
+
+                if ($sql) {
+                    foreach ($sql as $query) {
+                        $db->exec($query);
+                    }
+                }
+
+                // Remove temporary table
+                $schemaManager->dropTable($tempTableName);
             }
         }
     }
@@ -380,6 +484,31 @@ class ConnectionService
         }
 
         return $files;
+    }
+
+    /**
+     * Read contents of database schema file.
+     *
+     * Reads the contents of a database schema file and returns the number of `CREATE TABLE` statements within it.
+     * The `CREATE TABLE` statements will be stored in a by-reference variable which can then be accessed after
+     * calling this method.
+     *
+     * @param string $file Schema file
+     * @param array|null $schemas Result of {@see preg_match_all} containing `CREATE TABLE` statements
+     * @return int Number of `CREATE TABLE` statements inside schema file
+     * @throws FileNotFoundException if a table schema file is not available
+     */
+    protected function readContentsOfSchemaFile(string $file, ?array &$schemas): int
+    {
+        $contents = @file_get_contents($file);
+        if (!$contents) {
+            throw new FileNotFoundException(
+                sprintf("The schema file \"%s\" is not available.", $file),
+                1546889136
+            );
+        }
+
+        return preg_match_all("/CREATE TABLE(.*?)\(\n(?:.*?)\);/ims", $contents, $schemas, PREG_SET_ORDER);
     }
 
     /**

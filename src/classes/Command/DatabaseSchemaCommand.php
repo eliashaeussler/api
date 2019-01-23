@@ -28,9 +28,13 @@ class DatabaseSchemaCommand extends Command
     /** @var string Update command action */
     const ACTION_UPDATE = "update";
 
+    /** @var string Drop command action */
+    const ACTION_DROP = "drop";
+
     /** @var array Available command actions */
     const AVAILABLE_ACTIONS = [
         self::ACTION_UPDATE,
+        self::ACTION_DROP,
     ];
 
 
@@ -65,6 +69,20 @@ class DatabaseSchemaCommand extends Command
             "Force updating of columns even if their values differ from the new schema",
             false
         );
+        $this->addOption(
+            "fields",
+            null,
+            InputOption::VALUE_OPTIONAL,
+            sprintf("Define fields to drop when using `%s` action", self::ACTION_DROP),
+            false
+        );
+        $this->addOption(
+            "tables",
+            null,
+            InputOption::VALUE_OPTIONAL,
+            sprintf("Define tables to drop when using `%s` action", self::ACTION_DROP),
+            false
+        );
     }
 
     /**
@@ -95,6 +113,23 @@ class DatabaseSchemaCommand extends Command
                         "Database schemas updated successfully.",
                     ]);
                     $output->write("</info>");
+                    break;
+
+                //
+                // Drop fields and/or tables in database schema
+                //
+                case self::ACTION_DROP:
+
+                    // Check which database components should be dropped
+                    $dropFields = $input->getOption("fields") !== false;
+                    $dropTables = $input->getOption("tables") !== false;
+                    if (!$dropFields && !$dropTables) {
+                        $dropFields = true;
+                        $dropTables = true;
+                    }
+
+                    // Drop database components
+                    $connectionService->dropUnusedComponents($dropFields, $dropTables);
                     break;
             }
         } catch (DBALException $e) {
