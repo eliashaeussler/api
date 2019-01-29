@@ -4,6 +4,7 @@
 set -e
 
 # Global variables
+SECONDS=0
 ROOT_PATH="$(pwd "$(dirname "$0")")"
 
 # Get variables
@@ -46,4 +47,4 @@ dump=$(create_dump)
 echo "Importing dump with DDEV..."
 import_dump "$dump"
 
-echo "Done."
+echo "Done in $SECONDS second"$([[ $SECONDS != 1 ]] && echo "s")"."

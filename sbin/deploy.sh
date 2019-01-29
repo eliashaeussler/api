@@ -4,6 +4,7 @@
 set -e
 
 # Global variables
+SECONDS=0
 ROOT_PATH="$(pwd "$(dirname "$0")")"
 
 # Get variables
@@ -65,4 +66,4 @@ ssh ${TARGET_HOST} -T << __EOF
     php ${TARGET_PATH}/release/console.php database:schema update
 __EOF
 
-echo "Done."
+echo "Done in $SECONDS second"$([[ $SECONDS != 1 ]] && echo "s")"."
