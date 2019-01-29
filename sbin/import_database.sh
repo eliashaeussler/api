@@ -5,10 +5,12 @@ set -e
 
 # Global variables
 SECONDS=0
-ROOT_PATH="$(pwd "$(dirname "$0")")"
+SCRIPT_PATH="$(dirname "$0")"
+ROOT_PATH="$(pwd "$SCRIPT_PATH")"
 
-# Get variables
+# Get scripts and variables
 set -a
+source "$SCRIPT_PATH/shared/console.sh"
 source "$ROOT_PATH/remote.env"
 set +a
 
@@ -17,8 +19,8 @@ TARGET_HOST=${TARGET_HOST}
 TARGET_PATH=${TARGET_PATH}
 
 # Exit if required variables are not set
-[[ -z "${TARGET_HOST}" ]] && echo "TARGET_HOST not set. Exiting." && exit 1
-[[ -z "${TARGET_PATH}" ]] && echo "TARGET_HOST not set. Exiting." && exit 1
+[[ -z "${TARGET_HOST}" ]] && output "TARGET_HOST not set. Exiting." ${ERROR} && exit 1
+[[ -z "${TARGET_PATH}" ]] && output "TARGET_PATH not set. Exiting." ${ERROR} && exit 1
 
 function create_dump() {
     dump_name="$(date -u +%Y-%m-%dT%H%M%SZ).sql.gz"
@@ -27,24 +29,24 @@ function create_dump() {
 
     mkdir -p "${dump_path}"
     ssh ${TARGET_HOST} -T "php ${TARGET_PATH}/release/console.php database:export &" | gzip > "${dump_file}"
-    [[ ! -s "${dump_file}" ]] && rm ${dump_file} && echo "Database dump is empty. Exiting." >&2 && exit 1
+    [[ ! -s "${dump_file}" ]] && rm ${dump_file} && output "Database dump is empty. Exiting." ${ERROR} >&2 && exit 1
 
     echo "${dump_file}"
 }
 
 function import_dump() {
     dump_file="$1"
-    [[ -z ${dump_file} ]] && echo "Please specify a dump file for import with DDEV." >&2 && exit 1
+    [[ -z ${dump_file} ]] && output "Please specify a dump file for import with DDEV." ${ERROR} >&2 && exit 1
 
     ddev import-db --src "${dump_file}"
 }
 
 # Dump database and store it locally
-echo "Dumping from remote..."
+output "Dumping from remote..." ${ACTION}
 dump=$(create_dump)
 
 # Import database
-echo "Importing dump with DDEV..."
+output "Importing dump with DDEV..." ${ACTION}
 import_dump "$dump"
 
-echo "Done in $SECONDS second"$([[ $SECONDS != 1 ]] && echo "s")"."
+print_success_message
