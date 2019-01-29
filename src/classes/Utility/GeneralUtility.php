@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Utility;
 
 use Dotenv\Dotenv;
+use Dotenv\Loader;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -21,6 +22,9 @@ class GeneralUtility
 {
     /** @var array Class instances, ordered by class name */
     private static $instances = [];
+
+    /** @var Dotenv[] Loader for environment variables */
+    private static $dotenv = [];
 
 
     /**
@@ -122,7 +126,15 @@ class GeneralUtility
      */
     public static function loadEnvironment(string $file = ".env", bool $silent = false)
     {
-        $loader = new Dotenv(ROOT_PATH, $file);
+        $path = ROOT_PATH . "/" . $file;
+
+        if (isset(self::$dotenv[$path])) {
+            $loader = self::$dotenv[$path];
+        } else {
+            $loader = new Dotenv(ROOT_PATH, $file);
+            self::$dotenv[$path] = $loader;
+        }
+
         $loader->{$silent ? "safeLoad" : "load"}();
     }
 
@@ -131,11 +143,31 @@ class GeneralUtility
      *
      * @param string $name Name of the environment variable
      * @param mixed $default Default variable if environment variable is not available
-     * @return string|array The value of the given environment variable
+     * @return mixed The value of the given environment variable
      */
     public static function getEnvironmentVariable(string $name, $default = "")
     {
-        return getenv($name) ?: $default;
+        $loader = new Loader(ROOT_PATH);
+        return $loader->getEnvironmentVariable($name) ?? $default;
+    }
+
+    /**
+     * Get all loaded environment variables.
+     *
+     * @return array Array of loaded environment variables
+     */
+    public static function getEnvironmentVariableNames(): array
+    {
+        if (empty(self::$dotenv)) {
+            self::loadEnvironment();
+        }
+
+        $variables = [];
+        foreach (self::$dotenv as $dotenv) {
+            $variables = array_merge($variables, $dotenv->getEnvironmentVariableNames());
+        }
+
+        return $variables;
     }
 
     /**
@@ -148,11 +180,11 @@ class GeneralUtility
     public static function registerExceptionHandler()
     {
         $handler = new PrettyPageHandler();
-        foreach (["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME", "DB_PORT"] as $key) {
+        foreach (self::getEnvironmentVariableNames() as $key) {
             $handler->blacklist("_ENV", $key);
             $handler->blacklist("_SERVER", $key);
         }
-        $whoops = GeneralUtility::makeInstance(Run::class);
+        $whoops = self::makeInstance(Run::class);
         $whoops->pushHandler($handler);
         $whoops->register();
     }
@@ -164,7 +196,7 @@ class GeneralUtility
      */
     public static function isDebugEnabled(): bool
     {
-        GeneralUtility::loadEnvironment();
+        self::loadEnvironment();
         return !!static::getEnvironmentVariable("DEBUG_EXCEPTIONS", false);
     }
 }
