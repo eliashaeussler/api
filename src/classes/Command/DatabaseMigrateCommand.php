@@ -6,9 +6,12 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Command;
 
 use Doctrine\DBAL\DBALException;
+use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Exception\DatabaseException;
+use EliasHaeussler\Api\Exception\FileNotFoundException;
+use EliasHaeussler\Api\Exception\InvalidFileException;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
-class DatabaseMigrateCommand extends Command
+class DatabaseMigrateCommand extends BaseCommand
 {
     /**
      * {@inheritdoc}
@@ -44,42 +47,21 @@ class DatabaseMigrateCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
+     * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
+     * @throws InvalidFileException if no files are provided for migration
+     * @throws FileNotFoundException if any of the specified files does not exist
+     * @throws DBALException if any database connection cannot be established
+     * @throws DatabaseException if connection to any database was not successful
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
+        // Update database schema
+        /** @var ConnectionService $connectionService */
+        $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
+        $connectionService->migrate($input->getArgument("file"));
 
-            // Update database schema
-            /** @var ConnectionService $connectionService */
-            $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
-            $connectionService->migrate($input->getArgument("file"));
-
-            // Show success message
-            $output->write("<info>");
-            $output->writeln([
-                "Successfully migrated database.",
-            ]);
-            $output->write("</info>");
-
-        } catch (DBALException $e) {
-
-            $output->write("<error>");
-            $output->writeln([
-                "There was a problem with the database connection:",
-                $e->getMessage(),
-                $e->getTraceAsString(),
-            ]);
-            $output->write("</error>");
-
-        } catch (\Exception $e) {
-
-            $output->write("<error>");
-            $output->writeln([
-                "There was a problem during the command execution:",
-                $e->getMessage(),
-            ]);
-            $output->write("</error>");
-
-        }
+        // Show success message
+        $this->io->success("Successfully migrated database.");
     }
 }

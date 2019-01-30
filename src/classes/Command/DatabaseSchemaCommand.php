@@ -6,15 +6,14 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Command;
 
 use Doctrine\DBAL\DBALException;
+use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Database schema console command.
@@ -25,7 +24,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
-class DatabaseSchemaCommand extends Command
+class DatabaseSchemaCommand extends BaseCommand
 {
     /** @var string Update command action */
     const ACTION_UPDATE = "update";
@@ -62,14 +61,13 @@ class DatabaseSchemaCommand extends Command
             "schema",
             "s",
             InputOption::VALUE_OPTIONAL,
-            "Database schema to be updated"
+            "Database schema to be used for updating the schema or dropping unused components"
         );
         $this->addOption(
             "force",
             null,
-            InputOption::VALUE_OPTIONAL,
-            sprintf("Force dropping of unused database components when using `%s` action", self::ACTION_DROP),
-            false
+            InputOption::VALUE_NONE,
+            sprintf("Force dropping of unused database components when using `%s` action", self::ACTION_DROP)
         );
         $this->addOption(
             "fields",
@@ -89,90 +87,62 @@ class DatabaseSchemaCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
+     * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
+     * @throws DBALException if the database connection cannot be established
+     * @throws FileNotFoundException if a table schema file is not available
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            /** @var ConnectionService $connectionService */
-            $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
+        /** @var ConnectionService $connectionService */
+        $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
 
-            switch ($input->getArgument("action")) {
+        switch ($input->getArgument("action")) {
 
-                //
+            //
+            // Update database schema
+            //
+            case self::ACTION_UPDATE:
+
                 // Update database schema
-                //
-                case self::ACTION_UPDATE:
+                $connectionService->createSchema($input->getOption("schema"));
 
-                    // Update database schema
-                    $connectionService->createSchema($input->getOption("schema") ?: "");
+                // Show success message
+                $this->io->success("Successfully updated database schemas.");
+                break;
 
-                    // Show success message
-                    $output->write("<info>");
-                    $output->writeln([
-                        "Successfully updated database schemas.",
-                    ]);
-                    $output->write("</info>");
-                    break;
+            //
+            // Drop fields and/or tables in database schema
+            //
+            case self::ACTION_DROP:
 
-                //
-                // Drop fields and/or tables in database schema
-                //
-                case self::ACTION_DROP:
+                // Check which database components should be dropped
+                $dropFields = $input->getOption("fields") !== false;
+                $dropTables = $input->getOption("tables") !== false;
+                if (!$dropFields && !$dropTables) {
+                    $dropFields = true;
+                    $dropTables = true;
+                }
+                $dropComponentsString = implode(" ", array_filter([
+                    $dropFields ? "fields" : "",
+                    $dropFields && $dropTables ? "and" : "",
+                    $dropTables ? "tables" : ""
+                ]));
 
-                    // Check which database components should be dropped
-                    $dropFields = $input->getOption("fields") !== false;
-                    $dropTables = $input->getOption("tables") !== false;
-                    if (!$dropFields && !$dropTables) {
-                        $dropFields = true;
-                        $dropTables = true;
+                // Ask to drop components for security reasons
+                if (!$input->getOption("force")) {
+                    $question = sprintf("Really drop unused database %s?", $dropComponentsString);
+                    if (!$this->io->confirm($question, false)) {
+                        return;
                     }
-                    $dropComponentsString = implode(" ", array_filter([
-                        $dropFields ? "fields" : "",
-                        $dropFields && $dropTables ? "and" : "",
-                        $dropTables ? "tables" : ""
-                    ]));
+                }
 
-                    // Ask to drop components for security reasons
-                    if ($input->getOption("force") === false) {
-                        /** @var QuestionHelper $helper */
-                        $helper = $this->getHelper("question");
-                        $question = new ConfirmationQuestion(
-                            sprintf("Really drop unused database %s (y/N)? ", $dropComponentsString),
-                            false,
-                            '/^(y|j)/i'
-                        );
-                        if (!$helper->ask($input, $output, $question)) {
-                            return;
-                        }
-                    }
+                // Drop database components
+                $connectionService->dropUnusedComponents($dropFields, $dropTables, $input->getOption("schema"));
 
-                    // Drop database components
-                    $connectionService->dropUnusedComponents($dropFields, $dropTables);
-
-                    // Show success message
-                    $output->write("<info>");
-                    $output->writeln([
-                        sprintf("Successfully dropped unused database %s.", $dropComponentsString),
-                    ]);
-                    $output->write("</info>");
-                    break;
-            }
-        } catch (DBALException $e) {
-            $output->write("<error>");
-            $output->writeln([
-                "There was a problem with the database connection:",
-                $e->getMessage(),
-                $e->getTraceAsString(),
-            ]);
-            $output->write("</error>");
-
-        } catch (\Exception $e) {
-            $output->write("<error>");
-            $output->writeln([
-                "There was a problem during the command execution:",
-                $e->getMessage(),
-            ]);
-            $output->write("</error>");
+                // Show success message
+                $this->io->success(sprintf("Successfully dropped unused database %s.", $dropComponentsString));
+                break;
         }
     }
 }

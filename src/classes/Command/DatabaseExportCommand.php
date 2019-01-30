@@ -5,9 +5,9 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Command;
 
+use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
-class DatabaseExportCommand extends Command
+class DatabaseExportCommand extends BaseCommand
 {
     /**
      * {@inheritdoc}
@@ -35,25 +35,17 @@ class DatabaseExportCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
+     * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
+        // Create database dump
+        /** @var ConnectionService $connectionService */
+        $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
+        $exportedSql = $connectionService->export();
 
-            /** @var ConnectionService $connectionService */
-            $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
-            $exportedSql = $connectionService->export();
-            $output->writeln($exportedSql);
-
-        } catch (\Exception $e) {
-
-            $output->write("<error>");
-            $output->writeln([
-                "There was a problem during the command execution:",
-                $e->getMessage(),
-            ]);
-            $output->write("</error>");
-
-        }
+        // Print dump to console
+        $this->io->text($exportedSql);
     }
 }

@@ -113,11 +113,11 @@ class ConnectionService
      * Note that this only takes place if the schema files contain `CREATE TABLE` statements. In case of an error the
      * old table schema will be restored and an exception will be thrown.
      *
-     * @param string|array $controllers Name of one or more API controllers which will be used to identity the schema file
+     * @param string|array|null $controllers Name of one or more API controllers which will be used to identity the schema file
      * @throws DBALException if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
      */
-    public function createSchema($controllers = "")
+    public function createSchema($controllers = null)
     {
         if (!$this->database) {
             $this->connect();
@@ -229,11 +229,11 @@ class ConnectionService
      *
      * @param bool $dropFields Define whether to drop unused fields from current database schema
      * @param bool $dropTables Define whether to drop unused tables from current database schema
-     * @param string|array $controllers Name of one or more API controllers which will be used to identity the schema file
+     * @param string|array|null $controllers Name of one or more API controllers which will be used to identity the schema file
      * @throws DBALException if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
      */
-    public function dropUnusedComponents(bool $dropFields = true, bool $dropTables = false, $controllers = "")
+    public function dropUnusedComponents(bool $dropFields = true, bool $dropTables = false, $controllers = null)
     {
         if (!$dropFields && !$dropTables) {
             return;
@@ -478,10 +478,10 @@ class ConnectionService
      * Returns an array including the file names of available schema files. The search mode for schema files can be
      * modified by providing a list of controller class names. If set, only the appropriate schema files will be returned.
      *
-     * @param array|string $controllers Name of one or more API controllers which will be used to identity the schema file
+     * @param array|string|null $controllers Name of one or more API controllers which will be used to identity the schema file
      * @return array List of schema files
      */
-    protected function getListOfSchemaFiles($controllers = ""): array
+    protected function getListOfSchemaFiles($controllers = null): array
     {
         $files = [];
 
