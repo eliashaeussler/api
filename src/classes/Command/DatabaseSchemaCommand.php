@@ -9,10 +9,12 @@ use Doctrine\DBAL\DBALException;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Database schema console command.
@@ -63,17 +65,24 @@ class DatabaseSchemaCommand extends Command
             "Database schema to be updated"
         );
         $this->addOption(
+            "force",
+            null,
+            InputOption::VALUE_OPTIONAL,
+            sprintf("Force dropping of unused database components when using `%s` action", self::ACTION_DROP),
+            false
+        );
+        $this->addOption(
             "fields",
             null,
             InputOption::VALUE_OPTIONAL,
-            sprintf("Define fields to drop when using `%s` action", self::ACTION_DROP),
+            sprintf("Explicitly drop unused database fields when using `%s` action", self::ACTION_DROP),
             false
         );
         $this->addOption(
             "tables",
             null,
             InputOption::VALUE_OPTIONAL,
-            sprintf("Define tables to drop when using `%s` action", self::ACTION_DROP),
+            sprintf("Explicitly drop unused database tables when using `%s` action", self::ACTION_DROP),
             false
         );
     }
@@ -100,7 +109,7 @@ class DatabaseSchemaCommand extends Command
                     // Show success message
                     $output->write("<info>");
                     $output->writeln([
-                        "Database schemas updated successfully.",
+                        "Successfully updated database schemas.",
                     ]);
                     $output->write("</info>");
                     break;
@@ -117,9 +126,35 @@ class DatabaseSchemaCommand extends Command
                         $dropFields = true;
                         $dropTables = true;
                     }
+                    $dropComponentsString = implode(" ", array_filter([
+                        $dropFields ? "fields" : "",
+                        $dropFields && $dropTables ? "and" : "",
+                        $dropTables ? "tables" : ""
+                    ]));
+
+                    // Ask to drop components for security reasons
+                    if ($input->getOption("force") === false) {
+                        /** @var QuestionHelper $helper */
+                        $helper = $this->getHelper("question");
+                        $question = new ConfirmationQuestion(
+                            sprintf("Really drop unused %s (y/N)? ", $dropComponentsString),
+                            false,
+                            '/^(y|j)/i'
+                        );
+                        if (!$helper->ask($input, $output, $question)) {
+                            return;
+                        }
+                    }
 
                     // Drop database components
                     $connectionService->dropUnusedComponents($dropFields, $dropTables);
+
+                    // Show success message
+                    $output->write("<info>");
+                    $output->writeln([
+                        sprintf("Successfully dropped unused database %s.", $dropComponentsString),
+                    ]);
+                    $output->write("</info>");
                     break;
             }
         } catch (DBALException $e) {

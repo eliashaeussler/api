@@ -19,7 +19,8 @@
   },
   "require-dev": {
     "symfony/console": "^4.2",
-    "filp/whoops": "^2.3"
+    "filp/whoops": "^2.3",
+    "phpmyadmin/sql-parser": "^4.3"
   },
   "autoload": {
     "psr-4": {
