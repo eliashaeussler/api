@@ -235,7 +235,12 @@ class ConnectionService
      * @throws DBALException if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
      */
-    public function dropUnusedComponents(bool $dropFields = true, bool $dropTables = false, $controllers = null, bool $dryRun = true): array
+    public function dropUnusedComponents(
+        bool $dropFields = true,
+        bool $dropTables = false,
+        $controllers = null,
+        bool $dryRun = true
+    ): array
     {
         $report = [
             "tables" => [],
@@ -300,6 +305,11 @@ class ConnectionService
                             $definedQuery = $definedSchema[0];
                             $definedTableName = $definedSchema[1];
                             $tempTableName = self::TEMPORARY_TABLE_PREFIX . $definedTableName;
+
+                            // Do not continue if tables does not exist currently
+                            if (!$schemaManager->tablesExist([$definedTableName])) {
+                                continue;
+                            }
 
                             // Get SQL parser
                             $parser = new Parser($definedQuery);
