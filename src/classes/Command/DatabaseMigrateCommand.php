@@ -57,7 +57,7 @@ class DatabaseMigrateCommand extends Command
             // Show success message
             $output->write("<info>");
             $output->writeln([
-                "Database successfully migrated.",
+                "Successfully migrated database.",
             ]);
             $output->write("</info>");
 

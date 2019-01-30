@@ -137,7 +137,7 @@ class DatabaseSchemaCommand extends Command
                         /** @var QuestionHelper $helper */
                         $helper = $this->getHelper("question");
                         $question = new ConfirmationQuestion(
-                            sprintf("Really drop unused %s (y/N)? ", $dropComponentsString),
+                            sprintf("Really drop unused database %s (y/N)? ", $dropComponentsString),
                             false,
                             '/^(y|j)/i'
                         );
