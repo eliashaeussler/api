@@ -409,7 +409,7 @@ class ConnectionService
 
             if ($path === false) {
                 throw new FileNotFoundException(
-                    sprintf("The database file \"%s\" does not exist.", $path),
+                    sprintf("The database file \"%s\" does not exist.", $file),
                     1546890434
                 );
             }
