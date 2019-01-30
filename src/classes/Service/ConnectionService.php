@@ -112,101 +112,88 @@ class ConnectionService
      * old table schema will be restored and an exception will be thrown.
      *
      * @param string|array $controllers Name of one or more API controllers which will be used to identity the schema file
-     * @param bool $strictMode `true` if values of fields differing from the new schema should not be inserted, `false` otherwise
      * @throws DBALException if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
      */
-    public function createSchema($controllers = "", bool $strictMode = true)
+    public function createSchema($controllers = "")
     {
         if (!$this->database) {
             $this->connect();
         }
 
-        // Get database schema manager
+        // Get database schema manager and query builder
         $db = $this->database;
         $schemaManager = $db->getSchemaManager();
+        $queryBuilder = $db->createQueryBuilder();
 
         // Get list of schema files
-        $files = $this->getListOfSchemaFiles($controllers);
-        if (!$files) {
+        $schemaFiles = $this->getListOfSchemaFiles($controllers);
+        if (!$schemaFiles) {
             return;
         }
 
-        foreach ($files as $schemaFile)
+        foreach ($schemaFiles as $schemaFile)
         {
             // Get contents of schema file
-            $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $schemas);
+            $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $definedSchemas);
 
             if ($schemaCount === false || $schemaCount == 0) {
                 continue;
             }
 
             // Create table schemas
-            foreach ($schemas as $currentSchema)
+            foreach ($definedSchemas as $definedSchema)
             {
-                $queryBuilder = $db->createQueryBuilder();
+                // Reset query builder
+                $queryBuilder->resetQueryParts();
 
                 // Get table name
-                $query = $currentSchema[0];
-                $tableName = trim($currentSchema[1], " `");
-                $tempTableName = self::TEMPORARY_TABLE_PREFIX . $tableName;
+                $definedQuery = $definedSchema[0];
+                $definedTableName = trim($definedSchema[1], " `");
+                $tempTableName = self::TEMPORARY_TABLE_PREFIX . $definedTableName;
 
                 // Create table schema
-                if (!$schemaManager->tablesExist([$tableName])) {
+                if (!$schemaManager->tablesExist([$definedTableName])) {
 
                     // Create table if not exists yet
-                    $db->exec($query);
+                    $db->exec($definedQuery);
 
                 } else {
 
                     // Fetch all data from table
-                    $resultSet = $queryBuilder->select("*")
-                        ->from($tableName)
+                    $currentDataSet = $queryBuilder->select("*")
+                        ->from($definedTableName)
                         ->execute()
                         ->fetchAll();
 
                     try {
 
                         // Mark table as temporary
-                        $schemaManager->renameTable($tableName, $tempTableName);
+                        $schemaManager->renameTable($definedTableName, $tempTableName);
 
                         // Re-create table with given schema
-                        $db->exec($query);
+                        $db->exec($definedQuery);
 
                         // Restore result set
-                        if ($resultSet)
+                        if (!empty($currentDataSet))
                         {
-                            $newTable = $schemaManager->listTableDetails($tableName);
+                            $definedTable = $schemaManager->listTableDetails($definedTableName);
                             $tempTable = $schemaManager->listTableDetails($tempTableName);
 
                             // Re-create missing columns
-                            foreach (array_keys($resultSet[0]) as $columnName)
+                            foreach ($tempTable->getColumns() as $tempTableColumn)
                             {
-                                if ($newTable->hasColumn($columnName)) {
+                                if ($definedTable->hasColumn($tempTableColumn->getName())) {
                                     continue;
                                 }
 
-                                $column = $tempTable->getColumn($columnName);
-                                $tableDiff = new TableDiff($tableName, [$column]);
+                                $tableDiff = new TableDiff($definedTableName, [$tempTableColumn]);
                                 $schemaManager->alterTable($tableDiff);
                             }
 
                             // Insert result set
-                            foreach ($resultSet as $result)
-                            {
-                                if (!$strictMode) {
-                                    array_walk($result, function (&$value, $field) use ($newTable, $db) {
-                                        try {
-                                            $value = $newTable->getColumn($field)
-                                                ->getType()
-                                                ->convertToPHPValue($value, $db->getDatabasePlatform());
-                                        } catch (DBALException $e) {
-                                            $value = null;
-                                        }
-                                    });
-                                }
-
-                                $db->insert($tableName, $result);
+                            foreach ($currentDataSet as $dataSet) {
+                                $db->insert($definedTableName, $dataSet);
                             }
                         }
 
@@ -216,8 +203,8 @@ class ConnectionService
                     } catch (DBALException $e) {
 
                         // Restore new table with temporary table if an error occurs
-                        $schemaManager->dropTable($tableName);
-                        $schemaManager->renameTable($tempTableName, $tableName);
+                        $schemaManager->dropTable($definedTableName);
+                        $schemaManager->renameTable($tempTableName, $definedTableName);
 
                         throw $e;
 

@@ -63,13 +63,6 @@ class DatabaseSchemaCommand extends Command
             "Database schema to be updated"
         );
         $this->addOption(
-            "force",
-            "f",
-            InputOption::VALUE_OPTIONAL,
-            "Force updating of columns even if their values differ from the new schema",
-            false
-        );
-        $this->addOption(
             "fields",
             null,
             InputOption::VALUE_OPTIONAL,
@@ -102,10 +95,7 @@ class DatabaseSchemaCommand extends Command
                 case self::ACTION_UPDATE:
 
                     // Update database schema
-                    $connectionService->createSchema(
-                        $input->getOption("schema") ?: "",
-                        $input->getOption("force") === false
-                    );
+                    $connectionService->createSchema($input->getOption("schema") ?: "");
 
                     // Show success message
                     $output->write("<info>");
