@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Command;
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Table;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Service\ConnectionService;
@@ -138,10 +140,41 @@ class DatabaseSchemaCommand extends BaseCommand
                 }
 
                 // Drop database components
-                $connectionService->dropUnusedComponents($dropFields, $dropTables, $input->getOption("schema"));
+                $report = $connectionService->dropUnusedComponents($dropFields, $dropTables, $input->getOption("schema"));
 
-                // Show success message
-                $this->io->success(sprintf("Successfully dropped unused database %s.", $dropComponentsString));
+                // Build report
+                $droppedTables = [];
+                $droppedFields = [];
+                if (isset($report["tables"])) {
+                    $droppedTables = array_map(function (Table $table) {
+                        return sprintf("<fg=blue;options=bold>%s</>", $table->getName());
+                    }, $report["tables"]);
+                }
+                if (isset($report["fields"])) {
+                    array_walk($report["fields"], function (array $components) use (&$droppedFields) {
+                        /** @var Table $table */
+                        $table = $components["table"];
+                        /** @var Column[] $fields */
+                        $fields = $components["fields"];
+                        foreach ($fields as $field) {
+                            $droppedFields[] = sprintf("%s.<fg=blue;options=bold>%s</>", $table->getName(), $field->getName());
+                        }
+                    });
+                }
+
+                // Show report of dropped components
+                if (count($droppedTables) + count($droppedFields) > 0) {
+                    if (count($droppedTables) > 0) {
+                        $this->io->title("Dropped tables");
+                        $this->io->listing($droppedTables);
+                    }
+                    if (count($droppedFields) > 0) {
+                        $this->io->title("Dropped fields");
+                        $this->io->listing($droppedFields);
+                    }
+                } else {
+                    $this->io->success("No tables or fields have been dropped.");
+                }
                 break;
         }
     }

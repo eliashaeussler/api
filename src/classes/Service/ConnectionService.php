@@ -230,123 +230,136 @@ class ConnectionService
      * @param bool $dropFields Define whether to drop unused fields from current database schema
      * @param bool $dropTables Define whether to drop unused tables from current database schema
      * @param string|array|null $controllers Name of one or more API controllers which will be used to identity the schema file
+     * @return array Report of dropped tables and fields
      * @throws DBALException if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
      */
-    public function dropUnusedComponents(bool $dropFields = true, bool $dropTables = false, $controllers = null)
+    public function dropUnusedComponents(bool $dropFields = true, bool $dropTables = false, $controllers = null): array
     {
-        if (!$dropFields && !$dropTables) {
-            return;
-        }
+        $report = [
+            "tables" => [],
+            "fields" => [],
+        ];
 
-        // Ensure established database connection
-        if (!$this->database) {
-            $this->connect();
-        }
-
-        // Get database schema manager
-        $db = $this->database;
-        $schemaManager = $db->getSchemaManager();
-
-        // Get list of schema files
-        $schemaFiles = $this->getListOfSchemaFiles($controllers);
-        if (!$schemaFiles) {
-            return;
-        }
-
-        foreach ($schemaFiles as $schemaFile)
+        if ($dropFields || $dropTables)
         {
-            // Get contents of schema file
-            $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $definedSchemas);
-
-            if ($schemaCount === false || $schemaCount == 0) {
-                continue;
+            // Ensure established database connection
+            if (!$this->database) {
+                $this->connect();
             }
 
-            // Normalize schemas
-            array_walk($definedSchemas, function (&$schema) {
-                $table = strtolower(trim($schema[1], " `"));
-                $schema[1] = $table;
-            });
+            // Get database schema manager
+            $db = $this->database;
+            $schemaManager = $db->getSchemaManager();
 
-            // Drop tables
-            if ($dropTables)
+            // Get list of schema files
+            $schemaFiles = $this->getListOfSchemaFiles($controllers);
+
+            if ($schemaFiles)
             {
-                foreach ($schemaManager->listTables() as $currentTable)
+                foreach ($schemaFiles as $schemaFile)
                 {
-                    $currentTableName = $currentTable->getName();
-                    $normalizedTableName = strtolower(trim($currentTableName));
+                    // Get contents of schema file
+                    $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $definedSchemas);
 
-                    // Drop table if it's not listed in the defined schemas
-                    if (!in_array($normalizedTableName, array_column($definedSchemas, 1))) {
-                        $schemaManager->dropTable($currentTableName);
-                    }
-                }
-            }
-
-            // Drop fields
-            if ($dropFields)
-            {
-                foreach ($definedSchemas as $definedSchema)
-                {
-                    // Get table name
-                    $definedQuery = $definedSchema[0];
-                    $definedTableName = $definedSchema[1];
-                    $tempTableName = self::TEMPORARY_TABLE_PREFIX . $definedTableName;
-
-                    // Get SQL parser
-                    $parser = new Parser($definedQuery);
-
-                    // Allow only CREATE statements
-                    if (empty($parser->statements) || !$parser->statements[0] instanceof CreateStatement) {
+                    if ($schemaCount === false || $schemaCount == 0) {
                         continue;
                     }
 
-                    // Get parsed statement
-                    /** @var CreateStatement $statement */
-                    $statement = $parser->statements[0];
+                    // Normalize schemas
+                    array_walk($definedSchemas, function (&$schema) {
+                        $table = strtolower(trim($schema[1], " `"));
+                        $schema[1] = $table;
+                    });
 
-                    // Rename table name in query to create temporary table
-                    $statement->name->table = $tempTableName;
-                    $statement->name->expr = str_replace($definedTableName, $tempTableName, $statement->name->expr);
-                    $definedQuery = $statement->build();
+                    // Drop tables
+                    if ($dropTables)
+                    {
+                        foreach ($schemaManager->listTables() as $currentTable)
+                        {
+                            $currentTableName = $currentTable->getName();
+                            $normalizedTableName = strtolower(trim($currentTableName));
 
-                    // Create temporary table
-                    $db->exec($definedQuery);
-
-                    // Define schemas
-                    $currentTable = $schemaManager->listTableDetails($definedTableName);
-                    $definedTempTable = $schemaManager->listTableDetails($tempTableName);
-                    $currentSchema = new Schema([$currentTable]);
-                    $definedSchema = new Schema([$definedTempTable]);
-                    $definedSchema->renameTable($tempTableName, $definedTableName);
-
-                    // Compare tables
-                    $comparator = new Comparator();
-                    $schemaDiff = $comparator->compare($currentSchema, $definedSchema);
-
-                    // Remove fields
-                    $tableDiff = new TableDiff($definedTableName);
-                    foreach ($schemaDiff->changedTables as $key => $currentSchema) {
-                        if ($currentSchema->name == $definedTableName) {
-                            $tableDiff->removedColumns = $currentSchema->removedColumns;
+                            // Drop table if it's not listed in the defined schemas
+                            if (!in_array($normalizedTableName, array_column($definedSchemas, 1))) {
+                                $schemaManager->dropTable($currentTableName);
+                                $report["tables"][] = $currentTable;
+                            }
                         }
                     }
-                    $schemaDiff = new SchemaDiff();
-                    $schemaDiff->changedTables[$definedTableName] = $tableDiff;
-                    $sql = $schemaDiff->toSql($db->getDatabasePlatform());
 
-                    if ($sql) {
-                        foreach ($sql as $definedQuery) {
+                    // Drop fields
+                    if ($dropFields)
+                    {
+                        foreach ($definedSchemas as $definedSchema)
+                        {
+                            // Get table name
+                            $definedQuery = $definedSchema[0];
+                            $definedTableName = $definedSchema[1];
+                            $tempTableName = self::TEMPORARY_TABLE_PREFIX . $definedTableName;
+
+                            // Get SQL parser
+                            $parser = new Parser($definedQuery);
+
+                            // Allow only CREATE statements
+                            if (empty($parser->statements) || !$parser->statements[0] instanceof CreateStatement) {
+                                continue;
+                            }
+
+                            // Get parsed statement
+                            /** @var CreateStatement $statement */
+                            $statement = $parser->statements[0];
+
+                            // Rename table name in query to create temporary table
+                            $statement->name->table = $tempTableName;
+                            $statement->name->expr = str_replace($definedTableName, $tempTableName, $statement->name->expr);
+                            $definedQuery = $statement->build();
+
+                            // Create temporary table
                             $db->exec($definedQuery);
+
+                            // Define schemas
+                            $currentTable = $schemaManager->listTableDetails($definedTableName);
+                            $definedTempTable = $schemaManager->listTableDetails($tempTableName);
+                            $currentSchema = new Schema([$currentTable]);
+                            $definedSchema = new Schema([$definedTempTable]);
+                            $definedSchema->renameTable($tempTableName, $definedTableName);
+
+                            // Compare tables
+                            $comparator = new Comparator();
+                            $schemaDiff = $comparator->compare($currentSchema, $definedSchema);
+
+                            // Remove fields
+                            $tableDiff = new TableDiff($definedTableName);
+                            foreach ($schemaDiff->changedTables as $key => $currentSchema) {
+                                if ($currentSchema->name == $definedTableName) {
+                                    $tableDiff->removedColumns = $currentSchema->removedColumns;
+
+                                    $report["fields"][] = [
+                                        "table" => $currentTable,
+                                        "fields" => $currentSchema->removedColumns,
+                                    ];
+                                }
+                            }
+                            $schemaDiff = new SchemaDiff();
+                            $schemaDiff->changedTables[$definedTableName] = $tableDiff;
+                            $sql = $schemaDiff->toSql($db->getDatabasePlatform());
+
+                            if ($sql) {
+                                foreach ($sql as $definedQuery) {
+                                    $db->exec($definedQuery);
+                                }
+                            }
+
+                            // Remove temporary table
+                            $schemaManager->dropTable($tempTableName);
                         }
                     }
-
-                    // Remove temporary table
-                    $schemaManager->dropTable($tempTableName);
                 }
             }
         }
+
+        return $report;
     }
 
     /**
