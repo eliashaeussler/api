@@ -230,11 +230,12 @@ class ConnectionService
      * @param bool $dropFields Define whether to drop unused fields from current database schema
      * @param bool $dropTables Define whether to drop unused tables from current database schema
      * @param string|array|null $controllers Name of one or more API controllers which will be used to identity the schema file
+     * @param bool $dryRun Define whether to perform a dry run without changing the database schema
      * @return array Report of dropped tables and fields
      * @throws DBALException if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
      */
-    public function dropUnusedComponents(bool $dropFields = true, bool $dropTables = false, $controllers = null): array
+    public function dropUnusedComponents(bool $dropFields = true, bool $dropTables = false, $controllers = null, bool $dryRun = true): array
     {
         $report = [
             "tables" => [],
@@ -282,7 +283,9 @@ class ConnectionService
 
                             // Drop table if it's not listed in the defined schemas
                             if (!in_array($normalizedTableName, array_column($definedSchemas, 1))) {
-                                $schemaManager->dropTable($currentTableName);
+                                if (!$dryRun) {
+                                    $schemaManager->dropTable($currentTableName);
+                                }
                                 $report["tables"][] = $currentTable;
                             }
                         }
@@ -345,7 +348,7 @@ class ConnectionService
                             $schemaDiff->changedTables[$definedTableName] = $tableDiff;
                             $sql = $schemaDiff->toSql($db->getDatabasePlatform());
 
-                            if ($sql) {
+                            if (!$dryRun && $sql) {
                                 foreach ($sql as $definedQuery) {
                                     $db->exec($definedQuery);
                                 }

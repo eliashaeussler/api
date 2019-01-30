@@ -72,6 +72,13 @@ class DatabaseSchemaCommand extends BaseCommand
             sprintf("Force dropping of unused database components when using `%s` action", self::ACTION_DROP)
         );
         $this->addOption(
+            "dry-run",
+            null,
+            InputOption::VALUE_OPTIONAL,
+            sprintf("Process a dry run without updating the database when using `%s` action", self::ACTION_DROP),
+            false
+        );
+        $this->addOption(
             "fields",
             null,
             InputOption::VALUE_OPTIONAL,
@@ -118,6 +125,9 @@ class DatabaseSchemaCommand extends BaseCommand
             //
             case self::ACTION_DROP:
 
+                // Check if dry run is being processed
+                $dryRun = $input->getOption("dry-run") !== false;
+
                 // Check which database components should be dropped
                 $dropFields = $input->getOption("fields") !== false;
                 $dropTables = $input->getOption("tables") !== false;
@@ -132,7 +142,7 @@ class DatabaseSchemaCommand extends BaseCommand
                 ]));
 
                 // Ask to drop components for security reasons
-                if (!$input->getOption("force")) {
+                if (!$input->getOption("force") && !$dryRun) {
                     $question = sprintf("Really drop unused database %s?", $dropComponentsString);
                     if (!$this->io->confirm($question, false)) {
                         return;
@@ -140,14 +150,20 @@ class DatabaseSchemaCommand extends BaseCommand
                 }
 
                 // Drop database components
-                $report = $connectionService->dropUnusedComponents($dropFields, $dropTables, $input->getOption("schema"));
+                $report = $connectionService->dropUnusedComponents(
+                    $dropFields,
+                    $dropTables,
+                    $input->getOption("schema"),
+                    $dryRun
+                );
 
                 // Build report
                 $droppedTables = [];
                 $droppedFields = [];
                 if (isset($report["tables"])) {
                     $droppedTables = array_map(function (Table $table) {
-                        return sprintf("<fg=blue;options=bold>%s</>", $table->getName());
+                        /** @noinspection RequiredAttributes */
+                        return sprintf("<param>%s</>", $table->getName());
                     }, $report["tables"]);
                 }
                 if (isset($report["fields"])) {
@@ -157,7 +173,8 @@ class DatabaseSchemaCommand extends BaseCommand
                         /** @var Column[] $fields */
                         $fields = $components["fields"];
                         foreach ($fields as $field) {
-                            $droppedFields[] = sprintf("%s.<fg=blue;options=bold>%s</>", $table->getName(), $field->getName());
+                            /** @noinspection RequiredAttributes */
+                            $droppedFields[] = sprintf("%s.<param>%s</>", $table->getName(), $field->getName());
                         }
                     });
                 }
@@ -165,13 +182,21 @@ class DatabaseSchemaCommand extends BaseCommand
                 // Show report of dropped components
                 if (count($droppedTables) + count($droppedFields) > 0) {
                     if (count($droppedTables) > 0) {
-                        $this->io->title("Dropped tables");
+                        $this->io->title($dryRun ? "Tables to drop" : "Dropped tables");
                         $this->io->listing($droppedTables);
                     }
                     if (count($droppedFields) > 0) {
-                        $this->io->title("Dropped fields");
+                        $this->io->title($dryRun ? "Fields to drop" : "Dropped fields");
                         $this->io->listing($droppedFields);
                     }
+                    if ($dryRun) {
+                        $this->io->notice(
+                            "To execute the database update, run this command again and omit the --dry-run parameter.",
+                            "This was a dry run (see the report above)."
+                        );
+                    }
+                } else if ($dryRun) {
+                    $this->io->notice("Result: No tables or fields will be dropped.", "This was a dry run.");
                 } else {
                     $this->io->success("No tables or fields have been dropped.");
                 }
