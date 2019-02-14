@@ -123,7 +123,7 @@ class Message
         $header = sprintf("Error: %s", get_class($object));
         $body = $object->getMessage();
         if (($code = $object->getCode()) > 0) $body .= " [" . $code . "]";
-        if (GeneralUtility::isDebugEnabled()) $body .= "\n\n" . $object->getTraceAsString();
+        if (GeneralUtility::isDebugEnabled()) $body .= PHP_EOL . PHP_EOL . $object->getTraceAsString();
 
         return $this->message($header, $body, self::MESSAGE_TYPE_ERROR);
     }

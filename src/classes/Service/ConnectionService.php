@@ -495,7 +495,7 @@ class ConnectionService
         $command = ConsoleUtility::buildCommand($scriptName, $parameters);
 
         exec($command, $result);
-        return implode("\n", $result);
+        return implode(PHP_EOL, $result);
     }
 
     /**

@@ -50,7 +50,7 @@ try {
     } catch (ClassNotFoundException $e) {
         echo $e->getMessage();
         if (GeneralUtility::isDebugEnabled()) {
-            echo "\n" . $e->getTraceAsString();
+            echo PHP_EOL . $e->getTraceAsString();
         }
     }
 

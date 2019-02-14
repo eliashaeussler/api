@@ -305,7 +305,7 @@ class LunchCommandRoute extends BaseRoute
     protected function showHelpText()
     {
         $message = sprintf(
-            implode("\n", DataUtility::getData("slack", "lunch.help.text")),
+            implode(PHP_EOL, DataUtility::getData("slack", "lunch.help.text")),
             self::DEFAULT_EXPIRATION,
             $this->expirationPeriod,
             $this->expirationPeriod == 1 ? "" : "s"
