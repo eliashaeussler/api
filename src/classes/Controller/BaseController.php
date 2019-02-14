@@ -31,6 +31,9 @@ abstract class BaseController
     /** @var array Additional HTTP headers of API request */
     protected $requestHeaders = [];
 
+    /** @var array API request parameters */
+    protected $requestParameters = [];
+
     /** @var string API request route */
     protected $route;
 
@@ -50,6 +53,7 @@ abstract class BaseController
 
         $this->readRequestBody();
         $this->readRequestHeaders();
+        $this->readRequestParameters();
         $this->initializeEnvironment();
         $this->initializeRequest();
     }
@@ -152,6 +156,16 @@ abstract class BaseController
         }, ARRAY_FILTER_USE_KEY);
 
         $this->requestHeaders = $headers;
+    }
+
+    /**
+     * Read GET and POST parameters of current API request.
+     *
+     * Reads the GET and POST parameters of the current API request and stores them together in the current object.
+     */
+    protected function readRequestParameters()
+    {
+        $this->requestParameters = array_merge($_GET, $_POST);
     }
 
     /**
