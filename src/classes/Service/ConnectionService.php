@@ -94,7 +94,7 @@ class ConnectionService
      * @param array $parameters Database connection parameters
      * @return Connection The established database connection
      * @throws DBALException if the database connection cannot be established
-     * @see https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
+     * @link https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
      */
     protected function establishConnection(array $parameters): Connection
     {

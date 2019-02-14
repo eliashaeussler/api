@@ -133,7 +133,7 @@ class SlackController extends BaseController
      * @param bool $json Define whether to use JSON or POST to send data
      * @param bool $authorize Define whether to send authorization headers
      * @return bool|string The API result on success or `false` on failure
-     * @see https://api.slack.com/web#methods
+     * @link https://api.slack.com/web#methods
      */
     public function api(string $function, $data, bool $json = true, bool $authorize = true)
     {
@@ -409,7 +409,7 @@ class SlackController extends BaseController
      * @param string $signature Signature of the API request, sent by Slack as HTTP header
      * @return bool `true` if the request can be verified, `false` otherwise
      * @throws \Exception if the difference between request send and receive time could not be calculated
-     * @see https://api.slack.com/docs/verifying-requests-from-slack
+     * @link https://api.slack.com/docs/verifying-requests-from-slack
      */
     protected function isRequestVerified(string $timestamp, string $signature): bool
     {
