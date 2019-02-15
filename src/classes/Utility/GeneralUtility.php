@@ -101,6 +101,21 @@ class GeneralUtility
     }
 
     /**
+     * Split string into single characters.
+     *
+     * Splits a given string into its single characters and returns them as an array. Optionally, it's possible to set
+     * a maximum number of characters to be returned.
+     *
+     * @param string $string String to be split into characters
+     * @param int|null $max Maximum number of characters to be returned
+     * @return array Single characters of given string
+     */
+    public static function splitIntoCharacters(string $string, int $max = null): array
+    {
+        return array_slice(str_split($string), 0, $max);
+    }
+
+    /**
      * Get normalized name of current API controller without namespace and class suffix.
      *
      * @param string $class Class name of the API controller

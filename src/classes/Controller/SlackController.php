@@ -255,21 +255,6 @@ class SlackController extends BaseController
     }
 
     /**
-     * Build URI inside message to API result.
-     *
-     * Builds an URI inside a message to an API result. This means, the URI will be printed directly in Slack and needs
-     * therefore converted to the necessary format. If `$text` is not set or empty, the URI will be used as text.
-     *
-     * @param string $uri The URI to be linked inside the message
-     * @param string $text The URI text to be shown for the URI
-     * @return string The generated ready-to-use URI for the appropriate message in Slack
-     */
-    public function buildMessageUri(string $uri, string $text = ""): string
-    {
-        return sprintf("<%s|%s>", $uri, trim($text) ? $text : $uri);
-    }
-
-    /**
      * Check if request is verified before processing API request.
      *
      * Checks whether the current request is verified by walking through the authentication process of Slack. This
@@ -440,7 +425,8 @@ class SlackController extends BaseController
         echo $this->buildMessage(
             Message::MESSAGE_TYPE_WARNING,
             sprintf(
-                "%s Please " . $this->buildMessageUri($uri, "authenticate") . " first to use this command.",
+                "%s Please %s first to use this command.",
+                SlackMessage::link($uri, "authenticate"),
                 SlackMessage::emoji("warning")
             )
         );

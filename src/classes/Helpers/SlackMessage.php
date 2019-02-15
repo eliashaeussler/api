@@ -5,6 +5,8 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Helpers;
 
+use EliasHaeussler\Api\Utility\GeneralUtility;
+
 /**
  * Formatting of Slack messages.
  *
@@ -27,7 +29,11 @@ class SlackMessage
         "code" => "`",
         "italic" => "_",
         "strike" => "~",
+        "link" => "<>"
     ];
+
+    /** @var string Character separating URL and link text */
+    const LINK_TEXT_SEPARATOR = "|";
 
 
     /**
@@ -55,21 +61,44 @@ class SlackMessage
             return $text;
         }
 
-        return self::wrapTextWithCharacters($text, self::MESSAGE_FORMATS[$name]);
+        return self::wrapTextWithCharacters($text, ...GeneralUtility::splitIntoCharacters(self::MESSAGE_FORMATS[$name], 2));
+    }
+
+    /**
+     * Generate link.
+     *
+     * @param string $url The URL
+     * @param string $label An optional link text
+     * @return string The formatted link
+     */
+    public static function link(string $url, string $label = ""): string
+    {
+        $label = trim($label);
+        list($prefix, $suffix) = GeneralUtility::splitIntoCharacters(self::MESSAGE_FORMATS["link"], 2);
+
+        return self::wrapTextWithCharacters(
+            !empty($label) ? sprintf("%s|%s", $url, $label) : $url,
+            $prefix,
+            $suffix
+        );
     }
 
     /**
      * Wrap text with characters.
      *
      * @param string $text Text to be wrapped
-     * @param string $characters Character to be used as wrapping elements
+     * @param string $prefix Characters to be used as prefix
+     * @param string $suffix Characters to be used as suffix
      * @return string The wrapped text
      */
-    protected static function wrapTextWithCharacters(string $text, string $characters): string
+    protected static function wrapTextWithCharacters(string $text, string $prefix, string $suffix = ""): string
     {
         $text = trim($text);
-        $characters = trim($characters);
-        return !empty($text) ? ($characters . $text . $characters) : "";
+        $prefix = trim($prefix);
+        if (!$suffix) {
+            $suffix = $prefix;
+        }
+        return !empty($text) ? ($prefix . $text . $suffix) : "";
     }
 
     /**
@@ -88,8 +117,10 @@ class SlackMessage
             if (count($matches) < 3) {
                 return $matches[0];
             }
-            $format = $matches[1];
-            return self::$format(trim($matches[2]));
+            $format = trim($matches[1]);
+            $value = trim($matches[2]);
+            $value = $format == "link" ? explode(self::LINK_TEXT_SEPARATOR, $value, 2) : (array) $value;
+            return self::$format(...$value);
         }, $text);
     }
 
