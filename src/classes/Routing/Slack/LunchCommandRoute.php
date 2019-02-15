@@ -11,6 +11,7 @@ use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
+use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\DataUtility;
@@ -34,17 +35,17 @@ class LunchCommandRoute extends BaseRoute
 {
     /** @var array List of available emojis to be set in request */
     const EMOJI_LIST = [
-        ":pancakes:",
-        ":cut_of_meat:",
-        ":hamburger:",
-        ":pizza:",
-        ":stuffed_flatbread:",
-        ":shallow_pan_of_food:",
-        ":stew:",
-        ":green_salad:",
-        ":curry:",
-        ":ramen:",
-        ":spaghetti:",
+        "pancakes",
+        "cut_of_meat",
+        "hamburger",
+        "pizza",
+        "stuffed_flatbread",
+        "shallow_pan_of_food",
+        "stew",
+        "green_salad",
+        "curry",
+        "ramen",
+        "spaghetti",
     ];
 
     /** @var string Status message to be set in request */
@@ -69,7 +70,7 @@ class LunchCommandRoute extends BaseRoute
     protected $statusAlreadySet = false;
 
     /** @var string Selected emoji for status */
-    protected $emoji = ":pizza:";
+    protected $emoji = "pizza";
 
     /** @var int Timestamp of status expiration */
     protected $expiration = 0;
@@ -102,7 +103,7 @@ class LunchCommandRoute extends BaseRoute
         $this->calculateExpiration();
 
         // Status update
-        $this->emoji = self::EMOJI_LIST[array_rand(self::EMOJI_LIST)];
+        $this->emoji = SlackMessage::emoji(self::EMOJI_LIST[array_rand(self::EMOJI_LIST)]);
         $this->requestData = [
             "profile" => [
                 "status_text" => $this->statusAlreadySet ? "" : self::STATUS_MESSAGE,
@@ -138,7 +139,7 @@ class LunchCommandRoute extends BaseRoute
 
         // Show success message
         if ($this->statusAlreadySet) {
-            $message = ":rocket: Welcome back to work!";
+            $message = sprintf("%s Welcome back to work!", SlackMessage::emoji("rocket"));
         } else {
             $expiration = new \DateTime();
             $expiration->setTimestamp($this->expiration);
@@ -255,16 +256,16 @@ class LunchCommandRoute extends BaseRoute
         // Show message depending on result of database update
         if ($result) {
             $message = sprintf(
-                ":alarm_clock: Your default expiration time was successfully set to *%s %s*.",
-                $time,
-                "minute" . ($time == 1 ? "" : "s")
+                "%s Your default expiration time was successfully set to %s.",
+                SlackMessage::emoji("alarm_clock"),
+                SlackMessage::bold(sprintf("%s %s", $time, "minute" . ($time == 1 ? "" : "s")))
             );
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
         } else {
             $message = sprintf(
-                ":thinking_face: Slow down, my friend! Your default expiration time is already set to *%s %s*.",
-                $time,
-                "minute" . ($time == 1 ? "" : "s")
+                "%s Slow down, my friend! Your default expiration time is already set to %s.",
+                SlackMessage::emoji("thinking_face"),
+                SlackMessage::bold(sprintf("%s %s", $time, "minute" . ($time == 1 ? "" : "s")))
             );
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_NOTICE, $message);
         }
@@ -304,18 +305,22 @@ class LunchCommandRoute extends BaseRoute
      */
     protected function showHelpText()
     {
-        $message = sprintf(
-            implode(PHP_EOL, DataUtility::getData("slack", "lunch.help.text")),
+        $helpText = DataUtility::getData("slack", "lunch.help.text");
+        $plainMessage = sprintf(
+            implode(PHP_EOL, $helpText),
             self::DEFAULT_EXPIRATION,
             $this->expirationPeriod,
             $this->expirationPeriod == 1 ? "" : "s"
         );
+        $message = SlackMessage::convertPlaceholders($plainMessage);
         $attachments = [
             $this->controller->buildAttachmentForBotMessage(
-                DataUtility::getData("slack", "lunch.help.header"),
-                sprintf(
-                    DataUtility::getData("slack", "lunch.help.version"),
-                    ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION)
+                SlackMessage::convertPlaceholders(DataUtility::getData("slack", "lunch.help.header")),
+                SlackMessage::convertPlaceholders(
+                    sprintf(
+                        DataUtility::getData("slack", "lunch.help.version"),
+                        ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION)
+                    )
                 )
             ),
         ];

@@ -10,6 +10,7 @@ use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
+use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Service\RoutingService;
@@ -225,7 +226,7 @@ class SlackController extends BaseController
         // Set message
         if ($type == Message::MESSAGE_TYPE_ERROR) {
             /** @var \Exception $message */
-            $message = ":no_entry: " . $message->getMessage();
+            $message = sprintf("%s %s", SlackMessage::emoji("no_entry"), $message->getMessage());
         }
 
         return json_encode([
@@ -438,7 +439,10 @@ class SlackController extends BaseController
         $uri = $this->buildUserAuthenticationUri();
         echo $this->buildMessage(
             Message::MESSAGE_TYPE_WARNING,
-            ":warning: Please " . $this->buildMessageUri($uri, "authenticate") . " first to use this command."
+            sprintf(
+                "%s Please " . $this->buildMessageUri($uri, "authenticate") . " first to use this command.",
+                SlackMessage::emoji("warning")
+            )
         );
     }
 
