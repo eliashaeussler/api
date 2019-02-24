@@ -511,7 +511,6 @@ class SlackController extends BaseController
      *
      * @param string $result Raw result from API request, parsed as JSON
      * @throws InvalidRequestException if API request failed or contains an invalid answer
-     * @throws ClassNotFoundException if the {@see Message} is not available
      * @throws AuthenticationException if the user needs to re-authenticate himself
      */
     public function checkApiResult(string $result): void
@@ -534,13 +533,11 @@ class SlackController extends BaseController
         {
             case "missing_scope":
                 $authenticationUri = $this->buildUserAuthenticationUri();
-                $message = LocalizationUtility::localize(
-                    "authentication.reauth.message", "slack", null,
-                    SlackMessage::emoji("warning"),
-                    SlackMessage::link($authenticationUri, "re-authenticate")
-                );
                 throw new AuthenticationException(
-                    $this->buildMessage(Message::MESSAGE_TYPE_WARNING, $message),
+                    LocalizationUtility::localize(
+                        "authentication.reauth.message", "slack", null,
+                        SlackMessage::link($authenticationUri, "re-authenticate")
+                    ),
                     1551046280
                 );
 

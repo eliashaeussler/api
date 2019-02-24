@@ -86,6 +86,7 @@ class LunchCommandRoute extends BaseRoute
      *
      * @throws DatabaseException if ensuring the availability of user data for the current user failed
      * @throws InvalidRequestException if API request failed or contains an invalid answer
+     * @throws AuthenticationException if the user needs to re-authenticate himself
      * @throws \Exception if calculating the status expiration failed
      */
     protected function initializeRequest()
@@ -166,7 +167,6 @@ class LunchCommandRoute extends BaseRoute
      * Check whether the status has already been set and is still active.
      *
      * @return bool `true` if the status has already been set and is still active, `false` otherwise
-     * @throws ClassNotFoundException if the {@see Message} is not available
      * @throws InvalidRequestException if API request failed or contains an invalid answer
      * @throws AuthenticationException if the user needs to re-authenticate himself
      */

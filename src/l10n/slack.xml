@@ -12,7 +12,7 @@
             %s Please %s first to use this command.
         </text>
         <text id="authentication.reauth.message">
-            %s You need to %s to use this command.
+            You need to %s to use this command.
         </text>
         <text id="authentication.success.header">
             Yay, the authentication was successful.
