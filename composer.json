@@ -10,13 +10,14 @@
     }
   ],
   "require": {
-    "ext-curl": "*",
-    "ext-json": "*",
-    "ext-simplexml": "*",
     "vlucas/phpdotenv": "^2.5",
     "twig/twig": "^2.6",
     "doctrine/dbal": "^2.9",
-    "adbario/php-dot-notation": "^2.2"
+    "adbario/php-dot-notation": "^2.2",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-simplexml": "*",
+    "php": "^7.1"
   },
   "require-dev": {
     "symfony/console": "^4.2",
