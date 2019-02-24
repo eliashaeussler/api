@@ -1,5 +1,3 @@
-# Composer packages
 /vendor
-
-# Environment variables
 /*.env
+/src/db-assets

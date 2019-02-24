@@ -48,7 +48,8 @@ rsync -ar --delete --delete-excluded "${ROOT_PATH}"/ ${TARGET_HOST}:${TARGET_PAT
     --exclude /remote.env.dist \
     --exclude /.ddev \
     --exclude /sbin \
-    --exclude /.idea
+    --exclude /.idea \
+    --exclude /src/db-assets
 
 # Set new release on remote
 ssh ${TARGET_HOST} -T << __EOF

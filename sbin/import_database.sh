@@ -24,7 +24,7 @@ TARGET_PATH=${TARGET_PATH}
 
 function create_dump() {
     dump_name="$(date -u +%Y-%m-%dT%H%M%SZ).sql.gz"
-    dump_path="${ROOT_PATH}/.ddev/import-db"
+    dump_path="${ROOT_PATH}/src/db-assets"
     dump_file="${dump_path}/${dump_name}"
 
     mkdir -p "${dump_path}"
@@ -39,6 +39,7 @@ function import_dump() {
     [[ -z ${dump_file} ]] && output "Please specify a dump file for import with DDEV." ${ERROR} >&2 && exit 1
 
     ddev import-db --src "${dump_file}"
+    rm ${dump_file}
 }
 
 # Dump database and store it locally
