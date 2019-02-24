@@ -436,7 +436,7 @@ class SlackController extends BaseController
      * @param array $scopes Necessary scopes to be used in authentication process
      * @return string URI for user authentication
      */
-    protected function buildUserAuthenticationUri(array $scopes = ["users.profile:write", "users.profile:read"])
+    protected function buildUserAuthenticationUri(array $scopes = ["users.profile:write", "users:read"])
     {
         return self::AUTHORIZE_URI . "?" . http_build_query([
             "scope" => implode(",", $scopes),
@@ -511,8 +511,10 @@ class SlackController extends BaseController
      *
      * @param string $result Raw result from API request, parsed as JSON
      * @throws InvalidRequestException if API request failed or contains an invalid answer
+     * @throws ClassNotFoundException if the {@see Message} is not available
+     * @throws AuthenticationException if the user needs to re-authenticate himself
      */
-    public function checkApiResult(string $result)
+    public function checkApiResult(string $result): void
     {
         if (!$result) {
             throw new InvalidRequestException(
@@ -524,11 +526,29 @@ class SlackController extends BaseController
         $result = json_decode($result, true);
 
         // Check for valid result from Slack
-        if (!$result["ok"]) {
-            throw new InvalidRequestException(
-                LocalizationUtility::localize("exception.1551040956", "slack", null, $result['error']),
-                1551040956
-            );
+        if ($result["ok"]) {
+            return;
+        }
+
+        switch ($result["error"])
+        {
+            case "missing_scope":
+                $authenticationUri = $this->buildUserAuthenticationUri();
+                $message = LocalizationUtility::localize(
+                    "authentication.reauth.message", "slack", null,
+                    SlackMessage::emoji("warning"),
+                    SlackMessage::link($authenticationUri, "re-authenticate")
+                );
+                throw new AuthenticationException(
+                    $this->buildMessage(Message::MESSAGE_TYPE_WARNING, $message),
+                    1551046280
+                );
+
+            default:
+                throw new InvalidRequestException(
+                    LocalizationUtility::localize("exception.1551040956", "slack", null, $result['error']),
+                    1551040956
+                );
         }
     }
 

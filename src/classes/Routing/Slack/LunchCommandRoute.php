@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Routing\Slack;
 
 use EliasHaeussler\Api\Controller\SlackController;
+use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
@@ -122,6 +123,7 @@ class LunchCommandRoute extends BaseRoute
      *
      * @throws InvalidRequestException if API request failed or contains an invalid answer
      * @throws ClassNotFoundException if the {@see Message} class is not available
+     * @throws AuthenticationException if the user needs to re-authenticate himself
      * @throws \Exception if setting the status expiration failed
      */
     public function processRequest()
@@ -164,7 +166,9 @@ class LunchCommandRoute extends BaseRoute
      * Check whether the status has already been set and is still active.
      *
      * @return bool `true` if the status has already been set and is still active, `false` otherwise
+     * @throws ClassNotFoundException if the {@see Message} is not available
      * @throws InvalidRequestException if API request failed or contains an invalid answer
+     * @throws AuthenticationException if the user needs to re-authenticate himself
      */
     protected function checkIfStatusIsSet(): bool
     {
