@@ -176,15 +176,16 @@ class LunchCommandRoute extends BaseRoute
         $data = [
             "token" => $this->controller->getAuthToken(),
             "user" => $this->controller->getRequestData("user_id"),
+            "include_locale" => true,
         ];
 
         // Send API call
-        $result = $this->controller->api("users.profile.get", $data, false);
+        $result = $this->controller->api("users.info", $data, false);
 
         $this->controller->checkApiResult($result);
         $result = json_decode($result, true);
 
-        return $result["profile"]["status_text"] == self::STATUS_MESSAGE;
+        return $result["user"]["profile"]["status_text"] == self::STATUS_MESSAGE;
     }
 
     /**
