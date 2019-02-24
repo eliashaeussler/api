@@ -424,8 +424,8 @@ class SlackController extends BaseController
             Message::MESSAGE_TYPE_WARNING,
             LocalizationUtility::localize(
                 "authentication.invite", "slack", null,
-                SlackMessage::link($uri, "authenticate"),
-                SlackMessage::emoji("warning")
+                SlackMessage::emoji("warning"),
+                SlackMessage::link($uri, "authenticate")
             )
         );
     }
