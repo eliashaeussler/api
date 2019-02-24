@@ -37,9 +37,6 @@ class SlackController extends BaseController
     /** @var string Base authentication uri of Slack */
     const AUTHORIZE_URI = "https://slack.com/oauth/authorize";
 
-    /** @var string File name pattern of user-based .env files */
-    const ENV_FILENAME_PATTERN = "slack.env.%s";
-
     /** @var string Route for authentication */
     const ROUTE_AUTH = "authenticate";
 
