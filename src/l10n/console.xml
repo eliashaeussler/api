@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<l10n>
+    <meta>
+        <author>Elias Häußler</author>
+        <author_email>mail@elias-haeussler.de</author_email>
+        <copyright>2019 Elias Häußler. All rights reserved.</copyright>
+        <license>MIT</license>
+    </meta>
+
+    <body>
+        <text id="database.export.description">
+            Export the database
+        </text>
+        <text id="database.export.help">
+            This command allows you to export the currently used database.
+        </text>
+
+        <text id="database.migrate.description">
+            Migrate SQLite to MySQL database
+        </text>
+        <text id="database.migrate.help">
+            This command allows you to migrate legacy SQLite databases to the new MySQL database.
+        </text>
+        <text id="database.migrate.argument_file">
+            SQLite database files (relative to current path)
+        </text>
+        <text id="database.migrate.success">
+            Successfully migrated database.
+        </text>
+
+        <text id="database.schema.description">
+            Modify database schema
+        </text>
+        <text id="database.schema.help">
+            This command allows you to maintain the database schema.
+        </text>
+        <text id="database.schema.argument_action">
+            Action, can be one of `%s`.
+        </text>
+        <text id="database.schema.option_schema">
+            Database schema to be used for updating the schema or dropping unused components
+        </text>
+        <text id="database.schema.option_force">
+            Force dropping of unused database components when using `%s` action
+        </text>
+        <text id="database.schema.option_dry-run">
+            Process a dry run without updating the database when using `%s` action
+        </text>
+        <text id="database.schema.option_fields">
+            Explicitly drop unused database fields when using `%s` action
+        </text>
+        <text id="database.schema.option_tables">
+            Explicitly drop unused database tables when using `%s` action
+        </text>
+        <text id="database.schema.success_update">
+            Successfully updated database schemas.
+        </text>
+        <text id="database.schema.drop_components">
+            Really drop unused database %s?
+        </text>
+        <text id="database.schema.dryRun_message">
+            To execute the database update, run this command again and omit the --dry-run parameter.
+        </text>
+        <text id="database.schema.dryRun_prefix">
+            This was a dry run (see the report above).
+        </text>
+        <text id="database.schema.dryRun_result_message">
+            Result: No tables or fields will be dropped.
+        </text>
+        <text id="database.schema.dryRun_result_prefix">
+            This was a dry run.
+        </text>
+        <text id="database.schema.success_drop">
+            No tables or fields have been dropped.
+        </text>
+    </body>
+</l10n>

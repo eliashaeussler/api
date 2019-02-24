@@ -16,6 +16,7 @@ use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\DataUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\LocalizationUtility;
 
 /**
  * Lunch router for Slack API controller.
@@ -90,7 +91,10 @@ class LunchCommandRoute extends BaseRoute
     {
         // Ensure user data is available in database
         if (!$this->ensureUserDataIsAvailable()) {
-            throw new DatabaseException("User data for current user could not be generated.", 1547920929);
+            throw new DatabaseException(
+                LocalizationUtility::localize("exception.1547920929", "slack"),
+                1547920929
+            );
         }
 
         // Set provided request parameters
@@ -139,12 +143,15 @@ class LunchCommandRoute extends BaseRoute
 
         // Show success message
         if ($this->statusAlreadySet) {
-            $message = sprintf("%s Welcome back to work!", SlackMessage::emoji("rocket"));
+            $message = LocalizationUtility::localize(
+                "lunch.message.endBreak", "slack", null,
+                SlackMessage::emoji("rocket")
+            );
         } else {
             $expiration = new \DateTime();
             $expiration->setTimestamp($this->expiration);
-            $message = sprintf(
-                "%s Your lunch break will expire at %s. Bon appétit!",
+            $message = LocalizationUtility::localize(
+                "lunch.message.startBreak", "slack", null,
                 $this->emoji,
                 $expiration->format("H:i")
             );
@@ -235,13 +242,19 @@ class LunchCommandRoute extends BaseRoute
             if (count($parameterComponents) > 1) {
                 $time = (int) $parameterComponents[1] ?: self::DEFAULT_EXPIRATION;
             } else {
-                throw new InvalidRequestException("No default expiration time provided.", 1547919413);
+                throw new InvalidRequestException(
+                    LocalizationUtility::localize("exception.1547919413", "slack"),
+                    1547919413
+                );
             }
         }
 
         // Check if expiration time is at least one minute
         if ($time <= 0) {
-            throw new \InvalidArgumentException("Default expiration time must be at least 1 minute.", 1547919926);
+            throw new \InvalidArgumentException(
+                LocalizationUtility::localize("exception.1547919926", "slack"),
+                1547919926
+            );
         }
 
         // Update user data with default expiration time
@@ -255,15 +268,15 @@ class LunchCommandRoute extends BaseRoute
 
         // Show message depending on result of database update
         if ($result) {
-            $message = sprintf(
-                "%s Your default expiration time was successfully set to %s.",
+            $message = LocalizationUtility::localize(
+                "lunch.default.success", "slack", null,
                 SlackMessage::emoji("alarm_clock"),
                 SlackMessage::bold(sprintf("%s %s", $time, "minute" . ($time == 1 ? "" : "s")))
             );
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
         } else {
-            $message = sprintf(
-                "%s Slow down, my friend! Your default expiration time is already set to %s.",
+            $message = LocalizationUtility::localize(
+                "lunch.default.alreadySet", "slack", null,
                 SlackMessage::emoji("thinking_face"),
                 SlackMessage::bold(sprintf("%s %s", $time, "minute" . ($time == 1 ? "" : "s")))
             );

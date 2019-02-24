@@ -12,6 +12,7 @@ use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\LocalizationUtility;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -48,14 +49,17 @@ class DatabaseSchemaCommand extends BaseCommand
     {
         // Base configuration
         $this->setName("database:schema")
-            ->setDescription("Modify database schema")
-            ->setHelp("This command allows you to maintain the database schema.");
+            ->setDescription(LocalizationUtility::localize("database.schema.description", "console"))
+            ->setHelp(LocalizationUtility::localize("database.schema.help", "console"));
 
         // Arguments
         $this->addArgument(
             "action",
             InputArgument::REQUIRED,
-            sprintf("Action, can be one of `%s`.",  implode("`, `", self::AVAILABLE_ACTIONS))
+            LocalizationUtility::localize(
+                "database.schema.argument_action", "console", null,
+                implode("`, `", self::AVAILABLE_ACTIONS)
+            )
         );
 
         // Options
@@ -63,33 +67,33 @@ class DatabaseSchemaCommand extends BaseCommand
             "schema",
             "s",
             InputOption::VALUE_OPTIONAL,
-            "Database schema to be used for updating the schema or dropping unused components"
+            LocalizationUtility::localize("database.schema.option_schema", "console")
         );
         $this->addOption(
             "force",
             null,
             InputOption::VALUE_NONE,
-            sprintf("Force dropping of unused database components when using `%s` action", self::ACTION_DROP)
+            LocalizationUtility::localize("database.schema.option_force", "console", null, self::ACTION_DROP)
         );
         $this->addOption(
             "dry-run",
             null,
             InputOption::VALUE_OPTIONAL,
-            sprintf("Process a dry run without updating the database when using `%s` action", self::ACTION_DROP),
+            LocalizationUtility::localize("database.schema.option_dry-run", "console", null, self::ACTION_DROP),
             false
         );
         $this->addOption(
             "fields",
             null,
             InputOption::VALUE_OPTIONAL,
-            sprintf("Explicitly drop unused database fields when using `%s` action", self::ACTION_DROP),
+            LocalizationUtility::localize("database.schema.option_fields", "console", null, self::ACTION_DROP),
             false
         );
         $this->addOption(
             "tables",
             null,
             InputOption::VALUE_OPTIONAL,
-            sprintf("Explicitly drop unused database tables when using `%s` action", self::ACTION_DROP),
+            LocalizationUtility::localize("database.schema.option_tables", "console", null, self::ACTION_DROP),
             false
         );
     }
@@ -117,7 +121,7 @@ class DatabaseSchemaCommand extends BaseCommand
                 $connectionService->createSchema($input->getOption("schema"));
 
                 // Show success message
-                $this->io->success("Successfully updated database schemas.");
+                $this->io->success(LocalizationUtility::localize("database.schema.success_update", "console"));
                 break;
 
             //
@@ -143,7 +147,7 @@ class DatabaseSchemaCommand extends BaseCommand
 
                 // Ask to drop components for security reasons
                 if (!$input->getOption("force") && !$dryRun) {
-                    $question = sprintf("Really drop unused database %s?", $dropComponentsString);
+                    $question = LocalizationUtility::localize("database.schema.drop_components", "console", null, $dropComponentsString);
                     if (!$this->io->confirm($question, false)) {
                         return;
                     }
@@ -191,14 +195,17 @@ class DatabaseSchemaCommand extends BaseCommand
                     }
                     if ($dryRun) {
                         $this->io->notice(
-                            "To execute the database update, run this command again and omit the --dry-run parameter.",
-                            "This was a dry run (see the report above)."
+                            LocalizationUtility::localize("database.schema.dryRun_message", "console"),
+                            LocalizationUtility::localize("database.schema.dryRun_prefix", "console")
                         );
                     }
                 } else if ($dryRun) {
-                    $this->io->notice("Result: No tables or fields will be dropped.", "This was a dry run.");
+                    $this->io->notice(
+                        LocalizationUtility::localize("database.schema.dryRun_result_message", "console"),
+                        LocalizationUtility::localize("database.schema.dryRun_result_prefix", "console")
+                    );
                 } else {
-                    $this->io->success("No tables or fields have been dropped.");
+                    $this->io->success(LocalizationUtility::localize("database.schema.success_drop", "console"));
                 }
                 break;
         }

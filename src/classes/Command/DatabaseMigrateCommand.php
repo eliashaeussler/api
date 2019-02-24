@@ -12,6 +12,7 @@ use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidFileException;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\LocalizationUtility;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,14 +35,14 @@ class DatabaseMigrateCommand extends BaseCommand
     {
         // Base configuration
         $this->setName("database:migrate")
-            ->setDescription("Migrate SQLite to MySQL database")
-            ->setHelp("This command allows you to migrate legacy SQLite databases to the new MySQL database.");
+            ->setDescription(LocalizationUtility::localize("database.migrate.description", "console"))
+            ->setHelp(LocalizationUtility::localize("database.migrate.help", "console"));
 
         // Arguments
         $this->addArgument(
             "file",
             InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-            "SQLite database files (relative to current path)"
+            LocalizationUtility::localize("database.migrate.argument_file", "console")
         );
     }
 
@@ -62,6 +63,6 @@ class DatabaseMigrateCommand extends BaseCommand
         $connectionService->migrate($input->getArgument("file"));
 
         // Show success message
-        $this->io->success("Successfully migrated database.");
+        $this->io->success(LocalizationUtility::localize("database.migrate.success", "console"));
     }
 }

@@ -46,10 +46,10 @@ class GeneralUtility
             return self::$instances[$className];
 
         } else {
-            throw new ClassNotFoundException(sprintf(
-                "The class \"%s\" could not be found.",
-                $className
-            ), 1543534319);
+            throw new ClassNotFoundException(
+                LocalizationUtility::localize("exception.1543534319", null, null, $className),
+                1543534319
+            );
         }
     }
 

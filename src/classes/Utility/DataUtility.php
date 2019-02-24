@@ -49,7 +49,10 @@ class DataUtility
         $file = self::DATA_PATH . "/" . sprintf(self::DATA_FILE_PATTERN, strtolower($fileName));
 
         if (!@file_exists($file)) {
-            throw new FileNotFoundException(sprintf("The data file \"%s\" does not exist.", $file), 1547985632);
+            throw new FileNotFoundException(
+                LocalizationUtility::localize("exception.1547985632", null, null, $file),
+                1547985632
+            );
         }
 
         // Get file contents

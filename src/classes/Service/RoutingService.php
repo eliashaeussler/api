@@ -12,6 +12,7 @@ use EliasHaeussler\Api\Exception\EmptyControllerException;
 use EliasHaeussler\Api\Exception\EmptyParametersException;
 use EliasHaeussler\Api\Exception\InvalidControllerException;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\LocalizationUtility;
 
 /**
  * API request routing service.
@@ -101,17 +102,20 @@ class RoutingService
 
         // Set controller
         if (empty($uriComponents[0])) {
-            throw new EmptyControllerException("No controller given. Please provide a valid controller.", 1543532177);
+            throw new EmptyControllerException(
+                LocalizationUtility::localize("exception.1543532177"),
+                1543532177
+            );
         } else {
             $this->namespace = $uriComponents[0];
         }
 
         // Set controller parameters
         if (empty($uriComponents[1])) {
-            throw new EmptyParametersException(sprintf(
-                "No controller parameters given. Please provide valid parameters for the controller \"%s\".",
-                $this->namespace
-            ));
+            throw new EmptyParametersException(
+                LocalizationUtility::localize("exception.1551041868", null, null, $this->namespace),
+                1551041868
+            );
         } else {
             $this->parameters = $uriComponents[1];
         }
@@ -133,10 +137,10 @@ class RoutingService
 
         // Check if controller class is available
         if (!class_exists($controllerClass)) {
-            throw new InvalidControllerException(sprintf(
-                "Requested controller \"%s\" could not be found.",
-                $controllerName
-            ), 1543532513);
+            throw new InvalidControllerException(
+                LocalizationUtility::localize("exception.1543532513", null, null, $controllerName),
+                1543532513
+            );
         }
 
         $this->controller = GeneralUtility::makeInstance($controllerClass, $this->parameters);

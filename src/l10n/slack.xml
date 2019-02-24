@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<l10n>
+    <meta>
+        <author>Elias Häußler</author>
+        <author_email>mail@elias-haeussler.de</author_email>
+        <copyright>2019 Elias Häußler. All rights reserved.</copyright>
+        <license>MIT</license>
+    </meta>
+
+    <body>
+        <text id="authentication.invite">
+            %s Please %s first to use this command.
+        </text>
+        <text id="authentication.success.header">
+            Yay, the authentication was successful.
+        </text>
+        <text id="authentication.success.message">
+            Please re-send your command and everything should be fine.
+        </text>
+        <text id="authentication.error.header">
+            Damn, something went wrong...
+        </text>
+        <text id="authentication.error.message">
+            We couldn't store your authentication data. Please contact your Slack admin.
+        </text>
+
+        <text id="lunch.message.startBreak">
+            %s Your lunch break will expire at %s. Bon appétit!
+        </text>
+        <text id="lunch.message.endBreak">
+            %s Welcome back to work!
+        </text>
+        <text id="lunch.default.success">
+            %s Your default expiration time was successfully set to %s.
+        </text>
+        <text id="lunch.default.alreadySet">
+            %s Slow down, my friend! Your default expiration time is already set to %s.
+        </text>
+
+        <text id="exception.1543541836">
+            Authentication failed. Please contact your Slack admin.
+        </text>
+        <text id="exception.1546798472">
+            Authentication failed due to missing user data. Please contact your Slack admin.
+        </text>
+        <text id="exception.1545685035">
+            The request is invalid. Please refer to the command instructions in Slack for the correct usage.
+        </text>
+        <text id="exception.1545662028">
+            Authentication failed due to an invalid state provided. Please contact your Slack admin.
+        </text>
+        <text id="exception.1545669514">
+            Empty result due to an error during API request. Please contact your Slack admin.
+        </text>
+        <text id="exception.1551040956">
+            Error during API request: "%s". Please contact your Slack admin.
+        </text>
+        <text id="exception.1547920929">
+            User data for current user could not be generated.
+        </text>
+        <text id="exception.1547919413">
+            No default expiration time provided.
+        </text>
+        <text id="exception.1547919926">
+            Default expiration time must be at least 1 minute.
+        </text>
+    </body>
+</l10n>

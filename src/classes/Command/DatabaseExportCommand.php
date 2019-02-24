@@ -8,6 +8,7 @@ namespace EliasHaeussler\Api\Command;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\LocalizationUtility;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,8 +30,8 @@ class DatabaseExportCommand extends BaseCommand
     {
         // Base configuration
         $this->setName("database:export")
-            ->setDescription("Export the database")
-            ->setHelp("This command allows you to export the currently used database.");
+            ->setDescription(LocalizationUtility::localize("database.export.description", "console"))
+            ->setHelp(LocalizationUtility::localize("database.export.help", "console"));
     }
 
     /**

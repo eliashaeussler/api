@@ -17,6 +17,7 @@ use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidFileException;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\LocalizationUtility;
 use PhpMyAdmin\SqlParser\Parser;
 use PhpMyAdmin\SqlParser\Statements\CreateStatement;
 
@@ -388,7 +389,7 @@ class ConnectionService
     {
         if (!$files) {
             throw new InvalidFileException(
-                "No files provided for migration. You must at least provide one database file.",
+                LocalizationUtility::localize("exception.1546890034"),
                 1546890034
             );
         }
@@ -409,7 +410,7 @@ class ConnectionService
 
             if ($path === false) {
                 throw new FileNotFoundException(
-                    sprintf("The database file \"%s\" does not exist.", $file),
+                    LocalizationUtility::localize("exception.1546890434", null, null, $file),
                     1546890434
                 );
             }
@@ -422,7 +423,7 @@ class ConnectionService
 
             if (!$con->isConnected()) {
                 throw new DatabaseException(
-                    sprintf("Could not connect to database file \"%s\".", $path),
+                    LocalizationUtility::localize("exception.1546890846", null, null, $path),
                     1546890846
                 );
             }
@@ -461,7 +462,7 @@ class ConnectionService
 
                     if (!$insResult) {
                         throw new DatabaseException(
-                            sprintf("Failed to insert data from database file \"%s\".", $path),
+                            LocalizationUtility::localize("exception.1546892040", null, null, $path),
                             1546892040
                         );
                     }
@@ -545,7 +546,7 @@ class ConnectionService
         $contents = @file_get_contents($file);
         if (!$contents) {
             throw new FileNotFoundException(
-                sprintf("The schema file \"%s\" is not available.", $file),
+                LocalizationUtility::localize("exception.1546889136", null, null, $file),
                 1546889136
             );
         }

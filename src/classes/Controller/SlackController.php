@@ -15,6 +15,7 @@ use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Service\RoutingService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\LocalizationUtility;
 
 /**
  * Slack API controller.
@@ -274,7 +275,7 @@ class SlackController extends BaseController
 
         if (!$this->isRequestVerified($requestTimestamp, $requestSignature)) {
             throw new AuthenticationException(
-                "Authentication failed. Please contact your Slack admin.",
+                LocalizationUtility::localize("exception.1543541836", "slack"),
                 1543541836
             );
         }
@@ -322,7 +323,7 @@ class SlackController extends BaseController
 
         if (empty($result)) {
             throw new AuthenticationException(
-                "Authentication failed due to missing user data. Please contact your Slack admin.",
+                LocalizationUtility::localize("exception.1546798472", "slack"),
                 1546798472
             );
         }
@@ -343,7 +344,7 @@ class SlackController extends BaseController
     {
         if (!$this->requestData) {
             throw new InvalidRequestException(
-                "The request is invalid. Please refer to the command constructions in Slack for the correct usage.",
+                LocalizationUtility::localize("exception.1545685035", "slack"),
                 1545685035
             );
         }
@@ -424,8 +425,8 @@ class SlackController extends BaseController
         $uri = $this->buildUserAuthenticationUri();
         echo $this->buildMessage(
             Message::MESSAGE_TYPE_WARNING,
-            sprintf(
-                "%s Please %s first to use this command.",
+            LocalizationUtility::localize(
+                "authentication.invite", "slack", null,
                 SlackMessage::link($uri, "authenticate"),
                 SlackMessage::emoji("warning")
             )
@@ -462,7 +463,7 @@ class SlackController extends BaseController
     {
         if (!$this->isValidAuthState()) {
             throw new AuthenticationException(
-                "Authentication failed due to an invalid state provided. Please contact your Slack admin.",
+                LocalizationUtility::localize("exception.1545662028", "slack"),
                 1545662028
             );
         }
@@ -494,14 +495,14 @@ class SlackController extends BaseController
         if ($dbResult > 0) {
             echo $this->buildMessage(
                 Message::MESSAGE_TYPE_SUCCESS,
-                "Yay, the authentication was successful.",
-                "Please re-send your command and everything should be fine."
+                LocalizationUtility::localize("authentication.success.header", "slack"),
+                LocalizationUtility::localize("authentication.success.message", "slack")
             );
         } else {
             echo $this->buildMessage(
                 Message::MESSAGE_TYPE_WARNING,
-                "Damn, something went wrong...",
-                "We couldn't store your authentication data. Please contact your Slack admin."
+                LocalizationUtility::localize("authentication.error.header", "slack"),
+                LocalizationUtility::localize("authentication.error.message", "slack")
             );
         }
     }
@@ -518,7 +519,7 @@ class SlackController extends BaseController
     {
         if (!$result) {
             throw new InvalidRequestException(
-                "Empty result due to an error during API request. Please contact your Slack admin.",
+                LocalizationUtility::localize("exception.1545669514", "slack"),
                 1545669514
             );
         }
@@ -528,8 +529,8 @@ class SlackController extends BaseController
         // Check for valid result from Slack
         if (!$result["ok"]) {
             throw new InvalidRequestException(
-                sprintf("Error during API request: \"%s\". Please contact your Slack admin.", $result['error']),
-                1545669514
+                LocalizationUtility::localize("exception.1551040956", "slack", null, $result['error']),
+                1551040956
             );
         }
     }
