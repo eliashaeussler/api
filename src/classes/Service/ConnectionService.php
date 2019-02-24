@@ -474,13 +474,11 @@ class ConnectionService
     /**
      * Export database.
      *
-     * Creates a database dump for the current database and returns the dumped contents. Note that this
-     * method only returns the raw result of `mysqldump`. It does not save the contents to a file. This
-     * needs to be done by your own after calling the method.
-     *
-     * @return string The dumped database contents
+     * Creates a database dump for the current database and writes the dumped contents to stdin. Note that this
+     * method only writes the raw result of `mysqldump` to stdin and does NOT return or save it to a file. You
+     * need to handle the passed through contents by your own.
      */
-    public function export(): string
+    public function export(): void
     {
         // Define script name and parameters
         $scriptName = "mysqldump";
@@ -492,11 +490,9 @@ class ConnectionService
             "default-character-set" => "utf8",
         ];
 
-        // Build command with parameters
+        // Build and execute command with parameters
         $command = ConsoleUtility::buildCommand($scriptName, $parameters);
-
-        exec($command, $result);
-        return implode(PHP_EOL, $result);
+        passthru($command);
     }
 
     /**

@@ -44,9 +44,6 @@ class DatabaseExportCommand extends BaseCommand
         // Create database dump
         /** @var ConnectionService $connectionService */
         $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
-        $exportedSql = $connectionService->export();
-
-        // Print dump to console
-        $this->io->text($exportedSql);
+        $connectionService->export();
     }
 }
