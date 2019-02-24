@@ -475,18 +475,39 @@ class SlackController extends BaseController
         $this->checkApiResult($result);
         $result = json_decode($result, true);
 
-        // Save authentication credentials
+        // Check if user is already available in database
         $queryBuilder = $this->database->createQueryBuilder();
-        $dbResult = $queryBuilder->insert("slack_auth")
-            ->values([
-                "user" => ":user",
-                "token" => ":token",
-                "scope" => ":scope",
-            ])
+        $userIsAvailable = $queryBuilder->select("user")
+            ->from("slack_auth")
+            ->where($queryBuilder->expr()->eq("user", ":user"))
             ->setParameter("user", $result["user_id"])
-            ->setParameter("token", $result["access_token"])
-            ->setParameter("scope", $result["scope"])
-            ->execute();
+            ->execute()
+            ->rowCount() > 0;
+        $queryBuilder->resetQueryParts();
+
+        // Save authentication credentials
+        if ($userIsAvailable) {
+            $dbResult = $queryBuilder->update("slack_auth")
+                ->set("token", ":token")
+                ->set("scope", ":scope")
+                ->where($queryBuilder->expr()->eq("user", ":user"))
+                ->setParameter("token", $result["access_token"])
+                ->setParameter("scope", $result["scope"])
+                ->setParameter("user", $result["user_id"])
+                ->execute();
+
+        } else {
+            $dbResult = $queryBuilder->insert("slack_auth")
+                ->values([
+                    "user" => ":user",
+                    "token" => ":token",
+                    "scope" => ":scope",
+                ])
+                ->setParameter("user", $result["user_id"])
+                ->setParameter("token", $result["access_token"])
+                ->setParameter("scope", $result["scope"])
+                ->execute();
+        }
 
         // Show status message
         if ($dbResult > 0) {
