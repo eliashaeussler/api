@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<l10n>
+    <meta>
+        <author>Elias Häußler</author>
+        <author_email>mail@elias-haeussler.de</author_email>
+        <copyright>2019 Elias Häußler. All rights reserved.</copyright>
+        <license>MIT</license>
+    </meta>
+
+    <body>
+        <text id="time.min">
+            Minuten
+        </text>
+        <text id="time.min.one">
+            Minute
+        </text>
+
+        <text id="authentication.invite">
+            %s Bitte %s dich, bevor du dieses Kommando verwendest.
+        </text>
+        <text id="authentication.invite.linkText">
+            authentifiziere
+        </text>
+        <text id="authentication.reauth.message">
+            Du musst dich %s, um dieses Kommando weiter nutzen zu können.
+        </text>
+        <text id="authentication.reauth.linkText">
+            erneut authentifizieren
+        </text>
+        <text id="authentication.success.header">
+            Yay, die Authentifizierung war erfolgreich.
+        </text>
+        <text id="authentication.success.message">
+            Bitte sende dein Kommando nun erneut ab und alles sollte funktionieren.
+        </text>
+        <text id="authentication.error.header">
+            Oh nein, irgendwas ist schief gelaufen ...
+        </text>
+        <text id="authentication.error.message">
+            Wir konnten deine Authentifizierungsdaten nicht speichern. Bitte kontaktiere deinen Slack-Admin.
+        </text>
+
+        <text id="lunch.message.startBreak">
+            %s Deine Mittagspause endet um %s. Bon appétit!
+        </text>
+        <text id="lunch.message.endBreak">
+            %s Weiter geht's mit der Arbeit!
+        </text>
+        <text id="lunch.default.success">
+            %s Die Standard-Dauer deiner Mittagspause wurde auf %s gesetzt.
+        </text>
+        <text id="lunch.default.alreadySet">
+            %s Ganz ruhig! Die Standard-Dauer deiner Mittagspause ist bereits auf %s gesetzt.
+        </text>
+
+        <text id="exception.1543541836">
+            Authentifizierung fehlgeschlagen. Bitte kontaktiere deinen Slack-Admin.
+        </text>
+        <text id="exception.1546798472">
+            Authentifizierung aufgrund fehlender Benutzerdaten fehlgeschlagen. Bitte kontaktiere deinen Slack-Admin.
+        </text>
+        <text id="exception.1545685035">
+            Die Anfrage ist ungültig. Bitte prüfe die Instruktionen in Slack, um zu erfahren, wie Du dieses Kommando nutzt.
+        </text>
+        <text id="exception.1545662028">
+            Authentifzierung aufgrund eines ungültigen Statuses fehlgeschlagen. Bitte kontaktiere deinen Slack-Admin.
+        </text>
+        <text id="exception.1545669514">
+            Leeres Ergebnis aufgrund eines Fehlers während der Anfrage. Bitte kontaktiere deinen Slack-Admin.
+        </text>
+        <text id="exception.1551040956">
+            Fehler während der Anfrage bei Slack: "%s". Bitte kontaktiere deinen Slack-Admin.
+        </text>
+        <text id="exception.1547920929">
+            Benutzerdaten für den aktuellen Benutzer konnten nicht erstellt werden.
+        </text>
+        <text id="exception.1547919413">
+            Bitte übergebe eine Standard-Dauer für deine Mittagspause.
+        </text>
+        <text id="exception.1547919926">
+            Die Standard-Dauer deiner Mittagspause muss mindestens 1 minute betragen.
+        </text>
+    </body>
+</l10n>

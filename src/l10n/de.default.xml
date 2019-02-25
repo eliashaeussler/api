@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<l10n>
+    <meta>
+        <author>Elias Häußler</author>
+        <author_email>mail@elias-haeussler.de</author_email>
+        <copyright>2019 Elias Häußler. All rights reserved.</copyright>
+        <license>MIT</license>
+    </meta>
+
+    <body>
+        <text id="exception.1546890034">
+            Es muss mindestens eine Datei zur Datenbank-Migration ausgewählt werden.
+        </text>
+        <text id="exception.1546890434">
+            Die Datenbank-Datei "%s" ist nicht vorhanden.
+        </text>
+        <text id="exception.1546890846">
+            Verbindung zur Datenbank-Datei "%s" konnte nicht hergestellt werden.
+        </text>
+        <text id="exception.1546892040">
+            Fehler beim Übertragen der Daten aus der Datenbank-Datei "%s".
+        </text>
+        <text id="exception.1546889136">
+            Die Datenbank-Schema-Datei "%s" ist nicht vorhanden.
+        </text>
+        <text id="exception.1543532177">
+            Es wurde kein gültiger Controller festgelegt.
+        </text>
+        <text id="exception.1551041868">
+            Es wurden keine gültigen Controller-Argumente für den Controller "%s" festgelegt.
+        </text>
+        <text id="exception.1543532513">
+            Angefragter Controller "%s" ist nicht vorhanden.
+        </text>
+        <text id="exception.1547985632">
+            Die Datei "%s" ist nicht vorhanden.
+        </text>
+        <text id="exception.1543534319">
+            Die Klasse "%s" ist nicht vorhanden.
+        </text>
+    </body>
+</l10n>
