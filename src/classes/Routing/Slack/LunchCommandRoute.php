@@ -185,6 +185,9 @@ class LunchCommandRoute extends BaseRoute
         $this->controller->checkApiResult($result);
         $result = json_decode($result, true);
 
+        // Set user-preferred localization language
+        LocalizationUtility::readUserPreferredLanguages($result["user"]["locale"]);
+
         return $result["user"]["profile"]["status_text"] == self::STATUS_MESSAGE;
     }
 
