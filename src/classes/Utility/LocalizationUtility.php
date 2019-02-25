@@ -198,7 +198,7 @@ class LocalizationUtility
     public static function readUserPreferredLanguages(?string $source = null): void
     {
         if (!$source) {
-            $source = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
+            $source = $_SERVER["HTTP_ACCEPT_LANGUAGE"] ?? "";
         }
 
         $browserLanguages = GeneralUtility::trimExplode(",", $source);
