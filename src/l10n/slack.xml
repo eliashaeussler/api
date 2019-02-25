@@ -8,11 +8,24 @@
     </meta>
 
     <body>
+        <text id="time.min">
+            minutes
+        </text>
+        <text id="time.min.one">
+            minute
+        </text>
+
         <text id="authentication.invite">
             %s Please %s first to use this command.
         </text>
+        <text id="authentication.invite.linkText">
+            authenticate
+        </text>
         <text id="authentication.reauth.message">
             You need to %s to use this command.
+        </text>
+        <text id="authentication.reauth.linkText">
+            re-authenticate
         </text>
         <text id="authentication.success.header">
             Yay, the authentication was successful.

@@ -425,7 +425,10 @@ class SlackController extends BaseController
             LocalizationUtility::localize(
                 "authentication.invite", "slack", null,
                 SlackMessage::emoji("warning"),
-                SlackMessage::link($uri, "authenticate")
+                SlackMessage::link(
+                    $uri,
+                    LocalizationUtility::localize("authentication.invite.linkText", "slack")
+                )
             )
         );
     }
@@ -557,7 +560,10 @@ class SlackController extends BaseController
                 throw new AuthenticationException(
                     LocalizationUtility::localize(
                         "authentication.reauth.message", "slack", null,
-                        SlackMessage::link($authenticationUri, "re-authenticate")
+                        SlackMessage::link(
+                            $authenticationUri,
+                            LocalizationUtility::localize("authentication.reauth.linkText", "slack")
+                        )
                     ),
                     1551046280
                 );

@@ -276,14 +276,26 @@ class LunchCommandRoute extends BaseRoute
             $message = LocalizationUtility::localize(
                 "lunch.default.success", "slack", null,
                 SlackMessage::emoji("alarm_clock"),
-                SlackMessage::bold(sprintf("%s %s", $time, "minute" . ($time == 1 ? "" : "s")))
+                SlackMessage::bold(
+                    sprintf(
+                        "%s %s",
+                        $time,
+                        LocalizationUtility::localize("time.min" . ($time == 1 ? ".one" : ""), "slack")
+                    )
+                )
             );
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
         } else {
             $message = LocalizationUtility::localize(
                 "lunch.default.alreadySet", "slack", null,
                 SlackMessage::emoji("thinking_face"),
-                SlackMessage::bold(sprintf("%s %s", $time, "minute" . ($time == 1 ? "" : "s")))
+                SlackMessage::bold(
+                    sprintf(
+                        "%s %s",
+                        $time,
+                        LocalizationUtility::localize("time.min" . ($time == 1 ? ".one" : ""), "slack")
+                    )
+                )
             );
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_NOTICE, $message);
         }
