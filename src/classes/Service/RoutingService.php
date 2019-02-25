@@ -58,7 +58,6 @@ class RoutingService
      * resolved to a concrete API controller class.
      *
      * @throws ClassNotFoundException if either the {@see ConnectionService} class or API controller class is not available
-     * @throws DBALException if the database connection cannot be established
      * @throws EmptyControllerException if no API controller has been provided
      * @throws EmptyParametersException if not API controller parameters have been provided
      * @throws InvalidControllerException if the requested API controller class could not be found
