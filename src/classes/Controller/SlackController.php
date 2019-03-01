@@ -14,6 +14,7 @@ use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Service\RoutingService;
+use EliasHaeussler\Api\Utility\ConnectionUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 
@@ -43,6 +44,12 @@ class SlackController extends BaseController
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [
         "lunch" => LunchCommandRoute::class,
+    ];
+
+    /** @var array Default scopes which are required during authentication */
+    const DEFAULT_SCOPES = [
+        "users.profile:write",
+        "users:read",
     ];
 
     /** @var Connection Database connection */
@@ -137,63 +144,23 @@ class SlackController extends BaseController
     public function api(string $function, $data, bool $json = true, bool $authorize = true)
     {
         // Convert input data to required format
-        if ($json && is_array($data)) {
-            $data = json_encode($data);
-        }
-        if (!$json && is_string($data)) {
+        if ($json && is_string($data)) {
             $data = json_decode($data, true);
         }
 
-        // Configure Slack API call
-        $ch = curl_init();
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_URL => self::API_URI . $function,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $data,
-        ]);
-
-        // Build headers for API request
-        if ($json || $authorize) {
-            $this->addApiHeaders($ch, $data, $json, $authorize);
+        // Add authorization header
+        $options = [];
+        if ($authorize)
+        {
+            $options[CURLOPT_HTTPHEADER] = sprintf(
+                "Authorization: %s %s",
+                $this->authType,
+                $this->authToken
+            );
         }
 
         // Send API call and store result
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        return $result;
-    }
-
-    /**
-     * Add HTTP headers to an open API request.
-     *
-     * Adds authorization and content length headers to an open API request. This will only take effect if the
-     * appropriate variable (namely `$json` and `$authorize`) is set to `true`.
-     *
-     * @param resource $ch Open API request as cURL resource
-     * @param string|array $data Additional data to be sent during API request
-     * @param bool $json Define whether to use JSON as content type
-     * @param bool $authorize Define whether to send authorization headers
-     * @internal Used in {@see SlackController::api} to build HTTP headers for API request
-     */
-    protected function addApiHeaders(&$ch, $data, bool $json = true, bool $authorize = true)
-    {
-        $httpHeader = $json
-            ? ["Content-Type" => "application/json; charset=utf-8"]
-            : [];
-
-        if ($authorize) {
-            $httpHeader["Authorization"] = $this->authType . " " . $this->authToken;
-
-            if ($json) {
-                $httpHeader["Content-Length"] = strlen($data);
-            }
-        }
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array_map(function ($key, $value) {
-            return $key . ": " . $value;
-        }, array_keys($httpHeader), $httpHeader));
+        return ConnectionUtility::sendRequest(self::API_URI . $function, $data, $options, $json);
     }
 
     /**
@@ -439,7 +406,7 @@ class SlackController extends BaseController
      * @param array $scopes Necessary scopes to be used in authentication process
      * @return string URI for user authentication
      */
-    protected function buildUserAuthenticationUri(array $scopes = ["users.profile:write", "users:read"])
+    protected function buildUserAuthenticationUri(array $scopes = self::DEFAULT_SCOPES)
     {
         return self::AUTHORIZE_URI . "?" . http_build_query([
             "scope" => implode(",", $scopes),

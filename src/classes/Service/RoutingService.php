@@ -5,7 +5,6 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Service;
 
-use Doctrine\DBAL\DBALException;
 use EliasHaeussler\Api\Controller\BaseController;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\EmptyControllerException;
