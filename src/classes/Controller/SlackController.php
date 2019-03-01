@@ -522,6 +522,7 @@ class SlackController extends BaseController
 
         switch ($result["error"])
         {
+            case "not_authed":
             case "missing_scope":
                 $authenticationUri = $this->buildUserAuthenticationUri();
                 throw new AuthenticationException(
