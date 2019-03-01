@@ -149,18 +149,16 @@ class SlackController extends BaseController
         }
 
         // Add authorization header
-        $options = [];
+        $httpHeaders = [];
         if ($authorize)
         {
-            $options[CURLOPT_HTTPHEADER] = sprintf(
-                "Authorization: %s %s",
-                $this->authType,
-                $this->authToken
-            );
+            $httpHeaders = [
+                sprintf("Authorization: %s %s", $this->authType, $this->authToken),
+            ];
         }
 
         // Send API call and store result
-        return ConnectionUtility::sendRequest(self::API_URI . $function, $data, $options, $json);
+        return ConnectionUtility::sendRequest(self::API_URI . $function, $data, $httpHeaders, [], $json);
     }
 
     /**
@@ -440,7 +438,7 @@ class SlackController extends BaseController
             "client_id" => $this->clientId,
             "client_secret" => $this->clientSecret,
             "code" => $_GET['code'],
-        ], false);
+        ], false, false);
 
         $this->checkApiResult($result);
         $result = json_decode($result, true);

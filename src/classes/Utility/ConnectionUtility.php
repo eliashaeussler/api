@@ -23,31 +23,50 @@ class ConnectionUtility
      *
      * @param string $uri The request uri
      * @param array $postData POST data, will be added to the request
+     * @param array $httpHeaders Additional HTTP headers, will be merged with default headers
      * @param array $options Additional options, will be merged with the default cURL options
      * @param bool $json Define whether to send a JSON request instead of raw POST request
      * @return bool|string The cURL request result
      */
-    public static function sendRequest(string $uri, array $postData = [], array $options = [], bool $json = false)
-    {
+    public static function sendRequest(
+        string $uri,
+        array $postData = [],
+        array $httpHeaders = [],
+        array $options = [],
+        bool $json = false
+    ) {
+        
+        // Initialize request
         $ch = curl_init();
 
-        if ($json)
-        {
-            $postData = json_encode($postData);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                "Content-Type: " . "application/json; charset=utf-8",
-                "Content-Length: " . strlen($postData),
-            ]);
-        }
-
-        curl_setopt_array($ch, array_replace_recursive([
+        // Set default options
+        $defaultOptions = [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_URL => $uri,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $postData,
-        ], $options));
+        ];
 
-        // Send API call and store result
+        // Convert raw POST data to JSON data
+        if ($json) {
+            $postData = json_encode($postData);
+            $defaultOptions[CURLOPT_HTTPHEADER] = [
+                "Content-Type: " . "application/json; charset=utf-8",
+                "Content-Length: " . strlen($postData),
+            ];
+        }
+
+        // Set HTTP headers
+        $defaultOptions[CURLOPT_HTTPHEADER] = array_merge_recursive(
+            $defaultOptions[CURLOPT_HTTPHEADER] ?? [],
+            $httpHeaders
+        );
+
+        // Merge default options with custom options
+        $options = array_replace_recursive($defaultOptions, $options);
+        curl_setopt_array($ch, $options);
+
+        // Send request and store result
         $result = curl_exec($ch);
         curl_close($ch);
 
