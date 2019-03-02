@@ -16,5 +16,9 @@ function output() {
 }
 
 function print_success_message() {
-    output "Done in $SECONDS second"$([[ $SECONDS != 1 ]] && echo "s")"." ${SUCCESS}
+    local duration="$SECONDS second"$([[ $SECONDS != 1 ]] && echo "s")
+    local defaultMessage="Done in %s."
+    local message=$(echo "${1-$defaultMessage}" | sed "s/%s/$duration/g")
+
+    output "$message" ${SUCCESS}
 }

@@ -77,4 +77,4 @@ ssh ${TARGET_HOST} -T << __EOF
     echo "$(output " Done." ${SUCCESS})"
 __EOF
 
-print_success_message
+print_success_message "Deployed version ${version} in %s."
