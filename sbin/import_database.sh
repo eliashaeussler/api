@@ -43,8 +43,9 @@ function import_dump() {
 }
 
 # Dump database and store it locally
-output "Dumping from remote..." ${ACTION}
+output "Dumping from remote..." ${ACTION} 0
 dump=$(create_dump)
+output " Done." ${SUCCESS}
 
 # Import database
 output "Importing dump with DDEV..." ${ACTION}
