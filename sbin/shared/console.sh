@@ -9,8 +9,10 @@ export ACTION="\033[1;34m"
 function output() {
     local message="$1"
     local color="${2-$NORMAL}"
+    local lineBreak="${3-1}"
 
-    echo -e "${color}${message}${NORMAL}"
+    printf "${color}${message}${NORMAL}"
+    [[ ${lineBreak} == 0 ]] || printf "\n"
 }
 
 function print_success_message() {
