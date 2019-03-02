@@ -5,7 +5,7 @@
 
 define("ROOT_PATH", dirname(__DIR__));
 define("SOURCE_PATH", ROOT_PATH . "/src");
-include_once ROOT_PATH . '/vendor/autoload.php';
+require ROOT_PATH . '/vendor/autoload.php';
 
 use Doctrine\DBAL\DBALException;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;

@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 define("ROOT_PATH", __DIR__);
 define("SOURCE_PATH", ROOT_PATH . "/src");
-include_once ROOT_PATH . '/vendor/autoload.php';
+require ROOT_PATH . '/vendor/autoload.php';
 
 use EliasHaeussler\Api\Command\DatabaseExportCommand;
 use EliasHaeussler\Api\Command\DatabaseMigrateCommand;
@@ -28,4 +28,5 @@ $app->add(new DatabaseMigrateCommand());
 $app->add(new DatabaseSchemaCommand());
 
 // Run application
+/** @noinspection PhpUnhandledExceptionInspection */
 $app->run();
