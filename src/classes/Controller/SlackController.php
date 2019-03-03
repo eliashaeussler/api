@@ -13,6 +13,7 @@ use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
 use EliasHaeussler\Api\Service\ConnectionService;
+use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Service\RoutingService;
 use EliasHaeussler\Api\Utility\ConnectionUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
@@ -158,7 +159,11 @@ class SlackController extends BaseController
         }
 
         // Send API call and store result
-        return ConnectionUtility::sendRequest(self::API_URI . $function, $data, $httpHeaders, [], $json);
+        $result = ConnectionUtility::sendRequest(self::API_URI . $function, $data, $httpHeaders, [], $json);
+
+        LogService::log(sprintf("Got API result from Slack: %s", $result), LogService::DEBUG);
+
+        return $result;
     }
 
     /**
@@ -191,6 +196,8 @@ class SlackController extends BaseController
             /** @var \Exception $message */
             $message = sprintf("%s %s", SlackMessage::emoji("no_entry"), $message->getMessage());
         }
+
+        LogService::log($message, LogService::NOTICE);
 
         return json_encode([
             "response_type" => "ephemeral",
@@ -264,6 +271,8 @@ class SlackController extends BaseController
             ? RoutingService::ACCESS_TYPE_BOT
             : RoutingService::ACCESS_TYPE_BROWSER;
         RoutingService::setAccess($accessType);
+
+        LogService::log(sprintf("Setting access type \"%s\" for current request", $accessType), LogService::DEBUG);
     }
 
     /**
@@ -426,6 +435,8 @@ class SlackController extends BaseController
      */
     protected function processUserAuthentication()
     {
+        LogService::log("Processing user authentication", LogService::DEBUG);
+
         if (!$this->isValidAuthState()) {
             throw new AuthenticationException(
                 LocalizationUtility::localize("exception.1545662028", "slack"),
@@ -452,6 +463,8 @@ class SlackController extends BaseController
             ->execute()
             ->rowCount() > 0;
         $queryBuilder->resetQueryParts();
+
+        LogService::log(sprintf("User \"%s\" is %savailable", $result["user_id"], $userIsAvailable ? "" : "not "), LogService::DEBUG);
 
         // Save authentication credentials
         if ($userIsAvailable) {
@@ -491,6 +504,8 @@ class SlackController extends BaseController
                 LocalizationUtility::localize("authentication.error.message", "slack")
             );
         }
+
+        LogService::log("Finished user authentication", LogService::DEBUG);
     }
 
     /**

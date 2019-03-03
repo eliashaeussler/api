@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Routing;
 
 use EliasHaeussler\Api\Controller\BaseController;
+use EliasHaeussler\Api\Service\LogService;
 
 /**
  * Base request router.
@@ -34,6 +35,8 @@ abstract class BaseRoute
     final public function __construct(BaseController $controller)
     {
         $this->controller = $controller;
+
+        LogService::log(sprintf("Initializing request for route \"%s\"", static::class), LogService::DEBUG);
 
         $this->initializeRequest();
     }

@@ -65,6 +65,8 @@ class RoutingService
     {
         GeneralUtility::loadEnvironment();
 
+        LogService::log(sprintf("Debugging is %senabled", GeneralUtility::isDebugEnabled() ? "" : "not "), LogService::DEBUG);
+
         $this->analyzeRequestUri();
         $this->initializeDatabase();
         $this->initializeController();
@@ -108,6 +110,8 @@ class RoutingService
             $this->namespace = $uriComponents[0];
         }
 
+        LogService::log(sprintf("Setting request controller to \"%s\"", $this->namespace), LogService::DEBUG);
+
         // Set controller parameters
         if (empty($uriComponents[1])) {
             throw new EmptyParametersException(
@@ -117,6 +121,8 @@ class RoutingService
         } else {
             $this->parameters = $uriComponents[1];
         }
+
+        LogService::log(sprintf("Setting controller parameters to \"%s\"", $this->parameters), LogService::DEBUG);
     }
 
     /**
@@ -132,6 +138,8 @@ class RoutingService
         // Generate controller class name
         $controllerName = ucfirst($this->namespace) . "Controller";
         $controllerClass = "EliasHaeussler\\Api\\Controller\\" . $controllerName;
+
+        LogService::log(sprintf("Initializing controller \"%s\"", $controllerClass), LogService::DEBUG);
 
         // Check if controller class is available
         if (!class_exists($controllerClass)) {

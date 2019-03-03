@@ -12,6 +12,7 @@ use Doctrine\DBAL\DBALException;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Frontend\Message;
+use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Service\RoutingService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
@@ -22,6 +23,8 @@ try {
     $router->route();
 
 } catch (\Exception $e) {
+
+    LogService::log($e->getMessage(), LogService::ERROR);
 
     if ($e instanceof DBALException && !GeneralUtility::isDebugEnabled()) {
         $e = new DatabaseException(

@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Frontend;
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Service\RoutingService;
 
@@ -83,6 +84,8 @@ class Message
      */
     public function success(string $header, string $body): string
     {
+        LogService::log(sprintf("%s: %s", $header, $body), LogService::SUCCESS);
+
         return $this->message($header, $body, self::MESSAGE_TYPE_SUCCESS);
     }
 
@@ -95,6 +98,8 @@ class Message
      */
     public function notice(string $header, string $body): string
     {
+        LogService::log(sprintf("%s: %s", $header, $body), LogService::NOTICE);
+
         return $this->message($header, $body);
     }
 
@@ -107,6 +112,8 @@ class Message
      */
     public function warning(string $header, string $body): string
     {
+        LogService::log(sprintf("%s: %s", $header, $body), LogService::WARNING);
+
         $header = sprintf("Warning: %s", $header);
 
         return $this->message($header, $body, self::MESSAGE_TYPE_WARNING);
@@ -120,6 +127,8 @@ class Message
      */
     public function error(\Exception $object): string
     {
+        LogService::log(sprintf("%s: %s", get_class($object), $object->getMessage()), LogService::ERROR);
+
         $header = sprintf("Error: %s", get_class($object));
         $body = $object->getMessage();
         if (($code = $object->getCode()) > 0) $body .= " [" . $code . "]";

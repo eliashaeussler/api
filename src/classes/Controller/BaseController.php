@@ -8,6 +8,7 @@ namespace EliasHaeussler\Api\Controller;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
+use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
@@ -76,9 +77,17 @@ abstract class BaseController
      */
     public function call()
     {
-        if (array_key_exists($this->route, $this::ROUTE_MAPPINGS)) {
+        if (array_key_exists($this->route, $this::ROUTE_MAPPINGS))
+        {
+            $route_method = $this::ROUTE_MAPPINGS[$this->route];
+
+            LogService::log(
+                sprintf("Routing to \"%s\" from controller \"%s\"", $route_method, static::class),
+                LogService::DEBUG
+            );
+
             /** @var BaseRoute $method */
-            $method = GeneralUtility::makeInstance($this::ROUTE_MAPPINGS[$this->route], $this);
+            $method = GeneralUtility::makeInstance($route_method, $this);
             $method->processRequest();
         }
     }

@@ -8,6 +8,7 @@ namespace EliasHaeussler\Api\Utility;
 use Dotenv\Dotenv;
 use Dotenv\Loader;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Service\LogService;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -41,6 +42,8 @@ class GeneralUtility
     {
         if (class_exists($className)) {
             if (!isset(self::$instances[$className])) {
+                LogService::log(sprintf("Initializing class \"%s\" the first time", $className), LogService::DEBUG);
+
                 self::$instances[$className] = new $className(...$constructorArguments);
             }
             return self::$instances[$className];
@@ -146,6 +149,8 @@ class GeneralUtility
         if (isset(self::$dotenv[$path])) {
             $loader = self::$dotenv[$path];
         } else {
+            LogService::log(sprintf("Loading environment file \"%s/%s\" the first time", ROOT_PATH, $file), LogService::DEBUG);
+
             $loader = new Dotenv(ROOT_PATH, $file);
             self::$dotenv[$path] = $loader;
         }
@@ -194,6 +199,8 @@ class GeneralUtility
      */
     public static function registerExceptionHandler()
     {
+        LogService::log("Registering custom exception handler", LogService::DEBUG);
+
         $handler = new PrettyPageHandler();
         foreach (self::getEnvironmentVariableNames() as $key) {
             $handler->blacklist("_ENV", $key);

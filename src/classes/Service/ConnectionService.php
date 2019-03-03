@@ -99,6 +99,11 @@ class ConnectionService
      */
     protected function establishConnection(array $parameters): Connection
     {
+        LogService::log(
+            sprintf("Trying to connect to database \"%s\" on host \"%s\"", $parameters["dbname"], $parameters["host"]),
+            LogService::DEBUG
+        );
+
         $con = DriverManager::getConnection($parameters);
         $con->connect();
 

@@ -14,6 +14,7 @@ use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\BaseRoute;
+use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\DataUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
@@ -104,6 +105,14 @@ class LunchCommandRoute extends BaseRoute
 
         // Check whether to set or reset current status
         $this->statusAlreadySet = $this->checkIfStatusIsSet();
+
+        LogService::log(
+            sprintf("Slack status for user \"%s\" is %s set",
+                $this->controller->getRequestData("user_id"),
+                $this->statusAlreadySet ? "already" : "not"
+            ),
+            LogService::DEBUG
+        );
 
         // Calculate expiration time
         $this->calculateExpiration();
@@ -265,6 +274,15 @@ class LunchCommandRoute extends BaseRoute
             );
         }
 
+        LogService::log(
+            sprintf(
+                "Setting default expiration time to \"%s\" for user \"%s\"",
+                $time,
+                $this->controller->getRequestData("user_id")
+            ),
+            LogService::DEBUG
+        );
+
         // Update user data with default expiration time
         $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
         $result = $queryBuilder->update("slack_userdata")
@@ -288,6 +306,7 @@ class LunchCommandRoute extends BaseRoute
                 )
             );
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
+
         } else {
             $message = LocalizationUtility::localize(
                 "lunch.default.alreadySet", "slack", null,

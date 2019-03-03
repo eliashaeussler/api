@@ -5,6 +5,8 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Utility;
 
+use EliasHaeussler\Api\Service\LogService;
+
 /**
  * Connection utility functions.
  *
@@ -35,6 +37,8 @@ class ConnectionUtility
         array $options = [],
         bool $json = false
     ) {
+
+        LogService::log(sprintf("Sending request to \"%s\"", $uri), LogService::DEBUG);
         
         // Initialize request
         $ch = curl_init();

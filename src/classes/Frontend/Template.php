@@ -5,6 +5,7 @@
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Frontend;
 
+use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -59,6 +60,8 @@ class Template
      */
     protected function initializeTwig()
     {
+        LogService::log("Initializing Twig template", LogService::DEBUG);
+
         // Initialize environment
         $loader = new FilesystemLoader(self::TEMPLATE_PATH);
         $this->environment = new Environment($loader);
@@ -76,6 +79,8 @@ class Template
      */
     protected function loadTemplate()
     {
+        LogService::log(sprintf("Loading Twig template \"%s\"", $this->file), LogService::DEBUG);
+
         $this->template = $this->environment->load($this->file);
     }
 
@@ -87,6 +92,8 @@ class Template
      */
     public function renderTemplate(array $parameters = [])
     {
+        LogService::log("Rendering Twig template", LogService::DEBUG);
+
         return $this->template->render($parameters);
     }
 
