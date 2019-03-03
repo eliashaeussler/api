@@ -13,6 +13,7 @@ require ROOT_PATH . '/vendor/autoload.php';
 use EliasHaeussler\Api\Command\DatabaseExportCommand;
 use EliasHaeussler\Api\Command\DatabaseMigrateCommand;
 use EliasHaeussler\Api\Command\DatabaseSchemaCommand;
+use EliasHaeussler\Api\Command\LogfileClearCommand;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use Symfony\Component\Console\Application;
@@ -27,6 +28,7 @@ $app = new Application("Elias Häußler API console", ConsoleUtility::describeHi
 $app->add(new DatabaseExportCommand());
 $app->add(new DatabaseMigrateCommand());
 $app->add(new DatabaseSchemaCommand());
+$app->add(new LogfileClearCommand());
 
 // Run application
 /** @noinspection PhpUnhandledExceptionInspection */

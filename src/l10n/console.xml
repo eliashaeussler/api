@@ -73,5 +73,24 @@
         <text id="database.schema.success_drop">
             No tables or fields have been dropped.
         </text>
+
+        <text id="logfile.clear.description">
+            Clear log files
+        </text>
+        <text id="logfile.clear.help">
+            This command allows you to clear old log files
+        </text>
+        <text id="logfile.clear.option_keep-current">
+            Clear only rotated log files (preserves the current log file)
+        </text>
+        <text id="logfile.clear.success_file">
+            Successfully removed log file "%s".
+        </text>
+        <text id="logfile.clear.warning_file">
+            Could not remove log file "%s".
+        </text>
+        <text id="logfile.clear.noFilesRemoved">
+            No log files have been removed.
+        </text>
     </body>
 </l10n>

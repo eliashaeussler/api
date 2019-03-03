@@ -189,4 +189,31 @@ class LogService
         }
         return sprintf("%s/%s", self::LOG_DIRECTORY, $fileName);
     }
+
+    /**
+     * Clear old log files.
+     *
+     * Removes old log files from the file system. Set `$keepDefaultFile` to `true` to preserve the default file
+     * {@see LogService::LOG_FILE_NAME}. The method returns an array with the result of each file removal.
+     *
+     * @param bool $keepDefaultFile Define whether to keep the default log file
+     * @return array Result set of each log file removal
+     */
+    public static function clearLogFiles(bool $keepDefaultFile = true): array
+    {
+        $result = [];
+
+        // Clear default log file
+        $default_file = self::getLogFileName();
+        if (!$keepDefaultFile && file_exists($default_file)) {
+            $result[$default_file] = unlink($default_file);
+        }
+
+        // Clear rotated log files
+        foreach (glob(self::getLogFileName(self::LOG_FILE_NAME_ROTATION_PATTERN)) as $logFile) {
+            $result[$logFile] = unlink($logFile);
+        }
+
+        return $result;
+    }
 }
