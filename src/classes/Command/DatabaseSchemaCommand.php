@@ -78,9 +78,8 @@ class DatabaseSchemaCommand extends BaseCommand
         $this->addOption(
             "dry-run",
             null,
-            InputOption::VALUE_OPTIONAL,
-            LocalizationUtility::localize("database.schema.option_dry-run", "console", null, self::ACTION_DROP),
-            false
+            InputOption::VALUE_NONE,
+            LocalizationUtility::localize("database.schema.option_dry-run", "console", null, self::ACTION_DROP)
         );
         $this->addOption(
             "fields",
@@ -130,7 +129,7 @@ class DatabaseSchemaCommand extends BaseCommand
             case self::ACTION_DROP:
 
                 // Check if dry run is being processed
-                $dryRun = $input->getOption("dry-run") !== false;
+                $dryRun = $input->getOption("dry-run");
 
                 // Check which database components should be dropped
                 $dropFields = $input->getOption("fields") !== false;
