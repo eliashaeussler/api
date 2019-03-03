@@ -207,7 +207,9 @@ class LocalizationUtility
             return $matches[0];
         }, $browserLanguages);
 
-        self::$userPreferredLanguage = array_values(array_unique($browserLanguages))[0];
+        if ($browserLanguages = array_values(array_unique($browserLanguages))) {
+            self::$userPreferredLanguage = $browserLanguages[0];
+        }
     }
 
     /**
