@@ -37,42 +37,48 @@ class ConnectionUtility
         array $options = [],
         bool $json = false
     ) {
-        
+
         // Initialize request
         $ch = curl_init();
 
         // Set default options
-        $defaultOptions = [
+        $requestData = [
+            CURLOPT_HTTPHEADER => [],
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_URL => $uri,
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $postData,
         ];
 
         // Convert raw POST data to JSON data
         if ($json) {
             $postData = json_encode($postData);
-            $defaultOptions[CURLOPT_HTTPHEADER] = [
+            $requestData[CURLOPT_HTTPHEADER] = [
                 "Content-Type: " . "application/json; charset=utf-8",
                 "Content-Length: " . strlen($postData),
             ];
         }
 
+        // Add POST data
+        $requestData[CURLOPT_POSTFIELDS] = $postData;
+
         // Set HTTP headers
-        $defaultOptions[CURLOPT_HTTPHEADER] = array_merge_recursive(
-            $defaultOptions[CURLOPT_HTTPHEADER] ?? [],
-            $httpHeaders
-        );
+        $requestData[CURLOPT_HTTPHEADER] = array_merge($requestData[CURLOPT_HTTPHEADER], $httpHeaders);
 
         // Merge default options with custom options
-        $options = array_replace_recursive($defaultOptions, $options);
-        curl_setopt_array($ch, $options);
+        foreach ($options as $key => $option) {
+            if (is_array($option)) {
+                $requestData[$key] = array_merge($requestData[$key] ?? [], $option);
+            } else {
+                $requestData[$key] = $option;
+            }
+        }
+        curl_setopt_array($ch, $requestData);
 
         LogService::log(
             sprintf(
                 "Sending request to \"%s\" with data %s",
                 $uri,
-                GeneralUtility::convertArrayToString($options)
+                GeneralUtility::convertArrayToString($requestData)
             ),
             LogService::DEBUG
         );
