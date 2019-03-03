@@ -49,7 +49,9 @@ class ExtendedStyle extends SymfonyStyle
      */
     public function notice($message, string $prefix = "")
     {
-        $message = is_array($message) ? array_merge([$prefix], $message) : [$prefix, $message];
+        if ($prefix) {
+            $message = is_array($message) ? array_merge([$prefix], $message) : [$prefix, $message];
+        }
         $this->block($message, null, "fg=black;bg=yellow", "  ", true, false);
     }
 }
