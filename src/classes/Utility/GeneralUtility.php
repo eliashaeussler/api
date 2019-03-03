@@ -119,6 +119,24 @@ class GeneralUtility
     }
 
     /**
+     * Convert array to its string representation.
+     *
+     * Recursively converts an array to its appropriate string representation, separated by the given separator.
+     *
+     * @param array $array The array to be converted into string
+     * @param string $separator String separating array elements from each other
+     * @return string The converted string representation of the array
+     */
+    public static function convertArrayToString(array $array, string $separator = PHP_EOL): string
+    {
+        $result = "";
+        array_walk_recursive($array, function ($value, $key) use ($separator, &$result) {
+            $result .= sprintf("%s => %s", $key, $value) . $separator;
+        });
+        return substr_replace($result, "", -strlen($separator));
+    }
+
+    /**
      * Get normalized name of current API controller without namespace and class suffix.
      *
      * @param string $class Class name of the API controller

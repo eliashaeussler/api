@@ -37,8 +37,6 @@ class ConnectionUtility
         array $options = [],
         bool $json = false
     ) {
-
-        LogService::log(sprintf("Sending request to \"%s\"", $uri), LogService::DEBUG);
         
         // Initialize request
         $ch = curl_init();
@@ -69,6 +67,15 @@ class ConnectionUtility
         // Merge default options with custom options
         $options = array_replace_recursive($defaultOptions, $options);
         curl_setopt_array($ch, $options);
+
+        LogService::log(
+            sprintf(
+                "Sending request to \"%s\" with data %s",
+                $uri,
+                GeneralUtility::convertArrayToString($options)
+            ),
+            LogService::DEBUG
+        );
 
         // Send request and store result
         $result = curl_exec($ch);
