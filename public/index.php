@@ -5,6 +5,7 @@
 
 define("ROOT_PATH", dirname(__DIR__));
 define("SOURCE_PATH", ROOT_PATH . "/src");
+define("TEMP_PATH", ROOT_PATH . "/temp");
 require ROOT_PATH . '/vendor/autoload.php';
 
 use Doctrine\DBAL\DBALException;

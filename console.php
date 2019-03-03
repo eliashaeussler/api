@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 define("ROOT_PATH", __DIR__);
 define("SOURCE_PATH", ROOT_PATH . "/src");
+define("TEMP_PATH", ROOT_PATH . "/temp");
 require ROOT_PATH . '/vendor/autoload.php';
 
 use EliasHaeussler\Api\Command\DatabaseExportCommand;
