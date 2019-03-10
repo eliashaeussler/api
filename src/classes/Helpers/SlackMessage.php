@@ -84,6 +84,30 @@ class SlackMessage
     }
 
     /**
+     * Generate date.
+     *
+     * @param \DateTime $date The {@see DateTime} object which holds the date
+     * @param string $format A pre-formatted string to be used for formatting the date
+     * @param string $link An optional link to be wrapped around the date string
+     * @param string $fallback An optional fallback text
+     * @return string The formatted date
+     * @see https://api.slack.com/docs/message-formatting#formatting_dates
+     */
+    public static function date(\DateTime $date, string $format = "{date_pretty}", string $link = "", string $fallback = ""): string
+    {
+        $timestamp = $date->getTimestamp();
+        $contents = [
+            $timestamp,
+            $format,
+            $link,
+        ];
+        if (!$fallback) {
+            $fallback = $date->format('d.m.Y');
+        }
+        return sprintf("<!date^%s|%s>", implode("^", array_filter($contents)), $fallback);
+    }
+
+    /**
      * Wrap text with characters.
      *
      * @param string $text Text to be wrapped

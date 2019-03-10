@@ -53,6 +53,34 @@
             %s Slow down, my friend! Your default expiration time is already set to %s.
         </text>
 
+        <text id="redmine.message.project">
+            Project
+        </text>
+        <text id="redmine.message.assignedTo">
+            Assigned to
+        </text>
+        <text id="redmine.message.status">
+            Status
+        </text>
+        <text id="redmine.message.done">
+            Done
+        </text>
+        <text id="redmine.message.priority">
+            Priority
+        </text>
+        <text id="redmine.message.startDate">
+            Start date
+        </text>
+        <text id="redmine.button.showIssue">
+            %s Show issue
+        </text>
+        <text id="redmine.button.editIssue">
+            %s Edit
+        </text>
+        <text id="redmine.button.logTime">
+            %s Log time
+        </text>
+
         <text id="exception.1543541836">
             Authentication failed. Please contact your Slack admin.
         </text>
@@ -79,6 +107,18 @@
         </text>
         <text id="exception.1547919926">
             Default expiration time must be at least 1 minute.
+        </text>
+        <text id="exception.1552347666">
+            Issue with ID "%s" could not be found.
+        </text>
+        <text id="exception.1552348174">
+            Invalid or empty Redmine base URI given.
+        </text>
+        <text id="exception.1552348219">
+            No API key provided for accessing the Redmine API.
+        </text>
+        <text id="exception.1552348511">
+            Error during API request. Please contact your Slack admin.
         </text>
     </body>
 </l10n>

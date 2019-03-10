@@ -38,5 +38,8 @@
         <text id="exception.1543534319">
             The class "%s" could not be found.
         </text>
+        <text id="exception.1552241288">
+            Only `%s` are allowed methods for requesting the Redmine API.
+        </text>
     </body>
 </l10n>

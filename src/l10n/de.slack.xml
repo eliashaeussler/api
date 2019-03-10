@@ -53,6 +53,34 @@
             %s Ganz ruhig! Die Standard-Dauer deiner Mittagspause ist bereits auf %s gesetzt.
         </text>
 
+        <text id="redmine.message.project">
+            Projekt
+        </text>
+        <text id="redmine.message.assignedTo">
+            Zugewiesen an
+        </text>
+        <text id="redmine.message.status">
+            Status
+        </text>
+        <text id="redmine.message.done">
+            Erledigt
+        </text>
+        <text id="redmine.message.priority">
+            Priorität
+        </text>
+        <text id="redmine.message.startDate">
+            Beginn
+        </text>
+        <text id="redmine.button.showIssue">
+            %s Ticket öffnen
+        </text>
+        <text id="redmine.button.editIssue">
+            %s Bearbeiten
+        </text>
+        <text id="redmine.button.logTime">
+            %s Aufwand buchen
+        </text>
+
         <text id="exception.1543541836">
             Authentifizierung fehlgeschlagen. Bitte kontaktiere deinen Slack-Admin.
         </text>
@@ -79,6 +107,18 @@
         </text>
         <text id="exception.1547919926">
             Die Standard-Dauer deiner Mittagspause muss mindestens 1 minute betragen.
+        </text>
+        <text id="exception.1552347666">
+            Das Ticket mit der ID "%s" konnte nicht gefunden werden.
+        </text>
+        <text id="exception.1552348174">
+            Es wurde keine oder eine ungültige Redmine URI angegeben.
+        </text>
+        <text id="exception.1552348219">
+            Es wurde kein API-Schlüssel angegeben, um die Redmine-API anzusprechen.
+        </text>
+        <text id="exception.1552348511">
+            Fehler während der Anfrage bei Redmine. Bitte kontaktiere deinen Slack-Admin.
         </text>
     </body>
 </l10n>

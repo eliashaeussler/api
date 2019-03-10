@@ -12,6 +12,7 @@ use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
+use EliasHaeussler\Api\Routing\Slack\RedmineCommandRoute;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Service\RoutingService;
@@ -45,6 +46,7 @@ class SlackController extends BaseController
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [
         "lunch" => LunchCommandRoute::class,
+        "redmine" => RedmineCommandRoute::class,
     ];
 
     /** @var array Scopes which are required for each route during authentication */
@@ -194,9 +196,10 @@ class SlackController extends BaseController
      * @param string $type Message type
      * @param string|\Exception $message Message
      * @param array $attachments Attachments
+     * @param bool $public Define whether to post message publicly
      * @return string The rendered message
      */
-    public function buildBotMessage(string $type, $message, array $attachments = []): string
+    public function buildBotMessage(string $type, $message, array $attachments = [], bool $public = false): string
     {
         // Set correct content header
         header("Content-Type: application/json");
@@ -210,7 +213,7 @@ class SlackController extends BaseController
         LogService::log($message, LogService::NOTICE);
 
         return json_encode([
-            "response_type" => "ephemeral",
+            "response_type" => $public ? "in_channel" : "ephemeral",
             "text" => $message,
             "attachments" => $attachments,
         ]);
