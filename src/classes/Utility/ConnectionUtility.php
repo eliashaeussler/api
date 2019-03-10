@@ -46,20 +46,26 @@ class ConnectionUtility
             CURLOPT_HTTPHEADER => [],
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_URL => $uri,
-            CURLOPT_POST => true,
         ];
 
-        // Convert raw POST data to JSON data
-        if ($json) {
-            $postData = json_encode($postData);
-            $requestData[CURLOPT_HTTPHEADER] = [
-                "Content-Type: " . "application/json; charset=utf-8",
-                "Content-Length: " . strlen($postData),
-            ];
-        }
+        // Handle POST requests
+        if (count($postData) > 0)
+        {
+            // Mark current request as POST request
+            $requestData[CURLOPT_POST] = true;
 
-        // Add POST data
-        $requestData[CURLOPT_POSTFIELDS] = $postData;
+            // Convert raw POST data to JSON data
+            if ($json) {
+                $postData = json_encode($postData);
+                $requestData[CURLOPT_HTTPHEADER] = [
+                    "Content-Type: " . "application/json; charset=utf-8",
+                    "Content-Length: " . strlen($postData),
+                ];
+            }
+
+            // Add POST data
+            $requestData[CURLOPT_POSTFIELDS] = $postData;
+        }
 
         // Set HTTP headers
         $requestData[CURLOPT_HTTPHEADER] = array_merge($requestData[CURLOPT_HTTPHEADER], $httpHeaders);
