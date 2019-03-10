@@ -47,10 +47,12 @@ class SlackController extends BaseController
         "lunch" => LunchCommandRoute::class,
     ];
 
-    /** @var array Default scopes which are required during authentication */
-    const DEFAULT_SCOPES = [
-        "users.profile:write",
-        "users:read",
+    /** @var array Scopes which are required for each route during authentication */
+    const REQUIRED_SCOPES = [
+        "lunch" => [
+            "users.profile:write",
+            "users:read",
+        ],
     ];
 
     /** @var Connection Database connection */
@@ -103,8 +105,16 @@ class SlackController extends BaseController
 
         if ($this->matchesRoute(self::ROUTE_AUTH)) {
             $this->processUserAuthentication();
-        } else if ($this->isRequestValid() && $this->isUserAuthenticated()) {
-            $this->loadUserData();
+
+        } else if ($this->isRequestValid()) {
+            if ($this->routeRequiresAuthentication()) {
+                if ($this->isUserAuthenticated()) {
+                    $this->loadUserData();
+                } else {
+                    $this->showUserAuthenticationUri();
+                }
+            }
+
         } else {
             $this->showUserAuthenticationUri();
         }
@@ -324,6 +334,26 @@ class SlackController extends BaseController
     }
 
     /**
+     * Get scopes which are required for the current route.
+     *
+     * @return array Required scopes for the current route
+     */
+    protected function getRequiredScopes(): array
+    {
+        return isset(self::REQUIRED_SCOPES[$this->route]) ? self::REQUIRED_SCOPES[$this->route] : [];
+    }
+
+    /**
+     * Check if the current route requires user authentication.
+     *
+     * @return bool `true` if the current route requires authentication, `false` otherwise
+     */
+    protected function routeRequiresAuthentication(): bool
+    {
+        return count($this->getRequiredScopes()) > 0;
+    }
+
+    /**
      * Check whether the current user is already authenticated.
      *
      * Checks whether the current user is already authenticated by testing if an appropriate database entry exists.
@@ -410,13 +440,12 @@ class SlackController extends BaseController
     /**
      * Build URI for necessary user authentication.
      *
-     * @param array $scopes Necessary scopes to be used in authentication process
      * @return string URI for user authentication
      */
-    protected function buildUserAuthenticationUri(array $scopes = self::DEFAULT_SCOPES)
+    protected function buildUserAuthenticationUri()
     {
         return self::AUTHORIZE_URI . "?" . http_build_query([
-            "scope" => implode(",", $scopes),
+            "scope" => implode(",", $this->getRequiredScopes()),
             "client_id" => $this->clientId,
             "state" => $this->authState,
         ]);
