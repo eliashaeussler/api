@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Routing\Slack;
 
 use EliasHaeussler\Api\Controller\SlackController;
+use EliasHaeussler\Api\Exception\DatabaseException;
 use EliasHaeussler\Api\Exception\InvalidEnvironmentException;
 use EliasHaeussler\Api\Exception\InvalidParameterException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
@@ -44,6 +45,12 @@ class RedmineCommandRoute extends BaseRoute
     /** @var string Default slash command */
     const DEFAULT_COMMAND = "/redmine";
 
+    /** @var string Action for authenticating the user at the Redmine API */
+    const ACTION_AUTH = "auth";
+
+    /** @var string Action for getting issue information */
+    const ACTION_ISSUE = "issue";
+
     /** @var SlackController Slack API Controller */
     protected $controller;
 
@@ -56,6 +63,7 @@ class RedmineCommandRoute extends BaseRoute
     /** @var string Selected action for processing the request */
     protected $action;
 
+
     /**
      * {@inheritdoc}
      *
@@ -65,19 +73,13 @@ class RedmineCommandRoute extends BaseRoute
      */
     protected function initializeRequest()
     {
+        // Get base URI
         $this->baseUri = GeneralUtility::getEnvironmentVariable("SLACK_REDMINE_BASE_URI");
-        $this->apiKey = GeneralUtility::getEnvironmentVariable("SLACK_REDMINE_API_KEY");
 
         if (!$this->baseUri || parse_url($this->baseUri) === false) {
             throw new InvalidEnvironmentException(
                 LocalizationUtility::localize("exception.1552348174", "slack"),
                 1552348174
-            );
-        }
-        if (!$this->apiKey) {
-            throw new InvalidEnvironmentException(
-                LocalizationUtility::localize("exception.1552348219", "slack"),
-                1552348219
             );
         }
 
@@ -87,6 +89,18 @@ class RedmineCommandRoute extends BaseRoute
         } else {
             $this->action = $this->controller->getRawCommandName();
         }
+
+        // Get API key if current action requires a valid key
+        if ($this->action != self::ACTION_AUTH)
+        {
+            $this->apiKey = $this->retrieveApiKey();
+            if (!$this->apiKey) {
+                throw new InvalidEnvironmentException(
+                    LocalizationUtility::localize("exception.1552348219", "slack"),
+                    1552348219
+                );
+            }
+        }
     }
 
     /**
@@ -95,14 +109,19 @@ class RedmineCommandRoute extends BaseRoute
      * @throws InvalidParameterException if no issue ID has been provided or an invalid action is provided
      * @throws InvalidRequestException if the result from the Redmine API is invalid
      * @throws IssueNotFoundException if the requested issue could not be found
+     * @throws DatabaseException if persisting the API key failed
      * @throws \Exception if the issues' start date cannot be instantiated as {@see DateTime} object
      */
     public function processRequest()
     {
         switch ($this->action)
         {
-            case "issue":
+            case self::ACTION_ISSUE:
                 $this->showIssueData();
+                break;
+
+            case self::ACTION_AUTH:
+                $this->persistUserApiKey();
                 break;
 
             default:
@@ -268,6 +287,103 @@ class RedmineCommandRoute extends BaseRoute
     }
 
     /**
+     * Persist a new API key for the current user.
+     *
+     * Tries to store the new provided API key for the current user in the database. The method also checks the validity
+     * of the provided API key by accessing the Redmine API with the given key.
+     *
+     * @throws InvalidParameterException if no API key was provided or the provided key is not valid
+     * @throws DatabaseException if persisting the API key failed
+     */
+    protected function persistUserApiKey(): void
+    {
+        // Get provided API key
+        $apiKey = $this->controller->getRequestData("text");
+
+        if (empty($apiKey)) {
+            throw new InvalidParameterException(LocalizationUtility::localize("exception.1552439117", "slack"), 1552439117);
+        }
+
+        // Set API key
+        $this->apiKey = $apiKey;
+
+        // Test if API key is valid
+        $uri = $this->buildUri(["users"], self::REQUEST_MODE_JSON, ["limit" => 1]);
+        $request = $this->sendAuthenticatedRequest($uri);
+
+        if (!$request) {
+            throw new InvalidParameterException(
+                LocalizationUtility::localize("exception.1552519493", "slack", "", $apiKey),
+                1552519493
+            );
+        }
+
+        // Check if an API key is already available for the current user
+        $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
+        $availableApiKey = $queryBuilder->select("api_key")
+            ->from("slack_redmine_api_keys")
+            ->where("user = :user_id")
+            ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+            ->execute()
+            ->fetch();
+
+        if ($availableApiKey)
+        {
+            // Show notice if provided API key is already available in database
+            if ($availableApiKey["api_key"] == $this->apiKey) {
+                echo $this->controller->buildBotMessage(
+                    Message::MESSAGE_TYPE_NOTICE,
+                    LocalizationUtility::localize("redmine.auth.alreadyAuthenticated", "slack", "", SlackMessage::emoji("shushing_face"))
+                );
+                return;
+            }
+
+            // Update existing API key with new one
+            $result = $queryBuilder->resetQueryParts()
+                ->update("slack_redmine_api_keys")
+                ->set("api_key", ":api_key")
+                ->where("user = :user_id")
+                ->setParameter("api_key", $apiKey)
+                ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+                ->execute();
+
+            if ($result) {
+                echo $this->controller->buildBotMessage(
+                    Message::MESSAGE_TYPE_SUCCESS,
+                    LocalizationUtility::localize("redmine.auth.successfullyUpdated", "slack", "", SlackMessage::emoji("tada"))
+                );
+            }
+
+        } else {
+            // Add new API key to database
+            $result = $queryBuilder->resetQueryParts()
+                ->insert("slack_redmine_api_keys")
+                ->values([
+                    "api_key" => ":api_key",
+                    "user" => ":user_id",
+                ])
+                ->setParameter("api_key", $apiKey)
+                ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+                ->execute();
+
+            if ($result) {
+                echo $this->controller->buildBotMessage(
+                    Message::MESSAGE_TYPE_SUCCESS,
+                    LocalizationUtility::localize("redmine.auth.successful", "slack", "", SlackMessage::emoji("tada"))
+                );
+            }
+        }
+
+        // Show error message if persisting the API key failed
+        if (!$result) {
+            throw new DatabaseException(
+                LocalizationUtility::localize("exception.1552520966", "slack"),
+                1552520966
+            );
+        }
+    }
+
+    /**
      * Extract user-provided action from text in API request data.
      *
      * Extracts the action the user has provided from the text in the current API request data. This means, if a
@@ -344,5 +460,23 @@ class RedmineCommandRoute extends BaseRoute
     protected function buildAuthenticationHeader(): string
     {
         return "X-Redmine-API-Key: ". $this->apiKey;
+    }
+
+    /**
+     * Get available API key for the current user from the database.
+     *
+     * @return string The API key from the current user, if available, an empty string otherwise
+     */
+    protected function retrieveApiKey(): string
+    {
+        $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
+        $result = $queryBuilder->select("api_key")
+            ->from("slack_redmine_api_keys")
+            ->where("user = :user_id")
+            ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+            ->execute()
+            ->fetch();
+
+        return $result ? $result["api_key"] : "";
     }
 }

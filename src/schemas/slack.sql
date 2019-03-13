@@ -14,3 +14,11 @@ CREATE TABLE `slack_userdata` (
 
   PRIMARY KEY (`user`)
 );
+
+# Redmine API keys
+CREATE TABLE `slack_redmine_api_keys` (
+  `user` VARCHAR(20) NOT NULL UNIQUE,
+  `api_key` VARCHAR(255) NOT NULL DEFAULT '',
+
+  PRIMARY KEY (`user`)
+);
