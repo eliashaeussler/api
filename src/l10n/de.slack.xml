@@ -120,5 +120,17 @@
         <text id="exception.1552348511">
             Fehler während der Anfrage bei Redmine. Bitte kontaktiere deinen Slack-Admin.
         </text>
+        <text id="exception.1552433612">
+            Fehlender oder ungültiger Slash-Command. Bitte kontaktiere deinen Slack-Admin.
+        </text>
+        <text id="exception.1552434032">
+            Slash-Command konnte nicht verifiziert werden. Bitte achte auf die korrekte Schreibweise (/command).
+        </text>
+        <text id="exception.1552436109">
+            Es wurde eine ungültige Anweisung "%s" zum Ansprechen der Redmine-API übergeben.
+        </text>
+        <text id="exception.1552436599">
+            Bitte gib eine gültige Ticketnummer an, die nur aus Ziffern besteht.
+        </text>
     </body>
 </l10n>

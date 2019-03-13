@@ -7,6 +7,7 @@ namespace EliasHaeussler\Api\Routing\Slack;
 
 use EliasHaeussler\Api\Controller\SlackController;
 use EliasHaeussler\Api\Exception\InvalidEnvironmentException;
+use EliasHaeussler\Api\Exception\InvalidParameterException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Exception\IssueNotFoundException;
 use EliasHaeussler\Api\Frontend\Message;
@@ -40,6 +41,9 @@ class RedmineCommandRoute extends BaseRoute
     /** @var string Plain request mode for default URIs */
     const REQUEST_MODE_PLAIN = "";
 
+    /** @var string Default slash command */
+    const DEFAULT_COMMAND = "/redmine";
+
     /** @var SlackController Slack API Controller */
     protected $controller;
 
@@ -49,10 +53,15 @@ class RedmineCommandRoute extends BaseRoute
     /** @var string API key to be used for API requests */
     protected $apiKey;
 
+    /** @var string Selected action for processing the request */
+    protected $action;
+
     /**
      * {@inheritdoc}
      *
-     * @throws InvalidEnvironmentException
+     * @throws InvalidEnvironmentException if either the base URI or API key is not set or invalid
+     * @throws InvalidRequestException if no Slack command is set or no request data is available
+     * @throws InvalidParameterException if an invalid slash command has been provided
      */
     protected function initializeRequest()
     {
@@ -71,22 +80,65 @@ class RedmineCommandRoute extends BaseRoute
                 1552348219
             );
         }
+
+        // Set selected action
+        if ($this->controller->getRequestData("command") == self::DEFAULT_COMMAND) {
+            $this->action = $this->extractActionFromRequestText();
+        } else {
+            $this->action = $this->controller->getRawCommandName();
+        }
     }
 
     /**
      * {@inheritdoc}
      *
+     * @throws InvalidParameterException if no issue ID has been provided or an invalid action is provided
+     * @throws InvalidRequestException if the result from the Redmine API is invalid
+     * @throws IssueNotFoundException if the requested issue could not be found
      * @throws \Exception if the issues' start date cannot be instantiated as {@see DateTime} object
      */
     public function processRequest()
     {
+        switch ($this->action)
+        {
+            case "issue":
+                $this->showIssueData();
+                break;
+
+            default:
+                throw new InvalidParameterException(
+                    LocalizationUtility::localize("exception.1552436109", "slack", "", $this->action),
+                    1552436109
+                );
+        }
+    }
+
+    /**
+     * Show data for a requested issue.
+     *
+     * Requests data for the requested issue from Redmine and prints it in order to send the requested data to Slack.
+     * If no issue was provided or the provided issue is invalid, the method throws an exception. This is also the
+     * case if the requested issue could not be found in Redmine.
+     *
+     * @throws InvalidParameterException if no issue ID has been provided
+     * @throws InvalidRequestException if the result from the Redmine API is invalid
+     * @throws IssueNotFoundException if the requested issue could not be found
+     * @throws \Exception if the issues' start date cannot be instantiated as {@see DateTime} object
+     */
+    protected function showIssueData(): void
+    {
+        $text = $this->controller->getRequestData("text");
+
+        if (empty($text) || !is_numeric($text)) {
+            throw new InvalidParameterException(LocalizationUtility::localize("exception.1552436599", "slack"), 1552436599);
+        }
+
         // Get requested issue ID
-        $issueID = (int) $this->controller->getRequestData("text");
+        $issueID = (int) $text;
 
         // Request issue data from API
         $uri = $this->buildUri(["issues", $issueID]);
-        $authHeader = $this->buildAuthenticationHeader();
-        $request = ConnectionUtility::sendRequest($uri, [], [$authHeader], [], true);
+        $request = $this->sendAuthenticatedRequest($uri);
 
         LogService::log(sprintf("Got API result from Redmine: %s", $request), LogService::DEBUG);
 
@@ -108,7 +160,7 @@ class RedmineCommandRoute extends BaseRoute
 
             // Get priorities
             $uri = $this->buildUri(["enumerations", "issue_priorities"]);
-            $request = ConnectionUtility::sendRequest($uri, [], [$authHeader], [], true);
+            $request = $this->sendAuthenticatedRequest($uri);
 
             LogService::log(sprintf("Got API result from Redmine: %s", $request), LogService::DEBUG);
 
@@ -213,6 +265,40 @@ class RedmineCommandRoute extends BaseRoute
                 1552347666
             );
         }
+    }
+
+    /**
+     * Extract user-provided action from text in API request data.
+     *
+     * Extracts the action the user has provided from the text in the current API request data. This means, if a
+     * user sends the slash command `/redmine issue 25389`, this method will extract `issue` from the request text,
+     * then updates the API request data by shifting the action from the request data text and finally returns the
+     * selected action.
+     *
+     * @return string The extracted action
+     */
+    protected function extractActionFromRequestText(): string
+    {
+        // Extract action from request text
+        $delimiter = " ";
+        $requestData = explode($delimiter, $this->controller->getRequestData("text"));
+        $action = strtolower(array_shift($requestData));
+
+        // Update request text with shifted array
+        $this->controller->setRequestDataForKey("text", implode($delimiter, $requestData));
+
+        return $action;
+    }
+
+    /**
+     * Send and receive an authenticated API request.
+     *
+     * @param string $uri The request uri
+     * @return bool|string The cURL request result
+     */
+    protected function sendAuthenticatedRequest(string $uri)
+    {
+        return ConnectionUtility::sendRequest($uri, [], [$this->buildAuthenticationHeader()], [], true);
     }
 
     /**

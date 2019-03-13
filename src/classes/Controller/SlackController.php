@@ -8,6 +8,7 @@ namespace EliasHaeussler\Api\Controller;
 use Doctrine\DBAL\Connection;
 use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Exception\InvalidParameterException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Helpers\SlackMessage;
@@ -590,6 +591,33 @@ class SlackController extends BaseController
     }
 
     /**
+     * Get raw command name from full slash command.
+     *
+     * Returns the raw command name from the currently selected slash command. The raw command name contains only
+     * the name of the slash command without its prepended slash.
+     *
+     * @throws InvalidRequestException if no Slack command is set or no request data is available
+     * @throws InvalidParameterException if an invalid slash command has been provided
+     * @return string The raw command name
+     */
+    public function getRawCommandName(): string
+    {
+        if (!$this->requestData || !$this->requestData["command"]) {
+            throw new InvalidRequestException(LocalizationUtility::localize("exception.1552433612", "slack"), 1552433612);
+        }
+
+        // Get raw command name
+        $command = $this->requestData["command"];
+        preg_match("/^\/([[:alnum:]]+)$/", $command, $matches);
+
+        if (!$matches) {
+            throw new InvalidParameterException(LocalizationUtility::localize("exception.1552434032", "slack"), 1552434032);
+        }
+
+        return strtolower($matches[1]);
+    }
+
+    /**
      * Get Slack authentication token
      *
      * @return string Slack authentication token
@@ -611,6 +639,20 @@ class SlackController extends BaseController
     public function getRequestData(string $key = "")
     {
         return $key ? ($this->requestData[$key] ?? "") : $this->requestData;
+    }
+
+    /**
+     * Set value for a specific key of the current API request data.
+     *
+     * Updates a specific value of the current API request data with the provided value for the given key. This can
+     * be useful i. e. to update the given text from Slack.
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setRequestDataForKey(string $key, $value): void
+    {
+        $this->requestData[$key] = $value;
     }
 
     /**

@@ -174,7 +174,11 @@ abstract class BaseController
      */
     protected function readRequestParameters()
     {
-        $this->requestParameters = array_merge($_GET, $_POST);
+        $parameters = array_merge($_GET, $_POST);
+        array_walk_recursive($parameters, function (&$value) {
+            $value = trim(strtolower(urldecode($value)));
+        });
+        $this->requestParameters = $parameters;
     }
 
     /**
@@ -235,6 +239,27 @@ abstract class BaseController
         }
 
         return $this->requestHeaders[$normalizedHeader] ?? "";
+    }
+
+    /**
+     * Get API request parameters.
+     *
+     * @return array API request parameters
+     */
+    public function getRequestParameters(): array
+    {
+        return $this->requestParameters;
+    }
+
+    /**
+     * Get value of given API request parameters.
+     *
+     * @param string $key Name of the API request parameter to return
+     * @return mixed|null API request parameters
+     */
+    public function getRequestParameter(string $key)
+    {
+        return $this->requestParameters[$key];
     }
 
     /**

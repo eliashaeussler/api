@@ -120,5 +120,17 @@
         <text id="exception.1552348511">
             Error during API request. Please contact your Slack admin.
         </text>
+        <text id="exception.1552433612">
+            Missing or invalid Slash command provided. Please contact your Slack admin.
+        </text>
+        <text id="exception.1552434032">
+            Slash command could not be parsed. Please note the correct syntax (/command).
+        </text>
+        <text id="exception.1552436109">
+            Invalid action "%s" provided for accessing the Redmine API.
+        </text>
+        <text id="exception.1552436599">
+            Please provide a valid issue ID containing only numbers.
+        </text>
     </body>
 </l10n>
