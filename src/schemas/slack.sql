@@ -9,6 +9,8 @@ CREATE TABLE `slack_auth` (
 
 # User data
 CREATE TABLE `slack_userdata` (
-  `user` VARCHAR(20) NOT NULL,
-  `default_expiration` INT(11) NOT NULL DEFAULT 45
+  `user` VARCHAR(20) NOT NULL UNIQUE,
+  `default_expiration` INT(11) NOT NULL DEFAULT 45,
+
+  PRIMARY KEY (`user`)
 );
