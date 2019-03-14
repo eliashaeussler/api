@@ -95,6 +95,17 @@ class RoutingService
      */
     protected function analyzeRequestUri()
     {
+        // Get URI components
+        $plainUri = strtok($_SERVER['REQUEST_URI'], "?");
+        $uriComponents = GeneralUtility::trimExplode('/', $plainUri);
+        $this->uri = implode('/', $uriComponents);
+
+        // Apply blacklisted routes
+        if (in_array($this->uri, $this->getRouteBlacklist())) {
+            LogService::log(sprintf("Blocking request with route \"%s\"", $this->uri), LogService::NOTICE);
+            exit;
+        }
+
         // Check if request is done with an insecure connection
         if (!GeneralUtility::isRequestSecure()) {
             LogService::log(
@@ -102,11 +113,6 @@ class RoutingService
                 LogService::WARNING
             );
         }
-
-        // Get URI components
-        $plainUri = strtok($_SERVER['REQUEST_URI'], "?");
-        $uriComponents = GeneralUtility::trimExplode('/', $plainUri);
-        $this->uri = implode('/', $uriComponents);
 
         // Set controller
         if (empty($uriComponents[0])) {
@@ -158,6 +164,16 @@ class RoutingService
         }
 
         $this->controller = GeneralUtility::makeInstance($controllerClass, $this->parameters);
+    }
+
+    /**
+     * Get route blacklist as array.
+     *
+     * @return array Route blacklist
+     */
+    protected function getRouteBlacklist(): array
+    {
+        return GeneralUtility::trimExplode(",", GeneralUtility::getEnvironmentVariable("ROUTE_BLACKLIST"));
     }
 
     /**
