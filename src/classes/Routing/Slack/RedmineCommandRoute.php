@@ -16,6 +16,7 @@ use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Utility\ConnectionUtility;
+use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 
@@ -272,6 +273,7 @@ class RedmineCommandRoute extends BaseRoute
                             "url" => $this->buildUri(["issues", $issue["id"], "time_entries", "new"], self::REQUEST_MODE_PLAIN)
                         ],
                     ],
+                    "footer" => "api.elias-haeussler.de | " . ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION),
                 ],
             ];
 
