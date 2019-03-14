@@ -239,4 +239,14 @@ class GeneralUtility
         self::loadEnvironment();
         return !!static::getEnvironmentVariable("DEBUG_EXCEPTIONS", false);
     }
+
+    /**
+     * Check whether the current request is secured with SSL.
+     *
+     * @return bool `true` if the request is secured, `false` otherwise
+     */
+    public static function isRequestSecure(): bool
+    {
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== "off") || $_SERVER['SERVER_PORT'] == 443;
+    }
 }

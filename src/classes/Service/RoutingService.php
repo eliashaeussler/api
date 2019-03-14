@@ -95,6 +95,14 @@ class RoutingService
      */
     protected function analyzeRequestUri()
     {
+        // Check if request is done with an insecure connection
+        if (!GeneralUtility::isRequestSecure()) {
+            LogService::log(
+                "Request is not secured with HTTPS. Consider accessing the API with the HTTPS protocol.",
+                LogService::WARNING
+            );
+        }
+
         // Get URI components
         $plainUri = strtok($_SERVER['REQUEST_URI'], "?");
         $uriComponents = GeneralUtility::trimExplode('/', $plainUri);
