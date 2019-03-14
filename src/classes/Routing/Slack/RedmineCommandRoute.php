@@ -64,6 +64,9 @@ class RedmineCommandRoute extends BaseRoute
     /** @var string Selected action for processing the request */
     protected $action;
 
+    /** @var int Maximum string length for issue descriptions */
+    protected $issueMaxDescriptionLength = 150;
+
 
     /**
      * {@inheritdoc}
@@ -209,7 +212,7 @@ class RedmineCommandRoute extends BaseRoute
                     "author_name" => $issue["author"]["name"],
                     "author_link" => $this->buildUri(["users", $issue["author"]["id"]], self::REQUEST_MODE_PLAIN),
                     "author_icon" => $this->buildUri(["favicon.ico"], self::REQUEST_MODE_PLAIN),
-                    "text" => mb_strimwidth($issue["description"], 0, 200, "..."),
+                    "text" => mb_strimwidth($issue["description"], 0, $this->issueMaxDescriptionLength, "…"),
                 ],
                 [
                     "color" => $actionColor,
