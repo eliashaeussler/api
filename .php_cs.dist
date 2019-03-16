@@ -1,0 +1,27 @@
+<?php
+/**
+ * Copyright (c) 2019 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
+ */
+declare(strict_types=1);
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__ . '/src/classes');
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@PSR2' => true,
+        '@DoctrineAnnotation' => true,
+        '@PSR1' => true,
+        '@PhpCsFixer' => true,
+        '@Symfony' => true,
+        'concat_space' => ['spacing' => 'one'],
+        'elseif' => false,
+        'linebreak_after_opening_tag' => true,
+        'list_syntax' => true,
+        'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
+        'no_blank_lines_before_namespace' => true,
+        'single_blank_line_before_namespace' => false,
+        'single_quote' => false,
+        'yoda_style' => false,
+    ])
+    ->setFinder($finder);

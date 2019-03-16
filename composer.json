@@ -23,7 +23,8 @@
   "require-dev": {
     "symfony/console": "^4.2",
     "filp/whoops": "^2.3",
-    "phpmyadmin/sql-parser": "^4.3"
+    "phpmyadmin/sql-parser": "^4.3",
+    "friendsofphp/php-cs-fixer": "^2.14"
   },
   "autoload": {
     "psr-4": {
