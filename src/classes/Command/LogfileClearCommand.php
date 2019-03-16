@@ -16,7 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * This command allows removing old log files.
  *
- * @package EliasHaeussler\Api\Command
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */

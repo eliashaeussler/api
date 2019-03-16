@@ -23,7 +23,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * This command makes it possible to run several actions according database schema.
  *
- * @package EliasHaeussler\Api\Command
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -40,7 +39,6 @@ class DatabaseSchemaCommand extends BaseCommand
         self::ACTION_UPDATE,
         self::ACTION_DROP,
     ];
-
 
     /**
      * {@inheritdoc}
@@ -101,8 +99,8 @@ class DatabaseSchemaCommand extends BaseCommand
      * {@inheritdoc}
      *
      * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
-     * @throws DBALException if the database connection cannot be established
-     * @throws FileNotFoundException if a table schema file is not available
+     * @throws DBALException          if the database connection cannot be established
+     * @throws FileNotFoundException  if a table schema file is not available
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -110,7 +108,6 @@ class DatabaseSchemaCommand extends BaseCommand
         $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
 
         switch ($input->getArgument("action")) {
-
             //
             // Update database schema
             //
@@ -141,7 +138,7 @@ class DatabaseSchemaCommand extends BaseCommand
                 $dropComponentsString = implode(" ", array_filter([
                     $dropFields ? "fields" : "",
                     $dropFields && $dropTables ? "and" : "",
-                    $dropTables ? "tables" : ""
+                    $dropTables ? "tables" : "",
                 ]));
 
                 // Ask to drop components for security reasons
@@ -165,7 +162,7 @@ class DatabaseSchemaCommand extends BaseCommand
                 $droppedFields = [];
                 if (isset($report["tables"])) {
                     $droppedTables = array_map(function (Table $table) {
-                        /** @noinspection RequiredAttributes */
+                        /* @noinspection RequiredAttributes */
                         return sprintf("<param>%s</>", $table->getName());
                     }, $report["tables"]);
                 }
@@ -176,7 +173,7 @@ class DatabaseSchemaCommand extends BaseCommand
                         /** @var Column[] $fields */
                         $fields = $components["fields"];
                         foreach ($fields as $field) {
-                            /** @noinspection RequiredAttributes */
+                            /* @noinspection RequiredAttributes */
                             $droppedFields[] = sprintf("%s.<param>%s</>", $table->getName(), $field->getName());
                         }
                     });
@@ -198,13 +195,15 @@ class DatabaseSchemaCommand extends BaseCommand
                             LocalizationUtility::localize("database.schema.dryRun_prefix", "console")
                         );
                     }
-                } else if ($dryRun) {
-                    $this->io->notice(
+                } else {
+                    if ($dryRun) {
+                        $this->io->notice(
                         LocalizationUtility::localize("database.schema.dryRun_result_message", "console"),
                         LocalizationUtility::localize("database.schema.dryRun_result_prefix", "console")
                     );
-                } else {
-                    $this->io->success(LocalizationUtility::localize("database.schema.success_drop", "console"));
+                    } else {
+                        $this->io->success(LocalizationUtility::localize("database.schema.success_drop", "console"));
+                    }
                 }
                 break;
         }

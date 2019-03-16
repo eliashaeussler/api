@@ -15,7 +15,6 @@ use Whoops\Run;
 /**
  * General utility functions.
  *
- * @package EliasHaeussler\Api\Utility
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -27,16 +26,17 @@ class GeneralUtility
     /** @var Dotenv[] Loader for environment variables */
     private static $dotenv = [];
 
-
     /**
      * Get new or existing instance of a given class.
      *
      * Instantiates or loads an existing instance of a given class with given constructor arguments and returns it.
      *
-     * @param string $className Name of the class whose instance should be returned
-     * @param mixed ...$constructorArguments Optional arguments for the appropriate class constructor
-     * @return object A concrete instance of `$className`
+     * @param string $className               Name of the class whose instance should be returned
+     * @param mixed  ...$constructorArguments Optional arguments for the appropriate class constructor
+     *
      * @throws ClassNotFoundException if the requested class is not available
+     *
+     * @return object A concrete instance of `$className`
      */
     public static function makeInstance(string $className, ...$constructorArguments)
     {
@@ -46,23 +46,23 @@ class GeneralUtility
 
                 self::$instances[$className] = new $className(...$constructorArguments);
             }
-            return self::$instances[$className];
 
-        } else {
-            throw new ClassNotFoundException(
-                LocalizationUtility::localize("exception.1543534319", null, null, $className),
-                1543534319
-            );
+            return self::$instances[$className];
         }
+        throw new ClassNotFoundException(
+            LocalizationUtility::localize("exception.1543534319", null, null, $className),
+            1543534319
+        );
     }
 
     /**
      * Explode string by given delimiter and trim all resulting array components.
      *
-     * @param string $delimiter Boundary string
-     * @param string $string Input string
+     * @param string $delimiter      Boundary string
+     * @param string $string         Input string
      * @param string $trimCharacters Trim characters to be passed to {@see trim()}
-     * @param int $limit Limit to be passed to {@see explode()}
+     * @param int    $limit          Limit to be passed to {@see explode()}
+     *
      * @return array Array with string components
      */
     public static function trimExplode(
@@ -77,7 +77,9 @@ class GeneralUtility
             $result = [];
             array_walk($values, function ($value) use ($trimCharacters, &$result) {
                 $trimmedValue = trim($value, $trimCharacters);
-                if (!empty($trimmedValue)) $result[] = $trimmedValue;
+                if (!empty($trimmedValue)) {
+                    $result[] = $trimmedValue;
+                }
             });
 
             return $result;
@@ -89,18 +91,19 @@ class GeneralUtility
     /**
      * Replace first occurrence of search string with replacement string.
      *
-     * @param string $haystack The input string
-     * @param string $needle The search pattern
+     * @param string $haystack    The input string
+     * @param string $needle      The search pattern
      * @param string $replacement The replacement string
+     *
      * @return string The replaced input string
      */
     public static function replaceFirst(string $haystack, string $needle, string $replacement): string
     {
         if (($pos = strpos($haystack, $needle)) !== false) {
             return substr_replace($haystack, $replacement, $pos, strlen($needle));
-        } else {
-            return $haystack;
         }
+
+        return $haystack;
     }
 
     /**
@@ -109,8 +112,9 @@ class GeneralUtility
      * Splits a given string into its single characters and returns them as an array. Optionally, it's possible to set
      * a maximum number of characters to be returned.
      *
-     * @param string $string String to be split into characters
-     * @param int|null $max Maximum number of characters to be returned
+     * @param string   $string String to be split into characters
+     * @param int|null $max    Maximum number of characters to be returned
+     *
      * @return array Single characters of given string
      */
     public static function splitIntoCharacters(string $string, int $max = null): array
@@ -123,8 +127,9 @@ class GeneralUtility
      *
      * Recursively converts an array to its appropriate string representation, separated by the given separator.
      *
-     * @param array $array The array to be converted into string
+     * @param array  $array     The array to be converted into string
      * @param string $separator String separating array elements from each other
+     *
      * @return string The converted string representation of the array
      */
     public static function convertArrayToString(array $array, string $separator = PHP_EOL): string
@@ -133,6 +138,7 @@ class GeneralUtility
         array_walk_recursive($array, function ($value, $key) use ($separator, &$result) {
             $result .= sprintf("%s => %s", $key, $value) . $separator;
         });
+
         return substr_replace($result, "", -strlen($separator));
     }
 
@@ -140,6 +146,7 @@ class GeneralUtility
      * Get normalized name of current API controller without namespace and class suffix.
      *
      * @param string $class Class name of the API controller
+     *
      * @return string Normalized name of current API controller
      */
     public static function getControllerName(string $class)
@@ -147,9 +154,9 @@ class GeneralUtility
         $controller = ($pos = strrpos($class, "\\")) ? substr($class, $pos + 1) : $pos;
         if ($controller === false) {
             return $class;
-        } else {
-            return implode("", preg_split("/Controller$/", $controller, -1, PREG_SPLIT_NO_EMPTY));
         }
+
+        return implode("", preg_split("/Controller$/", $controller, -1, PREG_SPLIT_NO_EMPTY));
     }
 
     /**
@@ -157,8 +164,8 @@ class GeneralUtility
      *
      * Reads the environment variables of the current environment in order to use them in the API request.
      *
-     * @param string $file File name of the .env file
-     * @param bool $silent Define whether to not throw errors if .env file could not be found
+     * @param string $file   File name of the .env file
+     * @param bool   $silent Define whether to not throw errors if .env file could not be found
      */
     public static function loadEnvironment(string $file = ".env", bool $silent = false)
     {
@@ -179,13 +186,15 @@ class GeneralUtility
     /**
      * Get value of an environment variable.
      *
-     * @param string $name Name of the environment variable
-     * @param mixed $default Default variable if environment variable is not available
+     * @param string $name    Name of the environment variable
+     * @param mixed  $default Default variable if environment variable is not available
+     *
      * @return mixed The value of the given environment variable
      */
     public static function getEnvironmentVariable(string $name, $default = "")
     {
         $loader = new Loader(ROOT_PATH);
+
         return $loader->getEnvironmentVariable($name) ?? $default;
     }
 
@@ -237,7 +246,8 @@ class GeneralUtility
     public static function isDebugEnabled(): bool
     {
         self::loadEnvironment();
-        return !!static::getEnvironmentVariable("DEBUG_EXCEPTIONS", false);
+
+        return (bool) static::getEnvironmentVariable("DEBUG_EXCEPTIONS", false);
     }
 
     /**

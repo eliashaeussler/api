@@ -11,7 +11,6 @@ use EliasHaeussler\Api\Exception\FileNotFoundException;
 /**
  * Data utility functions.
  *
- * @package EliasHaeussler\Api\Utility
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -26,7 +25,6 @@ class DataUtility
     /** @var array Storage of processed data files */
     private static $dataStorage = [];
 
-
     /**
      * Get data of a specified data file.
      *
@@ -39,9 +37,11 @@ class DataUtility
      * * `getData("slack", "lunch.help-text")` returns the element `{ "lunch": { "help-text": "..." } }`
      *
      * @param string $fileName Data file name without path or file extension
-     * @param string $key Optional key to be used for traversing over JSON file and returning the resulting contents
-     * @return mixed The contents of the data file, or a specific set of elements if `$key` is defined
+     * @param string $key      Optional key to be used for traversing over JSON file and returning the resulting contents
+     *
      * @throws FileNotFoundException if the data file is not available
+     *
+     * @return mixed The contents of the data file, or a specific set of elements if `$key` is defined
      */
     public static function getData(string $fileName, string $key = "")
     {
@@ -66,8 +66,8 @@ class DataUtility
         // Return all elements or a specific one
         if (!$key) {
             return $elements;
-        } else {
-            return (new Dot($elements))->get($key);
         }
+
+        return (new Dot($elements))->get($key);
     }
 }

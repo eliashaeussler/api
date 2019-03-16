@@ -17,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * This command makes it possible to export the database.
  *
- * @package EliasHaeussler\Api\Command
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */

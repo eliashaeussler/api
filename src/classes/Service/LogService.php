@@ -14,7 +14,6 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
  * be helpful to reproduce errors or debug custom API functions. Log files will be rotated if they reach a file size
  * of 5 MB (respectively 5242880 Bytes). Use the console to clear old log files.
  *
- * @package EliasHaeussler\Api\Service
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -56,7 +55,6 @@ class LogService
     /** @var int Maximum file size of log files in bytes */
     const LOG_FILE_MAX_SIZE = 5242880;
 
-
     /**
      * Write a message to the log file using a given severity.
      *
@@ -64,8 +62,8 @@ class LogService
      * log level so that e.g. messages with severity {@see LogService::DEBUG} won't be logged if `MINIMUM_LOG_LEVEL`
      * is set to a number higher than `0`.
      *
-     * @param string $message The message to be logged
-     * @param int $severity The messages' severity level
+     * @param string $message  The message to be logged
+     * @param int    $severity The messages' severity level
      */
     public static function log(string $message, int $severity = self::NOTICE): void
     {
@@ -84,13 +82,58 @@ class LogService
     }
 
     /**
+     * Get full path and file name of a requested log file.
+     *
+     * @param string|null $fileName The base file name of the log file, can be null to use the default file name
+     *
+     * @return string The file name of the requested log file
+     */
+    public static function getLogFileName(?string $fileName = null): string
+    {
+        if (!$fileName) {
+            $fileName = self::LOG_FILE_NAME;
+        }
+
+        return sprintf("%s/%s", self::LOG_DIRECTORY, $fileName);
+    }
+
+    /**
+     * Clear old log files.
+     *
+     * Removes old log files from the file system. Set `$keepDefaultFile` to `true` to preserve the default file
+     * {@see LogService::LOG_FILE_NAME}. The method returns an array with the result of each file removal.
+     *
+     * @param bool $keepDefaultFile Define whether to keep the default log file
+     *
+     * @return array Result set of each log file removal
+     */
+    public static function clearLogFiles(bool $keepDefaultFile = true): array
+    {
+        $result = [];
+
+        // Clear default log file
+        $default_file = self::getLogFileName();
+        if (!$keepDefaultFile && file_exists($default_file)) {
+            $result[$default_file] = unlink($default_file);
+        }
+
+        // Clear rotated log files
+        foreach (glob(self::getLogFileName(self::LOG_FILE_NAME_ROTATION_PATTERN)) as $logFile) {
+            $result[$logFile] = unlink($logFile);
+        }
+
+        return $result;
+    }
+
+    /**
      * Build log message.
      *
      * Builds the log message by adding custom information like time, severity level and backtrace (only for error
      * severity level).
      *
-     * @param string $message The message to be used for building the complete log message
-     * @param int $severity The messages' severity level
+     * @param string $message  The message to be used for building the complete log message
+     * @param int    $severity The messages' severity level
+     *
      * @return string The generated log message
      */
     protected static function buildLogMessage(string $message, int $severity = self::NOTICE): string
@@ -132,6 +175,7 @@ class LogService
         if (!file_exists(self::LOG_DIRECTORY)) {
             mkdir(self::LOG_DIRECTORY, 0777, true);
             self::writeLogFile();
+
             return;
         }
 
@@ -140,17 +184,15 @@ class LogService
         }
 
         // Rotate log files
-        if (filesize($log_file) >= self::LOG_FILE_MAX_SIZE)
-        {
+        if (filesize($log_file) >= self::LOG_FILE_MAX_SIZE) {
             $next_rotation = 1;
 
             // Get last rotated file
-            if ($rotated_files = glob(self::getLogFileName(self::LOG_FILE_NAME_ROTATION_PATTERN)))
-            {
+            if ($rotated_files = glob(self::getLogFileName(self::LOG_FILE_NAME_ROTATION_PATTERN))) {
                 natsort($rotated_files);
                 $last_file = basename(end($rotated_files));
 
-                $file_pattern = sprintf("/^%s$/", str_replace("*", "(\d+)", self::LOG_FILE_NAME_ROTATION_PATTERN));
+                $file_pattern = sprintf("/^%s$/", str_replace("*", "(\\d+)", self::LOG_FILE_NAME_ROTATION_PATTERN));
                 preg_match($file_pattern, $last_file, $matches);
                 if ($matches) {
                     $next_rotation = $matches[1] + 1;
@@ -174,46 +216,5 @@ class LogService
     protected static function writeLogFile(?string $fileName = null): void
     {
         touch(self::getLogFileName($fileName));
-    }
-
-    /**
-     * Get full path and file name of a requested log file.
-     *
-     * @param string|null $fileName The base file name of the log file, can be null to use the default file name
-     * @return string The file name of the requested log file
-     */
-    public static function getLogFileName(?string $fileName = null): string
-    {
-        if (!$fileName) {
-            $fileName = self::LOG_FILE_NAME;
-        }
-        return sprintf("%s/%s", self::LOG_DIRECTORY, $fileName);
-    }
-
-    /**
-     * Clear old log files.
-     *
-     * Removes old log files from the file system. Set `$keepDefaultFile` to `true` to preserve the default file
-     * {@see LogService::LOG_FILE_NAME}. The method returns an array with the result of each file removal.
-     *
-     * @param bool $keepDefaultFile Define whether to keep the default log file
-     * @return array Result set of each log file removal
-     */
-    public static function clearLogFiles(bool $keepDefaultFile = true): array
-    {
-        $result = [];
-
-        // Clear default log file
-        $default_file = self::getLogFileName();
-        if (!$keepDefaultFile && file_exists($default_file)) {
-            $result[$default_file] = unlink($default_file);
-        }
-
-        // Clear rotated log files
-        foreach (glob(self::getLogFileName(self::LOG_FILE_NAME_ROTATION_PATTERN)) as $logFile) {
-            $result[$logFile] = unlink($logFile);
-        }
-
-        return $result;
     }
 }

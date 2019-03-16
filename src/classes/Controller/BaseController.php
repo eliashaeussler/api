@@ -14,14 +14,13 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
 /**
  * Base API controller.
  *
- * @package EliasHaeussler\Api\Controller
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
 abstract class BaseController
 {
     /** @var string Regex pattern for matching HTTP prefix in request header */
-    const REQUEST_HEADER_PREFIX_PATTERN = "/^(\s?HTTP_)/";
+    const REQUEST_HEADER_PREFIX_PATTERN = "/^(\\s?HTTP_)/";
 
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [];
@@ -37,7 +36,6 @@ abstract class BaseController
 
     /** @var string API request route */
     protected $route;
-
 
     /**
      * Initialize API request for selected controller.
@@ -60,14 +58,6 @@ abstract class BaseController
     }
 
     /**
-     * Initialize API request.
-     *
-     * Defines necessary variables for the API request and ensures that it can be processed without errors. This method
-     * can also be used to pre-check API conditions and user authentications.
-     */
-    abstract protected function initializeRequest();
-
-    /**
      * Process API request.
      *
      * This methods calls a concrete routing class to process the current API request. It's necessary to check both the
@@ -77,8 +67,7 @@ abstract class BaseController
      */
     public function call()
     {
-        if (array_key_exists($this->route, $this::ROUTE_MAPPINGS))
-        {
+        if (array_key_exists($this->route, $this::ROUTE_MAPPINGS)) {
             $route_method = $this::ROUTE_MAPPINGS[$this->route];
 
             LogService::log(
@@ -100,10 +89,12 @@ abstract class BaseController
      * class. The first parameter `$type` defines the name of the method to be used for building the message.
      *
      * @param string $type Message type, will be used to call the appropriate method in {@see Message} class
-     * @param mixed $arg1 First argument to be passed to appropriate method in {@see Message} class. Required.
-     * @param array $_ More arguments to be passed to appropriate method in {@see Message} class. Optional.
-     * @return string The generated message, if successful, or an empty string, if the build process failed
+     * @param mixed  $arg1 First argument to be passed to appropriate method in {@see Message} class. Required.
+     * @param array  $_    More arguments to be passed to appropriate method in {@see Message} class. Optional.
+     *
      * @throws ClassNotFoundException if the {@see Message} class is not available
+     *
+     * @return string The generated message, if successful, or an empty string, if the build process failed
      */
     public function buildMessage(string $type, $arg1, ...$_): string
     {
@@ -130,6 +121,89 @@ abstract class BaseController
 
         return call_user_func([$object, $method], ...$arguments) ?: "";
     }
+
+    /**
+     * Get body of current API request.
+     *
+     * @return string API request body
+     */
+    public function getRequestBody(): string
+    {
+        return $this->requestBody;
+    }
+
+    /**
+     * Get HTTP headers of current API request.
+     *
+     * @return array Additional HTTP headers of API request
+     */
+    public function getRequestHeaders(): array
+    {
+        return $this->requestHeaders;
+    }
+
+    /**
+     * Get value of given HTTP header.
+     *
+     * Returns the value of a given HTTP header of the current API request. Note that you shouldn't provide the "HTTP_"
+     * prefix in the `$header` argument. Also note that hyphens will be replaced by underscores. This can be disabled
+     * by setting `$useRawInput` to `true`.
+     *
+     * @param string $header      Name of the HTTP header to return
+     * @param bool   $useRawInput Define whether the raw name of the given HTTP header should be used
+     *
+     * @return string Value of the given HTTP header
+     */
+    public function getRequestHeader(string $header, bool $useRawInput = false): string
+    {
+        $normalizedHeader = strtoupper($header);
+        $normalizedHeader = preg_replace($this::REQUEST_HEADER_PREFIX_PATTERN, "", $normalizedHeader);
+        if (!$useRawInput) {
+            $normalizedHeader = str_replace("-", "_", $normalizedHeader);
+        }
+
+        return $this->requestHeaders[$normalizedHeader] ?? "";
+    }
+
+    /**
+     * Get API request parameters.
+     *
+     * @return array API request parameters
+     */
+    public function getRequestParameters(): array
+    {
+        return $this->requestParameters;
+    }
+
+    /**
+     * Get value of given API request parameters.
+     *
+     * @param string $key Name of the API request parameter to return
+     *
+     * @return mixed|null API request parameters
+     */
+    public function getRequestParameter(string $key)
+    {
+        return $this->requestParameters[$key];
+    }
+
+    /**
+     * Set current API request route.
+     *
+     * @param string $route
+     */
+    public function setRoute(string $route)
+    {
+        $this->route = trim(strtolower($route));
+    }
+
+    /**
+     * Initialize API request.
+     *
+     * Defines necessary variables for the API request and ensures that it can be processed without errors. This method
+     * can also be used to pre-check API conditions and user authentications.
+     */
+    abstract protected function initializeRequest();
 
     /**
      * Read body of current API request.
@@ -192,83 +266,11 @@ abstract class BaseController
      * Check if given route matches the current route.
      *
      * @param string $route Route to be checked against the current route
+     *
      * @return bool `true` if the given route matches the current route, `false` otherwise
      */
     protected function matchesRoute(string $route)
     {
         return trim(strtolower($route)) == $this->route;
-    }
-
-    /**
-     * Get body of current API request.
-     *
-     * @return string API request body
-     */
-    public function getRequestBody(): string
-    {
-        return $this->requestBody;
-    }
-
-    /**
-     * Get HTTP headers of current API request.
-     *
-     * @return array Additional HTTP headers of API request
-     */
-    public function getRequestHeaders(): array
-    {
-        return $this->requestHeaders;
-    }
-
-    /**
-     * Get value of given HTTP header.
-     *
-     * Returns the value of a given HTTP header of the current API request. Note that you shouldn't provide the "HTTP_"
-     * prefix in the `$header` argument. Also note that hyphens will be replaced by underscores. This can be disabled
-     * by setting `$useRawInput` to `true`.
-     *
-     * @param string $header Name of the HTTP header to return
-     * @param bool $useRawInput Define whether the raw name of the given HTTP header should be used
-     * @return string Value of the given HTTP header
-     */
-    public function getRequestHeader(string $header, bool $useRawInput = false): string
-    {
-        $normalizedHeader = strtoupper($header);
-        $normalizedHeader = preg_replace($this::REQUEST_HEADER_PREFIX_PATTERN, "", $normalizedHeader);
-        if (!$useRawInput) {
-            $normalizedHeader = str_replace("-", "_", $normalizedHeader);
-        }
-
-        return $this->requestHeaders[$normalizedHeader] ?? "";
-    }
-
-    /**
-     * Get API request parameters.
-     *
-     * @return array API request parameters
-     */
-    public function getRequestParameters(): array
-    {
-        return $this->requestParameters;
-    }
-
-    /**
-     * Get value of given API request parameters.
-     *
-     * @param string $key Name of the API request parameter to return
-     * @return mixed|null API request parameters
-     */
-    public function getRequestParameter(string $key)
-    {
-        return $this->requestParameters[$key];
-    }
-
-    /**
-     * Set current API request route.
-     *
-     * @param string $route
-     */
-    public function setRoute(string $route)
-    {
-        $this->route = trim(strtolower($route));
     }
 }

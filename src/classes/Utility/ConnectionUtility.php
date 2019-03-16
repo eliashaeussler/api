@@ -10,24 +10,23 @@ use EliasHaeussler\Api\Service\LogService;
 /**
  * Connection utility functions.
  *
- * @package EliasHaeussler\Api\Utility
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
 class ConnectionUtility
 {
-
     /**
      * Send cURL POST request to given uri.
      *
      * Sends a cURL POST request to the given uri and adds the appropriate post data and options to the request.
      * If `$json` is set to `true`, the request will be sent as JSON-formatted string.
      *
-     * @param string $uri The request uri
-     * @param array $postData POST data, will be added to the request
-     * @param array $httpHeaders Additional HTTP headers, will be merged with default headers
-     * @param array $options Additional options, will be merged with the default cURL options
-     * @param bool $json Define whether to send a JSON request instead of raw POST request
+     * @param string $uri         The request uri
+     * @param array  $postData    POST data, will be added to the request
+     * @param array  $httpHeaders Additional HTTP headers, will be merged with default headers
+     * @param array  $options     Additional options, will be merged with the default cURL options
+     * @param bool   $json        Define whether to send a JSON request instead of raw POST request
+     *
      * @return bool|string The cURL request result
      */
     public static function sendRequest(
@@ -37,7 +36,6 @@ class ConnectionUtility
         array $options = [],
         bool $json = false
     ) {
-
         // Initialize request
         $ch = curl_init();
 
@@ -49,8 +47,7 @@ class ConnectionUtility
         ];
 
         // Handle POST requests
-        if (count($postData) > 0)
-        {
+        if (count($postData) > 0) {
             // Mark current request as POST request
             $requestData[CURLOPT_POST] = true;
 
@@ -95,5 +92,4 @@ class ConnectionUtility
 
         return $result;
     }
-
 }

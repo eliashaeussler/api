@@ -30,7 +30,6 @@ use EliasHaeussler\Api\Utility\LocalizationUtility;
  * a specific API call. Disabling the status is possible by sending the `/lunch` command again, but it will expire by
  * default after either the given duration or a default time.
  *
- * @package EliasHaeussler\Api\Routing\Slack
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -81,14 +80,60 @@ class LunchCommandRoute extends BaseRoute
     /** @var int Expiration period */
     protected $expirationPeriod = self::DEFAULT_EXPIRATION;
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws InvalidRequestException if API request failed or contains an invalid answer
+     * @throws ClassNotFoundException  if the {@see Message} class is not available
+     * @throws AuthenticationException if the user needs to re-authenticate himself
+     * @throws \Exception              if setting the status expiration failed
+     */
+    public function processRequest()
+    {
+        // Show help text if request parameter starts with "help" keyword
+        if (stripos($this->requestParameters, self::REQUEST_PARAMETER_HELP) === 0) {
+            echo $this->showHelpText();
+
+            return;
+        }
+
+        // Set default expiration if request parameter starts with "expire" keyword
+        if (stripos($this->requestParameters, self::REQUEST_PARAMETER_EXPIRE) === 0) {
+            $this->setDefaultExpirationTime();
+
+            return;
+        }
+
+        // Send API call
+        $result = $this->controller->api("users.profile.set", $this->requestData);
+        $this->controller->checkApiResult($result);
+
+        // Show success message
+        if ($this->statusAlreadySet) {
+            $message = LocalizationUtility::localize(
+                "lunch.message.endBreak", "slack", null,
+                SlackMessage::emoji("rocket")
+            );
+        } else {
+            $expiration = new \DateTime();
+            $expiration->setTimestamp($this->expiration);
+            $message = LocalizationUtility::localize(
+                "lunch.message.startBreak", "slack", null,
+                $this->emoji,
+                $expiration->format("H:i")
+            );
+        }
+
+        echo $this->controller->buildMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
+    }
 
     /**
      * {@inheritdoc}
      *
-     * @throws DatabaseException if ensuring the availability of user data for the current user failed
+     * @throws DatabaseException       if ensuring the availability of user data for the current user failed
      * @throws InvalidRequestException if API request failed or contains an invalid answer
      * @throws AuthenticationException if the user needs to re-authenticate himself
-     * @throws \Exception if calculating the status expiration failed
+     * @throws \Exception              if calculating the status expiration failed
      */
     protected function initializeRequest()
     {
@@ -129,55 +174,12 @@ class LunchCommandRoute extends BaseRoute
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws InvalidRequestException if API request failed or contains an invalid answer
-     * @throws ClassNotFoundException if the {@see Message} class is not available
-     * @throws AuthenticationException if the user needs to re-authenticate himself
-     * @throws \Exception if setting the status expiration failed
-     */
-    public function processRequest()
-    {
-        // Show help text if request parameter starts with "help" keyword
-        if (stripos($this->requestParameters, self::REQUEST_PARAMETER_HELP) === 0) {
-            echo $this->showHelpText();
-            return;
-
-        // Set default expiration if request parameter starts with "expire" keyword
-        } else if (stripos($this->requestParameters, self::REQUEST_PARAMETER_EXPIRE) === 0) {
-            $this->setDefaultExpirationTime();
-            return;
-        }
-
-        // Send API call
-        $result = $this->controller->api("users.profile.set", $this->requestData);
-        $this->controller->checkApiResult($result);
-
-        // Show success message
-        if ($this->statusAlreadySet) {
-            $message = LocalizationUtility::localize(
-                "lunch.message.endBreak", "slack", null,
-                SlackMessage::emoji("rocket")
-            );
-        } else {
-            $expiration = new \DateTime();
-            $expiration->setTimestamp($this->expiration);
-            $message = LocalizationUtility::localize(
-                "lunch.message.startBreak", "slack", null,
-                $this->emoji,
-                $expiration->format("H:i")
-            );
-        }
-
-        echo $this->controller->buildMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
-    }
-
-    /**
      * Check whether the status has already been set and is still active.
      *
-     * @return bool `true` if the status has already been set and is still active, `false` otherwise
      * @throws InvalidRequestException if API request failed or contains an invalid answer
      * @throws AuthenticationException if the user needs to re-authenticate himself
+     *
+     * @return bool `true` if the status has already been set and is still active, `false` otherwise
      */
     protected function checkIfStatusIsSet(): bool
     {
@@ -211,8 +213,9 @@ class LunchCommandRoute extends BaseRoute
      *
      * Note that expiration needs to be provided in minutes.
      *
-     * @return int Calculated expiration in minutes
      * @throws \Exception if the expiration cannot be calculated
+     *
+     * @return int Calculated expiration in minutes
      */
     protected function calculateExpiration(): int
     {
@@ -249,6 +252,7 @@ class LunchCommandRoute extends BaseRoute
 
     /**
      * @param int $time
+     *
      * @throws InvalidRequestException if `$time` is not set and the request does not contain a valid expiration time
      */
     protected function setDefaultExpirationTime(int $time = 0)
@@ -306,7 +310,6 @@ class LunchCommandRoute extends BaseRoute
                 )
             );
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
-
         } else {
             $message = LocalizationUtility::localize(
                 "lunch.default.alreadySet", "slack", null,
@@ -344,7 +347,9 @@ class LunchCommandRoute extends BaseRoute
                 ->values(["user" => ":user_id"])
                 ->execute();
 
-            if ($result == 0) return false;
+            if ($result == 0) {
+                return false;
+            }
         }
 
         return true;

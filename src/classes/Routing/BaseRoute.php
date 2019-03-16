@@ -11,7 +11,6 @@ use EliasHaeussler\Api\Service\LogService;
 /**
  * Base request router.
  *
- * @package EliasHaeussler\Api\Routing
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -22,7 +21,6 @@ abstract class BaseRoute
 
     /** @var array Data to be send in request */
     protected $requestData;
-
 
     /**
      * Initialize request router for current API controller.
@@ -42,16 +40,16 @@ abstract class BaseRoute
     }
 
     /**
-     * Initialize routing for API request.
-     *
-     * Defines necessary variables for the routing of the API request and ensures that it can be processed without errors.
-     */
-    abstract protected function initializeRequest();
-
-    /**
      * Process routing of API request.
      *
      * This method processes the concrete API request and prints the result of it.
      */
     abstract public function processRequest();
+
+    /**
+     * Initialize routing for API request.
+     *
+     * Defines necessary variables for the routing of the API request and ensures that it can be processed without errors.
+     */
+    abstract protected function initializeRequest();
 }

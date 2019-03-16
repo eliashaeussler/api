@@ -11,7 +11,6 @@ use EliasHaeussler\Api\Exception\InvalidFileException;
 /**
  * Localization utility functions.
  *
- * @package EliasHaeussler\Api\Utility
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -50,10 +49,11 @@ class LocalizationUtility
      * Returns a localized text which is identified by its id and the localization type. The localization type needs to
      * match the appropriate localization file without its file extension.
      *
-     * @param string $id The localization text identifier
-     * @param string|null $type The localization type, needs to match the basename of the appropriate localization file
-     * @param string|null $default An optional default value which will be returned if the localization text is not available
-     * @param mixed ...$arguments Additional arguments which will be passed to the internal {@see sprintf()} function
+     * @param string      $id           The localization text identifier
+     * @param string|null $type         The localization type, needs to match the basename of the appropriate localization file
+     * @param string|null $default      An optional default value which will be returned if the localization text is not available
+     * @param mixed       ...$arguments Additional arguments which will be passed to the internal {@see sprintf()} function
+     *
      * @return string The localized text
      */
     public static function localize(string $id, ?string $type = self::DEFAULT_FILE_NAME, ?string $default = "", ...$arguments): string
@@ -74,24 +74,57 @@ class LocalizationUtility
             // Parse localization file nodes
             self::parseNodes($type);
 
-            foreach ([self::$userPreferredLanguage, self::DEFAULT_LANGUAGE] as $language)
-            {
+            foreach ([self::$userPreferredLanguage, self::DEFAULT_LANGUAGE] as $language) {
                 // Get localization file nodes
                 $type = strtolower($type);
                 $nodes = self::$fileCache[$type][$language]["nodes"] ?? [];
 
                 if (isset($nodes[$id])) {
                     return sprintf($nodes[$id], ...$arguments);
-                } else {
-                    continue;
                 }
+                continue;
             }
 
             return $default;
-
         } catch (FileNotFoundException | InvalidFileException $e) {
             return $default;
         }
+    }
+
+    /**
+     * Read user-preferred localization languages by given locale string.
+     *
+     * Reads and stores the user-preferred localization language by a given locale string. If no locale string is
+     * provided, the language will be extracted from the HTTP header.
+     *
+     * @param string|null $source Locale source string
+     */
+    public static function readUserPreferredLanguages(?string $source = null): void
+    {
+        if (!$source) {
+            $source = $_SERVER["HTTP_ACCEPT_LANGUAGE"] ?? "";
+        }
+
+        $browserLanguages = GeneralUtility::trimExplode(",", $source);
+        $browserLanguages = array_map(function ($language) {
+            preg_match(self::LANGUAGE_CODE_PATTERN, $language, $matches);
+
+            return $matches[0];
+        }, $browserLanguages);
+
+        if ($browserLanguages = array_values(array_unique($browserLanguages))) {
+            self::$userPreferredLanguage = $browserLanguages[0];
+        }
+    }
+
+    /**
+     * Set user-preferred localization language.
+     *
+     * @param string $userPreferredLanguage User-preferred localization language
+     */
+    public static function setUserPreferredLanguage(string $userPreferredLanguage): void
+    {
+        self::$userPreferredLanguage = $userPreferredLanguage;
     }
 
     /**
@@ -103,8 +136,9 @@ class LocalizationUtility
      * localization files, but only parses and stores them locally.
      *
      * @param string $type The localization type, needs to match the basename of the appropriate localization file
+     *
      * @throws FileNotFoundException if the localization file cannot be found or is not readable
-     * @throws InvalidFileException if the localization file contains invalid content
+     * @throws InvalidFileException  if the localization file contains invalid content
      */
     protected static function parseNodes(string $type = self::DEFAULT_FILE_NAME): void
     {
@@ -119,8 +153,7 @@ class LocalizationUtility
         // Get file contents
         self::readFileContents($type);
 
-        foreach (array_keys($fileCache) as $language)
-        {
+        foreach (array_keys($fileCache) as $language) {
             // Parse XML nodes
             $xml = new \SimpleXMLElement($fileCache[$language]["contents"]);
             $nodes = $xml->xpath(self::LOCALIZATION_TEXT_XPATH);
@@ -152,6 +185,7 @@ class LocalizationUtility
      * but only parses and stores them locally.
      *
      * @param string $type The localization type, needs to match the basename of the appropriate localization file
+     *
      * @throws FileNotFoundException if the localization file cannot be found or is not readable
      */
     protected static function readFileContents(string $type = self::DEFAULT_FILE_NAME): void
@@ -164,9 +198,8 @@ class LocalizationUtility
             self::$fileCache[$type] = [];
         }
 
-        foreach (glob($filePath, GLOB_BRACE) as $file)
-        {
-            preg_match("/^([a-z]{2})\./", basename($file), $matches);
+        foreach (glob($filePath, GLOB_BRACE) as $file) {
+            preg_match("/^([a-z]{2})\\./", basename($file), $matches);
             $language = $matches ? $matches[1] : self::DEFAULT_LANGUAGE;
 
             // Get file contents
@@ -185,40 +218,5 @@ class LocalizationUtility
             self::$fileCache[$type][$language]["parse_time"] = time();
             self::$fileCache[$type][$language]["contents"] = $fileContents;
         }
-    }
-
-    /**
-     * Read user-preferred localization languages by given locale string.
-     *
-     * Reads and stores the user-preferred localization language by a given locale string. If no locale string is
-     * provided, the language will be extracted from the HTTP header.
-     *
-     * @param string|null $source Locale source string
-     */
-    public static function readUserPreferredLanguages(?string $source = null): void
-    {
-        if (!$source) {
-            $source = $_SERVER["HTTP_ACCEPT_LANGUAGE"] ?? "";
-        }
-
-        $browserLanguages = GeneralUtility::trimExplode(",", $source);
-        $browserLanguages = array_map(function ($language) {
-            preg_match(self::LANGUAGE_CODE_PATTERN, $language, $matches);
-            return $matches[0];
-        }, $browserLanguages);
-
-        if ($browserLanguages = array_values(array_unique($browserLanguages))) {
-            self::$userPreferredLanguage = $browserLanguages[0];
-        }
-    }
-
-    /**
-     * Set user-preferred localization language.
-     *
-     * @param string $userPreferredLanguage User-preferred localization language
-     */
-    public static function setUserPreferredLanguage(string $userPreferredLanguage): void
-    {
-        self::$userPreferredLanguage = $userPreferredLanguage;
     }
 }

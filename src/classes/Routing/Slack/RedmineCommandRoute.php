@@ -27,7 +27,6 @@ use EliasHaeussler\Api\Utility\LocalizationUtility;
  * The data will be requested from the Redmine API. For this, it's necessary to set a base URI as well as an active
  * API key which will be used for authenticating an active user at the Redmine API.
  *
- * @package EliasHaeussler\Api\Routing\Slack
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -75,13 +74,40 @@ class RedmineCommandRoute extends BaseRoute
     /** @var int Maximum string length for issue descriptions */
     protected $issueMaxDescriptionLength = 150;
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws InvalidParameterException if no issue ID has been provided or an invalid action is provided
+     * @throws InvalidRequestException   if the result from the Redmine API is invalid
+     * @throws IssueNotFoundException    if the requested issue could not be found
+     * @throws DatabaseException         if persisting the API key failed
+     * @throws \Exception                if the issues' start date cannot be instantiated as {@see DateTime} object
+     */
+    public function processRequest()
+    {
+        switch ($this->action) {
+            case self::ACTION_ISSUE:
+                $this->showIssueData();
+                break;
+
+            case self::ACTION_AUTH:
+                $this->persistUserApiKey();
+                break;
+
+            default:
+                throw new InvalidParameterException(
+                    LocalizationUtility::localize("exception.1552436109", "slack", "", $this->action),
+                    1552436109
+                );
+        }
+    }
 
     /**
      * {@inheritdoc}
      *
      * @throws InvalidEnvironmentException if either the base URI or API key is not set or invalid
-     * @throws InvalidRequestException if no Slack command is set or no request data is available
-     * @throws InvalidParameterException if an invalid slash command has been provided
+     * @throws InvalidRequestException     if no Slack command is set or no request data is available
+     * @throws InvalidParameterException   if an invalid slash command has been provided
      */
     protected function initializeRequest()
     {
@@ -103,8 +129,7 @@ class RedmineCommandRoute extends BaseRoute
         }
 
         // Get API key if current action requires a valid key
-        if ($this->action != self::ACTION_AUTH)
-        {
+        if ($this->action != self::ACTION_AUTH) {
             $this->apiKey = $this->retrieveApiKey();
             if (!$this->apiKey) {
                 throw new InvalidEnvironmentException(
@@ -116,35 +141,6 @@ class RedmineCommandRoute extends BaseRoute
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws InvalidParameterException if no issue ID has been provided or an invalid action is provided
-     * @throws InvalidRequestException if the result from the Redmine API is invalid
-     * @throws IssueNotFoundException if the requested issue could not be found
-     * @throws DatabaseException if persisting the API key failed
-     * @throws \Exception if the issues' start date cannot be instantiated as {@see DateTime} object
-     */
-    public function processRequest()
-    {
-        switch ($this->action)
-        {
-            case self::ACTION_ISSUE:
-                $this->showIssueData();
-                break;
-
-            case self::ACTION_AUTH:
-                $this->persistUserApiKey();
-                break;
-
-            default:
-                throw new InvalidParameterException(
-                    LocalizationUtility::localize("exception.1552436109", "slack", "", $this->action),
-                    1552436109
-                );
-        }
-    }
-
-    /**
      * Show data for a requested issue.
      *
      * Requests data for the requested issue from Redmine and prints it in order to send the requested data to Slack.
@@ -152,9 +148,9 @@ class RedmineCommandRoute extends BaseRoute
      * case if the requested issue could not be found in Redmine.
      *
      * @throws InvalidParameterException if no issue ID has been provided
-     * @throws InvalidRequestException if the result from the Redmine API is invalid
-     * @throws IssueNotFoundException if the requested issue could not be found
-     * @throws \Exception if the issues' start date cannot be instantiated as {@see DateTime} object
+     * @throws InvalidRequestException   if the result from the Redmine API is invalid
+     * @throws IssueNotFoundException    if the requested issue could not be found
+     * @throws \Exception                if the issues' start date cannot be instantiated as {@see DateTime} object
      */
     protected function showIssueData(): void
     {
@@ -199,8 +195,7 @@ class RedmineCommandRoute extends BaseRoute
         }
 
         // Print issue data to Slack
-        if ($result = json_decode($request, true))
-        {
+        if ($result = json_decode($request, true)) {
             $issue = $result["issue"];
 
             // Get link to issue
@@ -220,10 +215,12 @@ class RedmineCommandRoute extends BaseRoute
             }));
             if ($issue["priority"]["id"] == $defaultPriority["id"]) {
                 $actionColor = "good";
-            } else if ($issue["priority"]["id"] > $defaultPriority["id"]) {
-                $actionColor = "danger";
             } else {
-                $actionColor = "";
+                if ($issue["priority"]["id"] > $defaultPriority["id"]) {
+                    $actionColor = "danger";
+                } else {
+                    $actionColor = "";
+                }
             }
 
             // Build default attachments for Slack message
@@ -299,7 +296,6 @@ class RedmineCommandRoute extends BaseRoute
 
             // Print message to Slack
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, "", $attachments, true);
-
         } else {
             throw new IssueNotFoundException(
                 LocalizationUtility::localize("exception.1552347666", "slack", "", $issueID),
@@ -311,8 +307,9 @@ class RedmineCommandRoute extends BaseRoute
     /**
      * Build link to issue in Redmine installation.
      *
-     * @param array $issue The result array from Redmine API containing issue data
+     * @param array $issue             The result array from Redmine API containing issue data
      * @param array $optionalArguments Optional arguments, will be passed through to the URI builder
+     *
      * @return string The generated link to issue in Redmine installation
      */
     protected function buildIssueLink(array $issue, array $optionalArguments = []): string
@@ -324,11 +321,13 @@ class RedmineCommandRoute extends BaseRoute
      * Build link actions for a specific issue.
      *
      * @param array $issue The result array from Redmine API containing issue data
+     *
      * @return array The link actions
      */
     protected function buildIssueActions(array $issue): array
     {
         $link = $this->buildIssueLink($issue);
+
         return [
             [
                 "type" => "button",
@@ -362,7 +361,7 @@ class RedmineCommandRoute extends BaseRoute
      * of the provided API key by accessing the Redmine API with the given key.
      *
      * @throws InvalidParameterException if no API key was provided or the provided key is not valid
-     * @throws DatabaseException if persisting the API key failed
+     * @throws DatabaseException         if persisting the API key failed
      */
     protected function persistUserApiKey(): void
     {
@@ -396,14 +395,14 @@ class RedmineCommandRoute extends BaseRoute
             ->execute()
             ->fetch();
 
-        if ($availableApiKey)
-        {
+        if ($availableApiKey) {
             // Show notice if provided API key is already available in database
             if ($availableApiKey["api_key"] == $this->apiKey) {
                 echo $this->controller->buildBotMessage(
                     Message::MESSAGE_TYPE_NOTICE,
                     LocalizationUtility::localize("redmine.auth.alreadyAuthenticated", "slack", "", SlackMessage::emoji("shushing_face"))
                 );
+
                 return;
             }
 
@@ -422,7 +421,6 @@ class RedmineCommandRoute extends BaseRoute
                     LocalizationUtility::localize("redmine.auth.successfullyUpdated", "slack", "", SlackMessage::emoji("tada"))
                 );
             }
-
         } else {
             // Add new API key to database
             $result = $queryBuilder->resetQueryParts()
@@ -479,6 +477,7 @@ class RedmineCommandRoute extends BaseRoute
      * Send and receive an authenticated API request.
      *
      * @param string $uri The request uri
+     *
      * @return bool|string The cURL request result
      */
     protected function sendAuthenticatedRequest(string $uri)
@@ -489,9 +488,10 @@ class RedmineCommandRoute extends BaseRoute
     /**
      * Build Redmine URI containing scopes, request method and optional arguments.
      *
-     * @param array $scopes API scopes, will be combined with slash character (/)
-     * @param string $method Request method, can be XML or JSON
-     * @param array $arguments Optional GET parameters
+     * @param array  $scopes    API scopes, will be combined with slash character (/)
+     * @param string $method    Request method, can be XML or JSON
+     * @param array  $arguments Optional GET parameters
+     *
      * @return string The generated API request URI
      */
     protected function buildUri(array $scopes, string $method = self::REQUEST_MODE_JSON, array $arguments = []): string
@@ -528,7 +528,7 @@ class RedmineCommandRoute extends BaseRoute
      */
     protected function buildAuthenticationHeader(): string
     {
-        return "X-Redmine-API-Key: ". $this->apiKey;
+        return "X-Redmine-API-Key: " . $this->apiKey;
     }
 
     /**

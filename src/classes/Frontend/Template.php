@@ -16,7 +16,6 @@ use Twig\TemplateWrapper;
  *
  * This class contains the rendering of Twig templates. It will be used to render page content within a given layout.
  *
- * @package EliasHaeussler\Api\Frontend
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -37,7 +36,6 @@ class Template
     /** @var TemplateWrapper Twig template wrapper */
     protected $template;
 
-
     /**
      * Initialize template rendering with Twig.
      *
@@ -45,6 +43,7 @@ class Template
      * template for rendering by loading and storing it inside the class instance.
      *
      * @param string $file File name of Twig template
+     *
      * @throws \Twig_Error if Twig template cannot be loaded
      */
     public function __construct(string $file = self::DEFAULT_TEMPLATE)
@@ -53,6 +52,20 @@ class Template
 
         $this->initializeTwig();
         $this->loadTemplate();
+    }
+
+    /**
+     * Render Twig template.
+     *
+     * @param array $parameters Additional parameters to pass to the template
+     *
+     * @return string The rendered template
+     */
+    public function renderTemplate(array $parameters = [])
+    {
+        LogService::log("Rendering Twig template", LogService::DEBUG);
+
+        return $this->template->render($parameters);
     }
 
     /**
@@ -83,18 +96,4 @@ class Template
 
         $this->template = $this->environment->load($this->file);
     }
-
-    /**
-     * Render Twig template.
-     *
-     * @param array $parameters Additional parameters to pass to the template
-     * @return string The rendered template
-     */
-    public function renderTemplate(array $parameters = [])
-    {
-        LogService::log("Rendering Twig template", LogService::DEBUG);
-
-        return $this->template->render($parameters);
-    }
-
 }

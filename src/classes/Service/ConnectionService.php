@@ -27,7 +27,6 @@ use PhpMyAdmin\SqlParser\Statements\CreateStatement;
  * This class provides a service to connect and interact with the database. A connection will automatically tried to be
  * established if any class instance is constructed.
  *
- * @package EliasHaeussler\Api\Service
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -44,7 +43,6 @@ class ConnectionService
 
     /** @var Connection Database connection */
     protected $database;
-
 
     /**
      * Initialize connection service.
@@ -87,30 +85,6 @@ class ConnectionService
     }
 
     /**
-     * Establish database connection with given parameters.
-     *
-     * Tries to establish a database connection with the given parameters. Configuration of the parameters must follow
-     * DBAL requirements.
-     *
-     * @param array $parameters Database connection parameters
-     * @return Connection The established database connection
-     * @throws DBALException if the database connection cannot be established
-     * @link https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
-     */
-    protected function establishConnection(array $parameters): Connection
-    {
-        LogService::log(
-            sprintf("Trying to connect to database \"%s\" on host \"%s\"", $parameters["dbname"], $parameters["host"]),
-            LogService::DEBUG
-        );
-
-        $con = DriverManager::getConnection($parameters);
-        $con->connect();
-
-        return $con;
-    }
-
-    /**
      * Create table schema.
      *
      * Creates or modifies the table schemas for a given set of API controllers or all available schema files. For this,
@@ -120,7 +94,8 @@ class ConnectionService
      * old table schema will be restored and an exception will be thrown.
      *
      * @param string|array|null $controllers Name of one or more API controllers which will be used to identity the schema file
-     * @throws DBALException if the database connection cannot be established
+     *
+     * @throws DBALException         if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
      */
     public function createSchema($controllers = null)
@@ -140,8 +115,7 @@ class ConnectionService
             return;
         }
 
-        foreach ($schemaFiles as $schemaFile)
-        {
+        foreach ($schemaFiles as $schemaFile) {
             // Get contents of schema file
             $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $definedSchemas);
 
@@ -150,8 +124,7 @@ class ConnectionService
             }
 
             // Create table schemas
-            foreach ($definedSchemas as $definedSchema)
-            {
+            foreach ($definedSchemas as $definedSchema) {
                 // Reset query builder
                 $queryBuilder->resetQueryParts();
 
@@ -162,12 +135,9 @@ class ConnectionService
 
                 // Create table schema
                 if (!$schemaManager->tablesExist([$definedTableName])) {
-
                     // Create table if not exists yet
                     $db->exec($definedQuery);
-
                 } else {
-
                     // Fetch all data from table
                     $currentDataSet = $queryBuilder->select("*")
                         ->from($definedTableName)
@@ -175,7 +145,6 @@ class ConnectionService
                         ->fetchAll();
 
                     try {
-
                         // Mark table as temporary
                         $schemaManager->renameTable($definedTableName, $tempTableName);
 
@@ -183,14 +152,12 @@ class ConnectionService
                         $db->exec($definedQuery);
 
                         // Restore result set
-                        if (!empty($currentDataSet))
-                        {
+                        if (!empty($currentDataSet)) {
                             $definedTable = $schemaManager->listTableDetails($definedTableName);
                             $tempTable = $schemaManager->listTableDetails($tempTableName);
 
                             // Re-create missing columns
-                            foreach ($tempTable->getColumns() as $tempTableColumn)
-                            {
+                            foreach ($tempTable->getColumns() as $tempTableColumn) {
                                 if ($definedTable->hasColumn($tempTableColumn->getName())) {
                                     continue;
                                 }
@@ -207,15 +174,12 @@ class ConnectionService
 
                         // Drop temporary table
                         $schemaManager->dropTable($tempTableName);
-
                     } catch (DBALException $e) {
-
                         // Restore new table with temporary table if an error occurs
                         $schemaManager->dropTable($definedTableName);
                         $schemaManager->renameTable($tempTableName, $definedTableName);
 
                         throw $e;
-
                     }
                 }
             }
@@ -233,28 +197,28 @@ class ConnectionService
      *
      * CAUTION: FIELDS AND TABLES WILL BE COMPLETELY DROPPED WHICH WILL CAUSE THEM TO LOSE ALL CONNECTED DATA AS WELL!
      *
-     * @param bool $dropFields Define whether to drop unused fields from current database schema
-     * @param bool $dropTables Define whether to drop unused tables from current database schema
+     * @param bool              $dropFields  Define whether to drop unused fields from current database schema
+     * @param bool              $dropTables  Define whether to drop unused tables from current database schema
      * @param string|array|null $controllers Name of one or more API controllers which will be used to identity the schema file
-     * @param bool $dryRun Define whether to perform a dry run without changing the database schema
-     * @return array Report of dropped tables and fields
-     * @throws DBALException if the database connection cannot be established
+     * @param bool              $dryRun      Define whether to perform a dry run without changing the database schema
+     *
+     * @throws DBALException         if the database connection cannot be established
      * @throws FileNotFoundException if a table schema file is not available
+     *
+     * @return array Report of dropped tables and fields
      */
     public function dropUnusedComponents(
         bool $dropFields = true,
         bool $dropTables = false,
         $controllers = null,
         bool $dryRun = true
-    ): array
-    {
+    ): array {
         $report = [
             "tables" => [],
             "fields" => [],
         ];
 
-        if ($dropFields || $dropTables)
-        {
+        if ($dropFields || $dropTables) {
             // Ensure established database connection
             if (!$this->database) {
                 $this->connect();
@@ -267,10 +231,8 @@ class ConnectionService
             // Get list of schema files
             $schemaFiles = $this->getListOfSchemaFiles($controllers);
 
-            if ($schemaFiles)
-            {
-                foreach ($schemaFiles as $schemaFile)
-                {
+            if ($schemaFiles) {
+                foreach ($schemaFiles as $schemaFile) {
                     // Get contents of schema file
                     $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $definedSchemas);
 
@@ -285,10 +247,8 @@ class ConnectionService
                     });
 
                     // Drop tables
-                    if ($dropTables)
-                    {
-                        foreach ($schemaManager->listTables() as $currentTable)
-                        {
+                    if ($dropTables) {
+                        foreach ($schemaManager->listTables() as $currentTable) {
                             $currentTableName = $currentTable->getName();
                             $normalizedTableName = strtolower(trim($currentTableName));
 
@@ -303,10 +263,8 @@ class ConnectionService
                     }
 
                     // Drop fields
-                    if ($dropFields)
-                    {
-                        foreach ($definedSchemas as $definedSchema)
-                        {
+                    if ($dropFields) {
+                        foreach ($definedSchemas as $definedSchema) {
                             // Get table name
                             $definedQuery = $definedSchema[0];
                             $definedTableName = $definedSchema[1];
@@ -385,10 +343,11 @@ class ConnectionService
      * Migrate legacy SQLite database files to current MySQL database.
      *
      * @param array|string $files The database files to be used for migration
-     * @throws InvalidFileException if no files are provided for migration
+     *
+     * @throws InvalidFileException  if no files are provided for migration
      * @throws FileNotFoundException if any of the specified files does not exist
-     * @throws DBALException if any database connection cannot be established
-     * @throws DatabaseException if connection to any database was not successful
+     * @throws DBALException         if any database connection cannot be established
+     * @throws DatabaseException     if connection to any database was not successful
      */
     public function migrate($files)
     {
@@ -408,8 +367,7 @@ class ConnectionService
         $this->createSchema();
 
         // Migrate SQLite databases
-        foreach ($files as $file)
-        {
+        foreach ($files as $file) {
             // Get full path
             $path = realpath($file);
 
@@ -437,8 +395,7 @@ class ConnectionService
             $scm = $this->database->getSchemaManager();
 
             // Migrate data
-            foreach($con->getSchemaManager()->listTables() as $table)
-            {
+            foreach ($con->getSchemaManager()->listTables() as $table) {
                 // Create table in new database if it does not exist yet
                 if (!$scm->tablesExist([$table->getName()])) {
                     $scm->createTable($table);
@@ -501,12 +458,50 @@ class ConnectionService
     }
 
     /**
+     * Get database connection.
+     *
+     * @return Connection Database connection
+     */
+    public function getDatabase(): Connection
+    {
+        return $this->database;
+    }
+
+    /**
+     * Establish database connection with given parameters.
+     *
+     * Tries to establish a database connection with the given parameters. Configuration of the parameters must follow
+     * DBAL requirements.
+     *
+     * @param array $parameters Database connection parameters
+     *
+     * @throws DBALException if the database connection cannot be established
+     *
+     * @return Connection The established database connection
+     *
+     * @see https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
+     */
+    protected function establishConnection(array $parameters): Connection
+    {
+        LogService::log(
+            sprintf("Trying to connect to database \"%s\" on host \"%s\"", $parameters["dbname"], $parameters["host"]),
+            LogService::DEBUG
+        );
+
+        $con = DriverManager::getConnection($parameters);
+        $con->connect();
+
+        return $con;
+    }
+
+    /**
      * Get list of schema files.
      *
      * Returns an array including the file names of available schema files. The search mode for schema files can be
      * modified by providing a list of controller class names. If set, only the appropriate schema files will be returned.
      *
      * @param array|string|null $controllers Name of one or more API controllers which will be used to identity the schema file
+     *
      * @return array List of schema files
      */
     protected function getListOfSchemaFiles($controllers = null): array
@@ -523,8 +518,10 @@ class ConnectionService
             });
 
         // Get all available schema files
-        } else if (($allFiles = glob(self::SCHEMA_PATH . "/" . self::SCHEMA_FILE_PATTERN)) !== false) {
-            $files = $allFiles;
+        } else {
+            if (($allFiles = glob(self::SCHEMA_PATH . "/" . self::SCHEMA_FILE_PATTERN)) !== false) {
+                $files = $allFiles;
+            }
         }
 
         return $files;
@@ -537,10 +534,12 @@ class ConnectionService
      * The `CREATE TABLE` statements will be stored in a by-reference variable which can then be accessed after
      * calling this method.
      *
-     * @param string $file Schema file
+     * @param string     $file    Schema file
      * @param array|null $schemas Result of {@see preg_match_all} containing `CREATE TABLE` statements
-     * @return int Number of `CREATE TABLE` statements inside schema file
+     *
      * @throws FileNotFoundException if a table schema file is not available
+     *
+     * @return int Number of `CREATE TABLE` statements inside schema file
      */
     protected function readContentsOfSchemaFile(string $file, ?array &$schemas): int
     {
@@ -552,16 +551,6 @@ class ConnectionService
             );
         }
 
-        return preg_match_all("/CREATE TABLE(.*?)\(\n(?:.*?)\);/ims", $contents, $schemas, PREG_SET_ORDER);
-    }
-
-    /**
-     * Get database connection.
-     *
-     * @return Connection Database connection
-     */
-    public function getDatabase(): Connection
-    {
-        return $this->database;
+        return preg_match_all("/CREATE TABLE(.*?)\\(\n(?:.*?)\\);/ims", $contents, $schemas, PREG_SET_ORDER);
     }
 }

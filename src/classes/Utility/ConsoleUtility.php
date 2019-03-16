@@ -8,7 +8,6 @@ namespace EliasHaeussler\Api\Utility;
 /**
  * Console utility functions.
  *
- * @package EliasHaeussler\Api\Utility
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -29,7 +28,8 @@ class ConsoleUtility
      * when building the console command.
      *
      * @param string $scriptName The script name
-     * @param array $parameters Optional parameters (named or unnamed)
+     * @param array  $parameters Optional parameters (named or unnamed)
+     *
      * @return string The console command
      */
     public static function buildCommand(string $scriptName, array $parameters = []): string
@@ -50,6 +50,7 @@ class ConsoleUtility
                 );
             }
         }
+
         return $command;
     }
 
@@ -57,6 +58,7 @@ class ConsoleUtility
      * Describe history of Git commit on which the API is currently running.
      *
      * @param int $mode Type of description, should be one of `HISTORY_TYPE_` constants
+     *
      * @return string Description of history
      */
     public static function describeHistory(int $mode = self::HISTORY_TYPE_REVISION): string
@@ -81,10 +83,11 @@ class ConsoleUtility
         // Return result of use file name as fallback if result is empty
         if ($commandResult) {
             return $commandResult;
-        } else if (@file_exists($fileName)) {
-            return trim(fgets(fopen($fileName, 'r')));
-        } else {
-            return "";
         }
+        if (@file_exists($fileName)) {
+            return trim(fgets(fopen($fileName, 'r')));
+        }
+
+        return "";
     }
 }

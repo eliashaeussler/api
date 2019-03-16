@@ -12,8 +12,8 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
  *
  * This class allows easy formatting of Slack messages.
  *
- * @link https://api.slack.com/docs/message-formatting
- * @package EliasHaeussler\Api\Helpers
+ * @see https://api.slack.com/docs/message-formatting
+ *
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -29,12 +29,11 @@ class SlackMessage
         "code" => "`",
         "italic" => "_",
         "strike" => "~",
-        "link" => "<>"
+        "link" => "<>",
     ];
 
     /** @var string Character separating URL and link text */
     const LINK_TEXT_SEPARATOR = "|";
-
 
     /**
      * Magic method to style text with a specific message format.
@@ -43,10 +42,12 @@ class SlackMessage
      * {@see SlackMessage::MESSAGE_FORMATS}. Each array key can be used as method name while the input text should
      * be passed as first argument.
      *
-     * @param string $name Method name, should be one of the array keys in {@see SlackMessage::MESSAGE_FORMATS}
-     * @param array $arguments Method arguments, first argument should be the text to be formatted
-     * @return string The formatted text
+     * @param string $name      Method name, should be one of the array keys in {@see SlackMessage::MESSAGE_FORMATS}
+     * @param array  $arguments Method arguments, first argument should be the text to be formatted
+     *
      * @throws \InvalidArgumentException if no input text has been provided
+     *
+     * @return string The formatted text
      */
     public static function __callStatic(string $name, array $arguments): string
     {
@@ -67,8 +68,9 @@ class SlackMessage
     /**
      * Generate link.
      *
-     * @param string $url The URL
+     * @param string $url   The URL
      * @param string $label An optional link text
+     *
      * @return string The formatted link
      */
     public static function link(string $url, string $label = ""): string
@@ -86,11 +88,13 @@ class SlackMessage
     /**
      * Generate date.
      *
-     * @param \DateTime $date The {@see DateTime} object which holds the date
-     * @param string $format A pre-formatted string to be used for formatting the date
-     * @param string $link An optional link to be wrapped around the date string
-     * @param string $fallback An optional fallback text
+     * @param \DateTime $date     The {@see DateTime} object which holds the date
+     * @param string    $format   A pre-formatted string to be used for formatting the date
+     * @param string    $link     An optional link to be wrapped around the date string
+     * @param string    $fallback An optional fallback text
+     *
      * @return string The formatted date
+     *
      * @see https://api.slack.com/docs/message-formatting#formatting_dates
      */
     public static function date(\DateTime $date, string $format = "{date_pretty}", string $link = "", string $fallback = ""): string
@@ -104,31 +108,15 @@ class SlackMessage
         if (!$fallback) {
             $fallback = $date->format('d.m.Y');
         }
-        return sprintf("<!date^%s|%s>", implode("^", array_filter($contents)), $fallback);
-    }
 
-    /**
-     * Wrap text with characters.
-     *
-     * @param string $text Text to be wrapped
-     * @param string $prefix Characters to be used as prefix
-     * @param string $suffix Characters to be used as suffix
-     * @return string The wrapped text
-     */
-    protected static function wrapTextWithCharacters(string $text, string $prefix, string $suffix = ""): string
-    {
-        $text = trim($text);
-        $prefix = trim($prefix);
-        if (!$suffix) {
-            $suffix = $prefix;
-        }
-        return !empty($text) ? ($prefix . $text . $suffix) : "";
+        return sprintf("<!date^%s|%s>", implode("^", array_filter($contents)), $fallback);
     }
 
     /**
      * Convert message format placeholders into valid text.
      *
      * @param string $text Text containing message format placeholders
+     *
      * @return string Converted text
      */
     public static function convertPlaceholders(string $text): string
@@ -144,8 +132,29 @@ class SlackMessage
             $format = trim($matches[1]);
             $value = trim($matches[2]);
             $value = $format == "link" ? explode(self::LINK_TEXT_SEPARATOR, $value, 2) : (array) $value;
+
             return self::$format(...$value);
         }, $text);
+    }
+
+    /**
+     * Wrap text with characters.
+     *
+     * @param string $text   Text to be wrapped
+     * @param string $prefix Characters to be used as prefix
+     * @param string $suffix Characters to be used as suffix
+     *
+     * @return string The wrapped text
+     */
+    protected static function wrapTextWithCharacters(string $text, string $prefix, string $suffix = ""): string
+    {
+        $text = trim($text);
+        $prefix = trim($prefix);
+        if (!$suffix) {
+            $suffix = $prefix;
+        }
+
+        return !empty($text) ? ($prefix . $text . $suffix) : "";
     }
 
     /**

@@ -22,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * This command makes it possible to run several actions according database migration.
  *
- * @package EliasHaeussler\Api\Command
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -50,10 +49,10 @@ class DatabaseMigrateCommand extends BaseCommand
      * {@inheritdoc}
      *
      * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
-     * @throws InvalidFileException if no files are provided for migration
-     * @throws FileNotFoundException if any of the specified files does not exist
-     * @throws DBALException if any database connection cannot be established
-     * @throws DatabaseException if connection to any database was not successful
+     * @throws InvalidFileException   if no files are provided for migration
+     * @throws FileNotFoundException  if any of the specified files does not exist
+     * @throws DBALException          if any database connection cannot be established
+     * @throws DatabaseException      if connection to any database was not successful
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

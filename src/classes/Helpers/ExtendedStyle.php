@@ -12,8 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Extended output style for Symfony console.
- * 
- * @package EliasHaeussler\Api\Helpers
+ *
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
@@ -31,6 +30,20 @@ class ExtendedStyle extends SymfonyStyle
     }
 
     /**
+     * Formats a notice.
+     *
+     * @param array|string $message The notice message
+     * @param string       $prefix  Optional first line message
+     */
+    public function notice($message, string $prefix = "")
+    {
+        if ($prefix) {
+            $message = is_array($message) ? array_merge([$prefix], $message) : [$prefix, $message];
+        }
+        $this->block($message, null, "fg=black;bg=yellow", "  ", true, false);
+    }
+
+    /**
      * Register custom output styles.
      *
      * @param OutputInterface $output The output interface
@@ -39,19 +52,5 @@ class ExtendedStyle extends SymfonyStyle
     {
         $outputStyle = new OutputFormatterStyle('blue', null, ['bold']);
         $output->getFormatter()->setStyle("param", $outputStyle);
-    }
-
-    /**
-     * Formats a notice.
-     *
-     * @param array|string $message The notice message
-     * @param string $prefix Optional first line message
-     */
-    public function notice($message, string $prefix = "")
-    {
-        if ($prefix) {
-            $message = is_array($message) ? array_merge([$prefix], $message) : [$prefix, $message];
-        }
-        $this->block($message, null, "fg=black;bg=yellow", "  ", true, false);
     }
 }

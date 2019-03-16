@@ -13,7 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Base Symfony console command.
  *
- * @package EliasHaeussler\Api\Command
  * @author Elias Häußler <mail@elias-haeussler.de>
  * @license MIT
  */
