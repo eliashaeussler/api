@@ -36,6 +36,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 - Use shorter file names for Bash scripts
 - Do not catch errors in console commands
 - Store database dumps from production in new directory `src/db-assets`
+- Do not require necessary packages as `require-dev` in [`composer.json`](composer.json)
 - SlackController: Define required scopes separately for each route
 
 ### Fixed
