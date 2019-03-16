@@ -18,6 +18,7 @@ use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Service\RoutingService;
 use EliasHaeussler\Api\Utility\ConnectionUtility;
+use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 
@@ -236,6 +237,16 @@ class SlackController extends BaseController
             "text" => $body,
             "mrkdwn_in" => ["fields"],
         ];
+    }
+
+    /**
+     * Build footer for Slack attachments.
+     *
+     * @return string Slack attachment footer
+     */
+    public function buildAttachmentFooter(): string
+    {
+        return "api.elias-haeussler.de | " . ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION);
     }
 
     /**

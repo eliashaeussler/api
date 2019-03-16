@@ -16,7 +16,6 @@ use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Utility\ConnectionUtility;
-use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 
@@ -45,6 +44,15 @@ class RedmineCommandRoute extends BaseRoute
 
     /** @var string Default slash command */
     const DEFAULT_COMMAND = "/redmine";
+
+    /** @var string Issue display mode for short result */
+    const ISSUE_DISPLAY_MODE_SHORT = "short";
+
+    /** @var string Issue display mode for full result */
+    const ISSUE_DISPLAY_MODE_FULL = "full";
+
+    /** @var string Default display mode for issues */
+    const DEFAULT_ISSUE_DISPLAY_MODE = self::ISSUE_DISPLAY_MODE_SHORT;
 
     /** @var string Action for authenticating the user at the Redmine API */
     const ACTION_AUTH = "auth";
@@ -151,13 +159,30 @@ class RedmineCommandRoute extends BaseRoute
     protected function showIssueData(): void
     {
         $text = $this->controller->getRequestData("text");
+        $textComponents = GeneralUtility::trimExplode(" ", (string) $text);
 
-        if (empty($text) || !is_numeric($text)) {
+        if (empty($textComponents) || !is_numeric($textComponents[0])) {
             throw new InvalidParameterException(LocalizationUtility::localize("exception.1552436599", "slack"), 1552436599);
         }
 
         // Get requested issue ID
-        $issueID = (int) $text;
+        $issueID = (int) $textComponents[0];
+
+        // Set display mode
+        $displayMode = self::DEFAULT_ISSUE_DISPLAY_MODE;
+        if (count($textComponents) > 1) {
+            $allowedModes = [self::ISSUE_DISPLAY_MODE_SHORT, self::ISSUE_DISPLAY_MODE_FULL];
+            $mode = trim(strtolower($textComponents[1]));
+
+            if (in_array($mode, $allowedModes)) {
+                $displayMode = $mode;
+            } else {
+                throw new InvalidParameterException(
+                    LocalizationUtility::localize("exception.1552768435", "slack", "", implode("`, `", $allowedModes)),
+                    1552768435
+                );
+            }
+        }
 
         // Request issue data from API
         $uri = $this->buildUri(["issues", $issueID]);
@@ -178,8 +203,8 @@ class RedmineCommandRoute extends BaseRoute
         {
             $issue = $result["issue"];
 
-            // Set link to issue
-            $link = $this->buildUri(["issues", $issue["id"]], self::REQUEST_MODE_PLAIN);
+            // Get link to issue
+            $link = $this->buildIssueLink($issue);
 
             // Get priorities
             $uri = $this->buildUri(["enumerations", "issue_priorities"]);
@@ -201,7 +226,7 @@ class RedmineCommandRoute extends BaseRoute
                 $actionColor = "";
             }
 
-            // Build attachments for Slack message
+            // Build default attachments for Slack message
             $attachments = [
                 [
                     "title" => sprintf("%s #%s: %s", $issue["tracker"]["name"], $issue["id"], $issue["subject"]),
@@ -212,73 +237,65 @@ class RedmineCommandRoute extends BaseRoute
                     "author_name" => $issue["author"]["name"],
                     "author_link" => $this->buildUri(["users", $issue["author"]["id"]], self::REQUEST_MODE_PLAIN),
                     "author_icon" => $this->buildUri(["favicon.ico"], self::REQUEST_MODE_PLAIN),
-                    "text" => mb_strimwidth($issue["description"], 0, $this->issueMaxDescriptionLength, "…"),
-                ],
-                [
-                    "color" => $actionColor,
-                    "fields" => [
-                        [
-                            "title" => LocalizationUtility::localize("redmine.message.project", "slack"),
-                            "value" => SlackMessage::link(
-                                $this->buildUri(["projects", $issue["project"]["id"]], self::REQUEST_MODE_PLAIN),
-                                $issue["project"]["name"]
-                            ),
-                        ],
-                        isset($issue["assigned_to"]) ? [
-                            "title" => LocalizationUtility::localize("redmine.message.assignedTo", "slack"),
-                            "value" => SlackMessage::link(
-                                $this->buildUri(["users", $issue["assigned_to"]["id"]], self::REQUEST_MODE_PLAIN),
-                                $issue["assigned_to"]["name"]
-                            ),
-                        ] : null,
-                        [
-                            "title" => LocalizationUtility::localize("redmine.message.status", "slack"),
-                            "value" => $issue["status"]["name"],
-                            "short" => true,
-                        ],
-                        [
-                            "title" => LocalizationUtility::localize("redmine.message.done", "slack"),
-                            "value" => sprintf("%s%%", $issue["done_ratio"]),
-                            "short" => true,
-                        ],
-                        [
-                            "title" => LocalizationUtility::localize("redmine.message.priority", "slack"),
-                            "value" => $issue["priority"]["name"],
-                            "short" => true,
-                        ],
-                        [
-                            "title" => LocalizationUtility::localize("redmine.message.startDate", "slack"),
-                            "value" => SlackMessage::date(new \DateTime($issue["start_date"]), "{date_short_pretty}"),
-                            "short" => true,
-                        ],
-                    ],
-                    "actions" => [
-                        [
-                            "type" => "button",
-                            "text" => LocalizationUtility::localize(
-                                "redmine.button.showIssue", "slack", "", SlackMessage::emoji("bug")
-                            ),
-                            "url" => $link,
-                            "style" => "primary",
-                        ],
-                        [
-                            "type" => "button",
-                            "text" => LocalizationUtility::localize(
-                                "redmine.button.editIssue", "slack", "", SlackMessage::emoji("pencil2")
-                            ),
-                            "url" => $link . "/edit",
-                        ],
-                        [
-                            "type" => "button",
-                            "text" => LocalizationUtility::localize(
-                                "redmine.button.logTime", "slack", "", SlackMessage::emoji("alarm_clock")
-                            ),
-                            "url" => $this->buildUri(["issues", $issue["id"], "time_entries", "new"], self::REQUEST_MODE_PLAIN)
-                        ],
-                    ],
-                    "footer" => "api.elias-haeussler.de | " . ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION),
                 ],
             ];
+
+            // Add custom attachments depending on selected display mode
+            switch ($displayMode) {
+                case self::ISSUE_DISPLAY_MODE_FULL:
+                    $attachments[0] += [
+                        "text" => mb_strimwidth($issue["description"], 0, $this->issueMaxDescriptionLength, "…"),
+                    ];
+                    $attachments[] = [
+                        "color" => $actionColor,
+                        "fields" => [
+                            [
+                                "title" => LocalizationUtility::localize("redmine.message.project", "slack"),
+                                "value" => SlackMessage::link(
+                                    $this->buildUri(["projects", $issue["project"]["id"]], self::REQUEST_MODE_PLAIN),
+                                    $issue["project"]["name"]
+                                ),
+                            ],
+                            isset($issue["assigned_to"]) ? [
+                                "title" => LocalizationUtility::localize("redmine.message.assignedTo", "slack"),
+                                "value" => SlackMessage::link(
+                                    $this->buildUri(["users", $issue["assigned_to"]["id"]], self::REQUEST_MODE_PLAIN),
+                                    $issue["assigned_to"]["name"]
+                                ),
+                            ] : null,
+                            [
+                                "title" => LocalizationUtility::localize("redmine.message.status", "slack"),
+                                "value" => $issue["status"]["name"],
+                                "short" => true,
+                            ],
+                            [
+                                "title" => LocalizationUtility::localize("redmine.message.done", "slack"),
+                                "value" => sprintf("%s%%", $issue["done_ratio"]),
+                                "short" => true,
+                            ],
+                            [
+                                "title" => LocalizationUtility::localize("redmine.message.priority", "slack"),
+                                "value" => $issue["priority"]["name"],
+                                "short" => true,
+                            ],
+                            [
+                                "title" => LocalizationUtility::localize("redmine.message.startDate", "slack"),
+                                "value" => SlackMessage::date(new \DateTime($issue["start_date"]), "{date_short_pretty}"),
+                                "short" => true,
+                            ],
+                        ],
+                        "actions" => $this->buildIssueActions($issue),
+                        "footer" => $this->controller->buildAttachmentFooter(),
+                    ];
+                    break;
+
+                case self::ISSUE_DISPLAY_MODE_SHORT:
+                    $attachments[0] += [
+                        "actions" => $this->buildIssueActions($issue),
+                        "footer" => $this->controller->buildAttachmentFooter(),
+                    ];
+                    break;
+            }
 
             // Print message to Slack
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, "", $attachments, true);
@@ -289,6 +306,53 @@ class RedmineCommandRoute extends BaseRoute
                 1552347666
             );
         }
+    }
+
+    /**
+     * Build link to issue in Redmine installation.
+     *
+     * @param array $issue The result array from Redmine API containing issue data
+     * @param array $optionalArguments Optional arguments, will be passed through to the URI builder
+     * @return string The generated link to issue in Redmine installation
+     */
+    protected function buildIssueLink(array $issue, array $optionalArguments = []): string
+    {
+        return $this->buildUri(array_merge(["issues", $issue["id"]], $optionalArguments), self::REQUEST_MODE_PLAIN);
+    }
+
+    /**
+     * Build link actions for a specific issue.
+     *
+     * @param array $issue The result array from Redmine API containing issue data
+     * @return array The link actions
+     */
+    protected function buildIssueActions(array $issue): array
+    {
+        $link = $this->buildIssueLink($issue);
+        return [
+            [
+                "type" => "button",
+                "text" => LocalizationUtility::localize(
+                    "redmine.button.showIssue", "slack", "", SlackMessage::emoji("bug")
+                ),
+                "url" => $link,
+                "style" => "primary",
+            ],
+            [
+                "type" => "button",
+                "text" => LocalizationUtility::localize(
+                    "redmine.button.editIssue", "slack", "", SlackMessage::emoji("pencil2")
+                ),
+                "url" => $link . "/edit",
+            ],
+            [
+                "type" => "button",
+                "text" => LocalizationUtility::localize(
+                    "redmine.button.logTime", "slack", "", SlackMessage::emoji("alarm_clock")
+                ),
+                "url" => $this->buildIssueLink($issue, ["time_entries", "new"]),
+            ],
+        ];
     }
 
     /**

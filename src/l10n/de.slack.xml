@@ -150,5 +150,8 @@
         <text id="exception.1552520966">
             Fehler beim Speichern deines API-Schlüssels. Bitte kontaktiere deinen Slack-Admin.
         </text>
+        <text id="exception.1552768435">
+            Ungültiger Ticket-Anzeigemodus. Verwende einen dieser Modi: `%s`
+        </text>
     </body>
 </l10n>

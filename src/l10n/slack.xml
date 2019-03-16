@@ -150,5 +150,8 @@
         <text id="exception.1552520966">
             Error while trying to persist your API key. Please contact your Slack admin.
         </text>
+        <text id="exception.1552768435">
+            Invalid issue display mode. Use one of `%s` instead.
+        </text>
     </body>
 </l10n>
