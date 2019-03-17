@@ -25,6 +25,11 @@ The API serves different endpoints which can be accessed from various clients.
 - [Deployment](#deployment)
     + [Prerequisites](#prerequisites)
     + [Process deployment](#process-deployment)
+- [Console](#console)
+    + [`database:export`](#databaseexport)
+    + [`database:migrate`](#databasemigrate)
+    + [`database:schema`](#databaseschema)
+    + [`logfile:clear`](#logfileclear)
 - [License](#license)
 
 
@@ -200,6 +205,50 @@ remote target path. If all files are ready on the server, the `release` director
 overridden by the `cache` directory which is overlain by the `local` directory.
 
 Note that on each deployment, the log files on the server will be removed.
+
+
+## Console
+
+The API ships with a [console](console.php) which provides useful commands to keep the API up-to-date.
+The console is based on Symfony console, so all known commands such as `list` or `help` are available.
+
+### `database:export`
+
+This command allows you to export the currently used database. It prints the database dump to `stdin`
+which allows you to save it to a SQL file.
+
+```bash
+./console.php database:export
+```
+
+### `database:migrate`
+
+This command allows you to migrate legacy SQLite databases to the new MySQL database. It's useful to
+execute the `database:schema` command after calling this one.
+
+```bash
+./console.php database:migrate <file>
+```
+
+### `database:schema`
+
+This command allows you to maintain the database schema. It can be used to update the database schema
+or drop unused components such as fields or tables.
+
+```bash
+./console.php database:schema update [-s|--schema <schema>]
+./console.php database:schema drop [--fields] [--tables] [--dry-run] [--force] [-s|--schema <schema>]
+```
+
+### `logfile:clear`
+
+This command allows you to clear old log files. It is useful to run this command in a specific interval
+to remove old logs and clear disk space as the log files might exceed in its size in case a low
+`MINIMUM_LOG_LEVEL` is set.
+
+```bash
+./console.php logfile:clear [--keep-current]
+```
 
 
 ## License

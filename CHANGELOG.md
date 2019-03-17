@@ -13,6 +13,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Added
 
 - License
+- Instructions for usage of the console
 
 
 
