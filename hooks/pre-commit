@@ -7,5 +7,4 @@ FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.php')
 # Run PHP-CS-Fixer
 if [[ -n "$FILES" ]]; then
     ${SCRIPT} ${FILES}
-    git add ${FILES}
 fi
