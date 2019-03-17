@@ -30,8 +30,8 @@ revision="$(git --git-dir="${ROOT_PATH}/.git" log --pretty="%h" -n1 HEAD)"
 version="$(git --git-dir="${ROOT_PATH}/.git" describe --tags)"
 
 # Install dependencies
-output "Install dependencies via Composer..." ${ACTION} 0
-composer install --quiet
+output "Install dependencies (no dev) via Composer..." ${ACTION} 0
+composer install --no-dev --quiet
 output " Done." ${SUCCESS}
 
 # Create directory structure on remote
@@ -77,5 +77,10 @@ ssh ${TARGET_HOST} -T << __EOF
     php ${TARGET_PATH}/release/console.php -q database:schema update
     echo "$(output " Done." ${SUCCESS})"
 __EOF
+
+# Re-install dev dependencies
+output "Re-install dev-dependencies via Composer..." ${ACTION} 0
+composer install --dev --quiet
+output " Done." ${SUCCESS}
 
 print_success_message "Deployed version ${version} in %s."
