@@ -111,6 +111,16 @@ class RedmineCommandRoute extends BaseRoute
      */
     protected function initializeRequest()
     {
+        // Get user-preferred language in case user is already authenticated
+        if ($this->controller->isUserAuthenticated()) {
+            try {
+                $this->controller->loadUserData();
+                $this->controller->getUserInformation();
+            } catch (\Exception $e) {
+                // Intended fallthrough as language is not necessarily needed
+            }
+        }
+
         // Get base URI
         $this->baseUri = GeneralUtility::getEnvironmentVariable("SLACK_REDMINE_BASE_URI");
 

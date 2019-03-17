@@ -262,6 +262,43 @@ class SlackController extends BaseController
     }
 
     /**
+     * Request user information from Slack API and set user-preferred language.
+     *
+     * @param bool $setLanguage Define whether to request and set user-preferred language
+     *
+     * @throws InvalidRequestException if API request failed or contains an invalid answer
+     * @throws AuthenticationException if the user needs to re-authenticate himself
+     *
+     * @return mixed The user information result from Slack API
+     */
+    public function getUserInformation(bool $setLanguage = true)
+    {
+        // Set API parameters
+        $data = [
+            "token" => $this->authToken,
+            "user" => $this->getRequestData("user_id"),
+        ];
+
+        // Request user-preferred language if requested
+        if ($setLanguage) {
+            $data["include_locale"] = true;
+        }
+
+        // Send API call
+        $result = $this->api("users.info", $data, false);
+
+        $this->checkApiResult($result);
+        $result = json_decode($result, true);
+
+        // Set user-preferred localization language
+        if ($setLanguage) {
+            LocalizationUtility::readUserPreferredLanguages($result["user"]["locale"]);
+        }
+
+        return $result;
+    }
+
+    /**
      * Get raw command name from full slash command.
      *
      * Returns the raw command name from the currently selected slash command. The raw command name contains only
@@ -369,6 +406,53 @@ class SlackController extends BaseController
     }
 
     /**
+     * Load user data from database.
+     *
+     * Loads the available user data from the database and stores them locally.
+     *
+     * @throws AuthenticationException if user data is missing in the database
+     */
+    public function loadUserData()
+    {
+        $queryBuilder = $this->database->createQueryBuilder();
+        $result = $queryBuilder->select("*")
+            ->from("slack_auth")
+            ->where("user = :user_id")
+            ->setParameter("user_id", $this->requestData['user_id'])
+            ->execute()
+            ->fetch();
+
+        if (empty($result)) {
+            throw new AuthenticationException(
+                LocalizationUtility::localize("exception.1546798472", "slack"),
+                1546798472
+            );
+        }
+
+        $this->authToken = $result['token'];
+    }
+
+    /**
+     * Check whether the current user is already authenticated.
+     *
+     * Checks whether the current user is already authenticated by testing if an appropriate database entry exists.
+     *
+     * @return bool `true` if the user is already authenticated, `false` otherwise
+     */
+    public function isUserAuthenticated(): bool
+    {
+        $queryBuilder = $this->database->createQueryBuilder();
+        $result = $queryBuilder->select("COUNT(*) AS count")
+            ->from("slack_auth")
+            ->where("user = :user_id")
+            ->setParameter("user_id", $this->requestData['user_id'])
+            ->execute()
+            ->fetch();
+
+        return $result['count'] > 0;
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @throws AuthenticationException if provided authentication state is invalid
@@ -462,33 +546,6 @@ class SlackController extends BaseController
     }
 
     /**
-     * Load user data from database.
-     *
-     * Loads the available user data from the database and stores them locally.
-     *
-     * @throws AuthenticationException if user data is missing in the database
-     */
-    protected function loadUserData()
-    {
-        $queryBuilder = $this->database->createQueryBuilder();
-        $result = $queryBuilder->select("*")
-            ->from("slack_auth")
-            ->where("user = :user_id")
-            ->setParameter("user_id", $this->requestData['user_id'])
-            ->execute()
-            ->fetch();
-
-        if (empty($result)) {
-            throw new AuthenticationException(
-                LocalizationUtility::localize("exception.1546798472", "slack"),
-                1546798472
-            );
-        }
-
-        $this->authToken = $result['token'];
-    }
-
-    /**
      * Check whether the current request is valid.
      *
      * Checks whether the request data is set and has been initialized yet. If not, an exception will be thrown. If the
@@ -528,26 +585,6 @@ class SlackController extends BaseController
     protected function routeRequiresAuthentication(): bool
     {
         return count($this->getRequiredScopes()) > 0;
-    }
-
-    /**
-     * Check whether the current user is already authenticated.
-     *
-     * Checks whether the current user is already authenticated by testing if an appropriate database entry exists.
-     *
-     * @return bool `true` if the user is already authenticated, `false` otherwise
-     */
-    protected function isUserAuthenticated(): bool
-    {
-        $queryBuilder = $this->database->createQueryBuilder();
-        $result = $queryBuilder->select("COUNT(*) AS count")
-            ->from("slack_auth")
-            ->where("user = :user_id")
-            ->setParameter("user_id", $this->requestData['user_id'])
-            ->execute()
-            ->fetch();
-
-        return $result['count'] > 0;
     }
 
     /**

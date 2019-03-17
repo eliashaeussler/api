@@ -183,23 +183,9 @@ class LunchCommandRoute extends BaseRoute
      */
     protected function checkIfStatusIsSet(): bool
     {
-        // Set API parameters
-        $data = [
-            "token" => $this->controller->getAuthToken(),
-            "user" => $this->controller->getRequestData("user_id"),
-            "include_locale" => true,
-        ];
+        $userInformation = $this->controller->getUserInformation();
 
-        // Send API call
-        $result = $this->controller->api("users.info", $data, false);
-
-        $this->controller->checkApiResult($result);
-        $result = json_decode($result, true);
-
-        // Set user-preferred localization language
-        LocalizationUtility::readUserPreferredLanguages($result["user"]["locale"]);
-
-        return $result["user"]["profile"]["status_text"] == self::STATUS_MESSAGE;
+        return $userInformation["user"]["profile"]["status_text"] == self::STATUS_MESSAGE;
     }
 
     /**
