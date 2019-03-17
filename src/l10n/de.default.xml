@@ -38,5 +38,8 @@
         <text id="exception.1543534319">
             Die Klasse "%s" ist nicht vorhanden.
         </text>
+        <text id="exception.1552821753">
+            Route "%s" konnte keiner Klasse zugeordnet werden.
+        </text>
     </body>
 </l10n>

@@ -50,6 +50,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 - Pass through dumped database result instead of just executing it
 - Allow `GET` requests when using [`ConnectionUtility::sendRequest()`](src/classes/Utility/ConnectionUtility.php) method
 - Check if selected controller can be instantiated before trying to instantiate it
+- Check if route mapping is available for current route
 - SlackController: Fix argument order when building Slack authentication uri
 - SlackController: Check if user already exists in database when trying to add authentication data
 - SlackController: Show link for re-authentication if Slack API throws `not_authed` error

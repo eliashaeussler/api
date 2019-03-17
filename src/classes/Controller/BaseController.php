@@ -6,10 +6,12 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Controller;
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Exception\NoMappingDefinedException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
+use EliasHaeussler\Api\Utility\LocalizationUtility;
 
 /**
  * Base API controller.
@@ -63,22 +65,29 @@ abstract class BaseController
      * This methods calls a concrete routing class to process the current API request. It's necessary to check both the
      * validity and authenticity inside this method as it differs from different requests.
      *
-     * @throws ClassNotFoundException if the routing class is not available
+     * @throws ClassNotFoundException    if the routing class is not available
+     * @throws NoMappingDefinedException if no route mapping is defined for the current route
      */
     public function call()
     {
-        if (array_key_exists($this->route, $this::ROUTE_MAPPINGS)) {
-            $route_method = $this::ROUTE_MAPPINGS[$this->route];
-
-            LogService::log(
-                sprintf("Routing to \"%s\" from controller \"%s\"", $route_method, static::class),
-                LogService::DEBUG
+        if (!array_key_exists($this->route, $this::ROUTE_MAPPINGS)) {
+            throw new NoMappingDefinedException(
+                LocalizationUtility::localize("exception.1552821753", null, "", $this->route),
+                1552821753
             );
-
-            /** @var BaseRoute $method */
-            $method = GeneralUtility::makeInstance($route_method, $this);
-            $method->processRequest();
         }
+
+        // Get routing method
+        $route_method = $this::ROUTE_MAPPINGS[$this->route];
+
+        LogService::log(
+            sprintf("Routing to \"%s\" from controller \"%s\"", $route_method, static::class),
+            LogService::DEBUG
+        );
+
+        /** @var BaseRoute $method */
+        $method = GeneralUtility::makeInstance($route_method, $this);
+        $method->processRequest();
     }
 
     /**

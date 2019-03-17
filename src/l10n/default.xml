@@ -41,5 +41,8 @@
         <text id="exception.1552241288">
             Only `%s` are allowed methods for requesting the Redmine API.
         </text>
+        <text id="exception.1552821753">
+            No route mapping defined for the route "%s".
+        </text>
     </body>
 </l10n>
