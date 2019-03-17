@@ -8,6 +8,14 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 
 
+## [4.0.1] - 2019-03-17
+
+### Added
+
+- License
+
+
+
 ## [4.0.0] - 2019-03-17
 
 ### Added

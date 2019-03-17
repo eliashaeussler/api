@@ -25,6 +25,7 @@ The API serves different endpoints which can be accessed from various clients.
 - [Deployment](#deployment)
     + [Prerequisites](#prerequisites)
     + [Process deployment](#process-deployment)
+- [License](#license)
 
 
 ## Features
@@ -199,3 +200,8 @@ remote target path. If all files are ready on the server, the `release` director
 overridden by the `cache` directory which is overlain by the `local` directory.
 
 Note that on each deployment, the log files on the server will be removed.
+
+
+## License
+
+[MIT License](LICENSE.md)
