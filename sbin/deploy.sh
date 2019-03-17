@@ -17,10 +17,12 @@ set +a
 # Define default variables
 TARGET_HOST=${TARGET_HOST}
 TARGET_PATH=${TARGET_PATH}
+TARGET_PORT=${TARGET_PORT-22}
 
 # Exit if required variables are not set
 [[ -z "${TARGET_HOST}" ]] && output "TARGET_HOST not set. Exiting." ${ERROR} && exit 1
 [[ -z "${TARGET_PATH}" ]] && output "TARGET_PATH not set. Exiting." ${ERROR} && exit 1
+[[ -z "${TARGET_PORT}" ]] && output "TARGET_PORT not set. Exiting." ${ERROR} && exit 1
 
 # Exit if there are unstaged files
 [[ -n "$(git status --porcelain)" ]] && output "Working directory is not clean. Exiting." ${ERROR} && exit 1
@@ -36,12 +38,12 @@ output " Done." ${SUCCESS}
 
 # Create directory structure on remote
 output "Create directory structure on remote..." ${ACTION} 0
-ssh ${TARGET_HOST} -T "mkdir -p ${TARGET_PATH}/{cache,local,release}"
+ssh ${TARGET_HOST} -p ${TARGET_PORT} -T "mkdir -p ${TARGET_PATH}/{cache,local,release}"
 output " Done." ${SUCCESS}
 
 # Transfer files to cache on remote
 output "Transfer files to remote cache..." ${ACTION} 0
-rsync -arq --delete --delete-excluded "${ROOT_PATH}"/ ${TARGET_HOST}:${TARGET_PATH}/cache \
+rsync -arq --delete --delete-excluded --port ${TARGET_PORT} "${ROOT_PATH}"/ ${TARGET_HOST}:${TARGET_PATH}/cache \
     --exclude /composer.json \
     --exclude /composer.lock \
     --exclude /.git \
@@ -57,7 +59,7 @@ rsync -arq --delete --delete-excluded "${ROOT_PATH}"/ ${TARGET_HOST}:${TARGET_PA
 output " Done." ${SUCCESS}
 
 # Set new release on remote
-ssh ${TARGET_HOST} -T << __EOF
+ssh ${TARGET_HOST} -p ${TARGET_PORT} -T << __EOF
     $(typeset -f output)
 
     set -e

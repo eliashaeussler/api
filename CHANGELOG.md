@@ -22,6 +22,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 - Support of PHP-CS-Fixer for code sniffing
 - Git Pre-Commit hook file
 - Set correct HTTP response code on failures
+- Possibility to define remote server port in [`remote.env`](remote.env.dist)
 - **Breaking:** SlackController: Request user's locale when sending API request
 - SlackController: Allow users to set default expiration time when using `/lunch` command in Slack
 - SlackController: Introduce `SlackMessage` class for styling of Slack messages

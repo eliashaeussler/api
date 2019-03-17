@@ -17,10 +17,12 @@ set +a
 # Define default variables
 TARGET_HOST=${TARGET_HOST}
 TARGET_PATH=${TARGET_PATH}
+TARGET_PORT=${TARGET_PORT-22}
 
 # Exit if required variables are not set
 [[ -z "${TARGET_HOST}" ]] && output "TARGET_HOST not set. Exiting." ${ERROR} && exit 1
 [[ -z "${TARGET_PATH}" ]] && output "TARGET_PATH not set. Exiting." ${ERROR} && exit 1
+[[ -z "${TARGET_PORT}" ]] && output "TARGET_PORT not set. Exiting." ${ERROR} && exit 1
 
 function create_dump() {
     dump_name="$(date -u +%Y-%m-%dT%H%M%SZ).sql.gz"
@@ -28,7 +30,7 @@ function create_dump() {
     dump_file="${dump_path}/${dump_name}"
 
     mkdir -p "${dump_path}"
-    ssh ${TARGET_HOST} -T "php ${TARGET_PATH}/release/console.php database:export" | gzip > "${dump_file}"
+    ssh ${TARGET_HOST} -p ${TARGET_PORT} -T "php ${TARGET_PATH}/release/console.php database:export" | gzip > "${dump_file}"
     [[ ! -s "${dump_file}" ]] && rm ${dump_file} && output "Database dump is empty. Exiting." ${ERROR} >&2 && exit 1
 
     echo "${dump_file}"
