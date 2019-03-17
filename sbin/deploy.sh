@@ -52,7 +52,8 @@ rsync -arq --delete --delete-excluded "${ROOT_PATH}"/ ${TARGET_HOST}:${TARGET_PA
     --exclude /sbin \
     --exclude /.idea \
     --exclude /src/db-assets \
-    --exclude /temp
+    --exclude /temp \
+    --exclude /.php_cs*
 output " Done." ${SUCCESS}
 
 # Set new release on remote
