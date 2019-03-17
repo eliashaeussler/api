@@ -22,6 +22,9 @@ try {
     $router = GeneralUtility::makeInstance(RoutingService::class);
     $router->route();
 } catch (\Exception $e) {
+    // Set HTTP response code
+    http_response_code(500);
+
     LogService::log($e->getMessage(), LogService::ERROR);
 
     if ($e instanceof DBALException && !GeneralUtility::isDebugEnabled()) {
