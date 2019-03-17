@@ -525,7 +525,7 @@ class SlackController extends BaseController
      */
     protected function isValidAuthState(): bool
     {
-        return $_GET['state'] == $this->authState;
+        return $this->requestParameters['state'] == $this->authState;
     }
 
     /**
@@ -627,7 +627,7 @@ class SlackController extends BaseController
         $result = $this->api("oauth.access", [
             "client_id" => $this->clientId,
             "client_secret" => $this->clientSecret,
-            "code" => $_GET['code'],
+            "code" => $this->requestParameters['code'],
         ], false, false);
 
         $this->checkApiResult($result);
