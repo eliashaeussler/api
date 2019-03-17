@@ -20,6 +20,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 - Log warning if request is not secured with HTTPS
 - Route blacklist to block unwanted requests
 - Support of PHP-CS-Fixer for code sniffing
+- Git Pre-Commit hook file
 - **Breaking:** SlackController: Request user's locale when sending API request
 - SlackController: Allow users to set default expiration time when using `/lunch` command in Slack
 - SlackController: Introduce `SlackMessage` class for styling of Slack messages
