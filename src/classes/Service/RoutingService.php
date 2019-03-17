@@ -196,8 +196,13 @@ class RoutingService
 
         LogService::log(sprintf("Initializing controller \"%s\"", $controllerClass), LogService::DEBUG);
 
-        // Check if controller class is available
-        if (!class_exists($controllerClass)) {
+        // Check if controller class is available and can be instantiated
+        try {
+            $reflectionClass = new \ReflectionClass($controllerClass);
+            if ($reflectionClass->isAbstract()) {
+                throw new \Exception();
+            }
+        } catch (\Exception $e) {
             throw new InvalidControllerException(
                 LocalizationUtility::localize("exception.1543532513", null, null, $controllerName),
                 1543532513
