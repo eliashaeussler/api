@@ -12,6 +12,7 @@ use EliasHaeussler\Api\Exception\InvalidParameterException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Helpers\SlackMessage;
+use EliasHaeussler\Api\Routing\Slack\AuthenticateRoute;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
 use EliasHaeussler\Api\Routing\Slack\RedmineCommandRoute;
 use EliasHaeussler\Api\Service\ConnectionService;
@@ -48,6 +49,7 @@ class SlackController extends BaseController
     const ROUTE_MAPPINGS = [
         "lunch" => LunchCommandRoute::class,
         "redmine" => RedmineCommandRoute::class,
+        self::ROUTE_AUTH => AuthenticateRoute::class,
     ];
 
     /** @var array Scopes which are required for each route during authentication */
@@ -298,6 +300,36 @@ class SlackController extends BaseController
     }
 
     /**
+     * Get Slack authentication state string.
+     *
+     * @return string Slack authentication state string
+     */
+    public function getAuthState(): string
+    {
+        return $this->authState;
+    }
+
+    /**
+     * Get client ID of Slack app.
+     *
+     * @return string Client ID of Slack app
+     */
+    public function getClientId(): string
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * Get client secret of Slack app.
+     *
+     * @return string Client secret of Slack app
+     */
+    public function getClientSecret(): string
+    {
+        return $this->clientSecret;
+    }
+
+    /**
      * Get data from API request.
      *
      * Returns data from API request, either a specific key, if provided, or all available data. This method returns
@@ -359,20 +391,22 @@ class SlackController extends BaseController
         $this->storeRequestData();
         $this->setAccessType();
 
+        // Do not handle request as default if authentication is in progress
         if ($this->matchesRoute(self::ROUTE_AUTH)) {
-            $this->processUserAuthentication();
-        } else {
-            if ($this->isRequestValid()) {
-                if ($this->routeRequiresAuthentication()) {
-                    if ($this->isUserAuthenticated()) {
-                        $this->loadUserData();
-                    } else {
-                        $this->showUserAuthenticationUri();
-                    }
+            return;
+        }
+
+        // Load user data
+        if ($this->isRequestValid()) {
+            if ($this->routeRequiresAuthentication()) {
+                if ($this->isUserAuthenticated()) {
+                    $this->loadUserData();
+                } else {
+                    $this->showUserAuthenticationUri();
                 }
-            } else {
-                $this->showUserAuthenticationUri();
             }
+        } else {
+            $this->showUserAuthenticationUri();
         }
     }
 
@@ -599,90 +633,5 @@ class SlackController extends BaseController
             "client_id" => $this->clientId,
             "state" => $this->authState,
         ]);
-    }
-
-    /**
-     * Process requested user authentication.
-     *
-     * Processes the requested user authentication. In general, this method uses a provided code together with the
-     * app credentials to request an access token at the Slack API. This will then be stored locally and used for
-     * further API requests to authenticate the user at the Slack API.
-     *
-     * @throws AuthenticationException if provided authentication state is invalid
-     * @throws InvalidRequestException if API request failed
-     * @throws ClassNotFoundException  if the {@see Frontend} class is not available
-     */
-    protected function processUserAuthentication()
-    {
-        LogService::log("Processing user authentication", LogService::DEBUG);
-
-        if (!$this->isValidAuthState()) {
-            throw new AuthenticationException(
-                LocalizationUtility::localize("exception.1545662028", "slack"),
-                1545662028
-            );
-        }
-
-        // Send API call
-        $result = $this->api("oauth.access", [
-            "client_id" => $this->clientId,
-            "client_secret" => $this->clientSecret,
-            "code" => $this->requestParameters['code'],
-        ], false, false);
-
-        $this->checkApiResult($result);
-        $result = json_decode($result, true);
-
-        // Check if user is already available in database
-        $queryBuilder = $this->database->createQueryBuilder();
-        $userIsAvailable = $queryBuilder->select("user")
-            ->from("slack_auth")
-            ->where($queryBuilder->expr()->eq("user", ":user"))
-            ->setParameter("user", $result["user_id"])
-            ->execute()
-            ->rowCount() > 0;
-        $queryBuilder->resetQueryParts();
-
-        LogService::log(sprintf("User \"%s\" is %savailable", $result["user_id"], $userIsAvailable ? "" : "not "), LogService::DEBUG);
-
-        // Save authentication credentials
-        if ($userIsAvailable) {
-            $dbResult = $queryBuilder->update("slack_auth")
-                ->set("token", ":token")
-                ->set("scope", ":scope")
-                ->where($queryBuilder->expr()->eq("user", ":user"))
-                ->setParameter("token", $result["access_token"])
-                ->setParameter("scope", $result["scope"])
-                ->setParameter("user", $result["user_id"])
-                ->execute();
-        } else {
-            $dbResult = $queryBuilder->insert("slack_auth")
-                ->values([
-                    "user" => ":user",
-                    "token" => ":token",
-                    "scope" => ":scope",
-                ])
-                ->setParameter("user", $result["user_id"])
-                ->setParameter("token", $result["access_token"])
-                ->setParameter("scope", $result["scope"])
-                ->execute();
-        }
-
-        // Show status message
-        if ($dbResult > 0) {
-            echo $this->buildMessage(
-                Message::MESSAGE_TYPE_SUCCESS,
-                LocalizationUtility::localize("authentication.success.header", "slack"),
-                LocalizationUtility::localize("authentication.success.message", "slack")
-            );
-        } else {
-            echo $this->buildMessage(
-                Message::MESSAGE_TYPE_WARNING,
-                LocalizationUtility::localize("authentication.error.header", "slack"),
-                LocalizationUtility::localize("authentication.error.message", "slack")
-            );
-        }
-
-        LogService::log("Finished user authentication", LogService::DEBUG);
     }
 }

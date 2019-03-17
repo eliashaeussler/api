@@ -41,6 +41,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 - Store database dumps from production in new directory `src/db-assets`
 - Do not require necessary packages as `require-dev` in [`composer.json`](composer.json)
 - SlackController: Define required scopes separately for each route
+- SlackController: Define authentication route as own Route class [`AuthenticateRoute`](src/classes/Routing/Slack/AuthenticateRoute.php)
 
 ### Fixed
 
