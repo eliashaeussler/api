@@ -8,6 +8,16 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 
 
+
+
+## [4.0.2] - 2019-03-17
+
+### Fixed
+
+- SlackController: Show authentication uri again if OAuth token was revoked
+
+
+
 ## [4.0.1] - 2019-03-17
 
 ### Added

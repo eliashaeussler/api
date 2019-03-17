@@ -241,6 +241,7 @@ class SlackController extends BaseController
         switch ($result["error"]) {
             case "not_authed":
             case "missing_scope":
+            case "token_revoked":
                 $authenticationUri = $this->buildUserAuthenticationUri();
                 throw new AuthenticationException(
                     LocalizationUtility::localize(
