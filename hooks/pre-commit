@@ -1,10 +1,14 @@
 #!/bin/bash
 
 # Define variables
-SCRIPT="./sbin/php-cs-fixer.sh"
-FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.php')
+PHP_CS_FIXER="./sbin/php-cs-fixer.sh"
+PHP_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.php')
 
 # Run PHP-CS-Fixer
-if [[ -n "$FILES" ]]; then
-    ${SCRIPT} ${FILES}
+if [[ -n "$PHP_FILES" ]]; then
+    ${PHP_CS_FIXER} ${PHP_FILES}
 fi
+
+# Build documentation
+./sbin/generate_documentation.sh
+git add docs/php
