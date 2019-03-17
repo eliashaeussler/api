@@ -259,7 +259,7 @@ abstract class BaseController
     {
         $parameters = array_merge($_GET, $_POST);
         array_walk_recursive($parameters, function (&$value) {
-            $value = trim(strtolower(urldecode($value)));
+            $value = urldecode($value);
         });
         $this->requestParameters = $parameters;
     }
