@@ -2,6 +2,7 @@
 /**
  * Copyright (c) 2019 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
  */
+declare(strict_types=1);
 
 define("ROOT_PATH", dirname(__DIR__));
 define("SOURCE_PATH", ROOT_PATH . "/src");
@@ -17,13 +18,10 @@ use EliasHaeussler\Api\Service\RoutingService;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
 try {
-
     /** @var RoutingService $router */
     $router = GeneralUtility::makeInstance(RoutingService::class);
     $router->route();
-
 } catch (\Exception $e) {
-
     LogService::log($e->getMessage(), LogService::ERROR);
 
     if ($e instanceof DBALException && !GeneralUtility::isDebugEnabled()) {
@@ -50,12 +48,10 @@ try {
             $message = GeneralUtility::makeInstance(Message::class);
             echo $message->error($e);
         }
-
     } catch (ClassNotFoundException $e) {
         echo $e->getMessage();
         if (GeneralUtility::isDebugEnabled()) {
             echo PHP_EOL . $e->getTraceAsString();
         }
     }
-
 }
