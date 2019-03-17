@@ -22,8 +22,9 @@ try {
     $router = GeneralUtility::makeInstance(RoutingService::class);
     $router->route();
 } catch (\Exception $e) {
-    // Set HTTP response code
-    http_response_code(500);
+    if (RoutingService::getAccess() != RoutingService::ACCESS_TYPE_BOT) {
+        http_response_code(500);
+    }
 
     LogService::log($e->getMessage(), LogService::ERROR);
 
