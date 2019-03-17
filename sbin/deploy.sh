@@ -55,7 +55,9 @@ rsync -arq --delete --delete-excluded --port ${TARGET_PORT} "${ROOT_PATH}"/ ${TA
     --exclude /.idea \
     --exclude /src/db-assets \
     --exclude /temp \
-    --exclude /.php_cs*
+    --exclude /.php_cs* \
+    --exclude /.sami_config.php \
+    --exclude /docs/cache
 output " Done." ${SUCCESS}
 
 # Set new release on remote
