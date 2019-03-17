@@ -1,15 +1,11 @@
 #!/bin/bash
 
 # Define variables
-PHP_CS_FIXER="./vendor/bin/php-cs-fixer"
-CONFIG_FILE=".php_cs"
+SCRIPT="./sbin/php-cs-fixer.sh"
 FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.php')
-
-# Ensure PHP-CS-Fixer is installed and executable
-[[ ! -f "$PHP_CS_FIXER" ]] && composer install --dev --quiet
 
 # Run PHP-CS-Fixer
 if [[ -n "$FILES" ]]; then
-    ${PHP_CS_FIXER} fix --config "${CONFIG_FILE}" ${FILES}
+    ${SCRIPT} ${FILES}
     git add ${FILES}
 fi
