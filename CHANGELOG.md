@@ -6,6 +6,10 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+## [4.0.0] - 2019-03-17
+
 ### Added
 
 - Possibility to get and user current version from Git
