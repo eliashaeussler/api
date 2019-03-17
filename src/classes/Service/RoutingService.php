@@ -10,6 +10,7 @@ use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\EmptyControllerException;
 use EliasHaeussler\Api\Exception\EmptyParametersException;
 use EliasHaeussler\Api\Exception\InvalidControllerException;
+use EliasHaeussler\Api\Exception\NoMappingDefinedException;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 
@@ -76,7 +77,8 @@ class RoutingService
      * This method calls the API controller class to route the current request to the concrete routing class where the
      * request can be processed.
      *
-     * @throws ClassNotFoundException if the routing class is not available
+     * @throws ClassNotFoundException    if the routing class is not available
+     * @throws NoMappingDefinedException if no route mapping is defined for the current route
      */
     public function route()
     {
