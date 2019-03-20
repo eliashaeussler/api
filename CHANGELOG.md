@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Fixed
 
 - Generate documentation on commit only if PHP files were committed
+- Exclude `docs` directory from being processed with PHP-CS-Fixer
 
 
 
