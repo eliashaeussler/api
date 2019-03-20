@@ -6,7 +6,9 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Fixed
 
+- Generate documentation on commit only if PHP files were committed
 
 
 

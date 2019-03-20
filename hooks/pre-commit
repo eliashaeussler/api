@@ -4,11 +4,11 @@
 PHP_CS_FIXER="./sbin/php-cs-fixer.sh"
 PHP_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.php')
 
-# Run PHP-CS-Fixer
 if [[ -n "$PHP_FILES" ]]; then
+    # Run PHP-CS-Fixer
     ${PHP_CS_FIXER} ${PHP_FILES}
-fi
 
-# Build documentation
-./sbin/generate_documentation.sh
-git add docs/php
+    # Build documentation
+    ./sbin/generate_documentation.sh
+    git add docs/php
+fi
