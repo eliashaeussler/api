@@ -9,6 +9,6 @@ if [[ -n "$PHP_FILES" ]]; then
     ${PHP_CS_FIXER} ${PHP_FILES}
 
     # Build documentation
-    ./sbin/generate_documentation.sh
+    echo "${PHP_FILES[@]}" | ./sbin/generate_documentation.sh
     git add docs/php
 fi

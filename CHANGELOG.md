@@ -6,6 +6,10 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Updated
+
+- Build documentation only for committed files in pre-commit hook
+
 ### Fixed
 
 - Generate documentation on commit only if PHP files were committed
