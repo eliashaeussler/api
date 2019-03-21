@@ -80,7 +80,9 @@ class LocalizationUtility
                 $nodes = self::$fileCache[$type][$language]["nodes"] ?? [];
 
                 if (isset($nodes[$id])) {
-                    return sprintf($nodes[$id], ...$arguments);
+                    $text = preg_replace("/\\n\\s*/", PHP_EOL, $nodes[$id]);
+
+                    return sprintf($text, ...$arguments);
                 }
                 continue;
             }

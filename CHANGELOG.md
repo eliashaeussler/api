@@ -13,6 +13,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Updated
 
 - Build documentation only for committed files in pre-commit hook
+- Allow multiline texts as localizations in `l10n` XML files
 - SlackController: Allow adding more data when building message attachment footer
 
 ### Fixed
