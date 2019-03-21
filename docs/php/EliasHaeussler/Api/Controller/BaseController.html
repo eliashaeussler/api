@@ -193,6 +193,16 @@
                     string
                 </div>
                 <div class="col-md-8 type">
+                    <a href="#method_buildUriForRoute">buildUriForRoute</a>(string $route, array $data = [])
+        
+                                            <p>Build API uri for selected route.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_getRequestBody">getRequestBody</a>()
         
                                             <p>Get body of current API request.</p>                </div>
@@ -316,7 +326,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         line 51</div>
+        <div class="location">at         line 52</div>
         <code>final                    
     <strong>__construct</strong>(string $route)
         </code>
@@ -351,7 +361,7 @@ calling {see initializeRequest()}.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_call">
-        <div class="location">at         line 71</div>
+        <div class="location">at         line 72</div>
         <code>                    
     <strong>call</strong>()
         </code>
@@ -370,11 +380,11 @@ validity and authenticity inside this method as it differs from different reques
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></td>
                 <td>if the routing class is not available</td>
             </tr>
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/NoMappingDefinedException.html"><abbr title="EliasHaeussler\Api\Exception\NoMappingDefinedException">NoMappingDefinedException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\NoMappingDefinedException">NoMappingDefinedException</abbr></td>
                 <td>if no route mapping is defined for the current route</td>
             </tr>
             </table>
@@ -388,7 +398,7 @@ validity and authenticity inside this method as it differs from different reques
             </div>
                     <div class="method-item">
                     <h3 id="method_buildMessage">
-        <div class="location">at         line 108</div>
+        <div class="location">at         line 109</div>
         <code>                    string
     <strong>buildMessage</strong>(string $type, mixed $arg1, array ...$_)
         </code>
@@ -437,7 +447,7 @@ class. The first parameter <code>$type</code> defines the name of the method to 
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></td>
                 <td>if the {see Message} class is not available</td>
             </tr>
             </table>
@@ -450,8 +460,65 @@ class. The first parameter <code>$type</code> defines the name of the method to 
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_buildUriForRoute">
+        <div class="location">at         line 148</div>
+        <code>                    string
+    <strong>buildUriForRoute</strong>(string $route, array $data = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build API uri for selected route.</p>                    <p>Returns the API uri for a selected route and appends the route with given user data as GET parameters.
+The uri is based on the current controller and the current request protocol.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$route</td>
+                <td>The route to be used for building the API uri</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$data</td>
+                <td>Optional user data, will be appended to the API uri as GET parameters</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The API uri for the selected route</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></td>
+                <td>if the selected route is not available for the current controller</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getRequestBody">
-        <div class="location">at         line 139</div>
+        <div class="location">at         line 178</div>
         <code>                    string
     <strong>getRequestBody</strong>()
         </code>
@@ -483,7 +550,7 @@ class. The first parameter <code>$type</code> defines the name of the method to 
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestHeaders">
-        <div class="location">at         line 149</div>
+        <div class="location">at         line 188</div>
         <code>                    array
     <strong>getRequestHeaders</strong>()
         </code>
@@ -515,7 +582,7 @@ class. The first parameter <code>$type</code> defines the name of the method to 
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestHeader">
-        <div class="location">at         line 166</div>
+        <div class="location">at         line 205</div>
         <code>                    string
     <strong>getRequestHeader</strong>(string $header, bool $useRawInput = false)
         </code>
@@ -564,7 +631,7 @@ by setting <code>$useRawInput</code> to <code>true</code>.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestParameters">
-        <div class="location">at         line 182</div>
+        <div class="location">at         line 221</div>
         <code>                    array
     <strong>getRequestParameters</strong>()
         </code>
@@ -596,7 +663,7 @@ by setting <code>$useRawInput</code> to <code>true</code>.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestParameter">
-        <div class="location">at         line 194</div>
+        <div class="location">at         line 233</div>
         <code>                    mixed|null
     <strong>getRequestParameter</strong>(string $key)
         </code>
@@ -638,7 +705,7 @@ by setting <code>$useRawInput</code> to <code>true</code>.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_setRoute">
-        <div class="location">at         line 204</div>
+        <div class="location">at         line 243</div>
         <code>                    
     <strong>setRoute</strong>(string $route)
         </code>
@@ -671,7 +738,7 @@ by setting <code>$useRawInput</code> to <code>true</code>.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_initializeRequest">
-        <div class="location">at         line 215</div>
+        <div class="location">at         line 254</div>
         <code>    abstract        protected        
     <strong>initializeRequest</strong>()
         </code>
@@ -695,7 +762,7 @@ can also be used to pre-check API conditions and user authentications.</p>      
             </div>
                     <div class="method-item">
                     <h3 id="method_readRequestBody">
-        <div class="location">at         line 222</div>
+        <div class="location">at         line 261</div>
         <code>            protected        
     <strong>readRequestBody</strong>()
         </code>
@@ -718,7 +785,7 @@ can also be used to pre-check API conditions and user authentications.</p>      
             </div>
                     <div class="method-item">
                     <h3 id="method_readRequestHeaders">
-        <div class="location">at         line 234</div>
+        <div class="location">at         line 273</div>
         <code>            protected        
     <strong>readRequestHeaders</strong>()
         </code>
@@ -743,7 +810,7 @@ from the header name.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_readRequestParameters">
-        <div class="location">at         line 258</div>
+        <div class="location">at         line 297</div>
         <code>            protected        
     <strong>readRequestParameters</strong>()
         </code>
@@ -766,7 +833,7 @@ from the header name.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_initializeEnvironment">
-        <div class="location">at         line 270</div>
+        <div class="location">at         line 309</div>
         <code>            protected        
     <strong>initializeEnvironment</strong>()
         </code>
@@ -789,7 +856,7 @@ from the header name.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_matchesRoute">
-        <div class="location">at         line 281</div>
+        <div class="location">at         line 320</div>
         <code>            protected        bool
     <strong>matchesRoute</strong>(string $route)
         </code>

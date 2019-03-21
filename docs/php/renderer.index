@@ -1,1 +1,1 @@
-C:19:"Sami\Renderer\Index":191:{a:3:{i:0;a:0:{}i:1;a:1:{i:0;s:6:"master";}i:2;a:4:{i:0;s:14:"EliasHaeussler";i:1;s:18:"EliasHaeussler\Api";i:2;s:26:"EliasHaeussler\Api\Routing";i:3;s:32:"EliasHaeussler\Api\Routing\Slack";}}}
+C:19:"Sami\Renderer\Index":250:{a:3:{i:0;a:1:{s:44:"EliasHaeussler\Api\Controller\BaseController";s:40:"a8939a570db5af7d73e545efc7c7f8f9f9d2c525";}i:1;a:1:{i:0;s:6:"master";}i:2;a:3:{i:0;s:14:"EliasHaeussler";i:1;s:18:"EliasHaeussler\Api";i:2;s:29:"EliasHaeussler\Api\Controller";}}}

@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Api\Controller;
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
+use EliasHaeussler\Api\Exception\InvalidParameterException;
 use EliasHaeussler\Api\Exception\NoMappingDefinedException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
@@ -193,7 +194,7 @@ abstract class BaseController
      */
     public function getRequestParameter(string $key)
     {
-        return $this->requestParameters[$key];
+        return isset($this->requestParameters[$key]) ? $this->requestParameters[$key] : null;
     }
 
     /**
