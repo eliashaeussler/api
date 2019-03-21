@@ -160,6 +160,19 @@ class GeneralUtility
     }
 
     /**
+     * Get current server name from environment variable or server.
+     *
+     * Returns the server name by reading the appropriate environment variable. If it is not set,
+     * the default server name, provided by the server itself, will be returned.
+     *
+     * @return string The current server name
+     */
+    public static function getServerName(): string
+    {
+        return self::getEnvironmentVariable("SERVER_NAME", $_SERVER['HTTP_HOST']);
+    }
+
+    /**
      * Load API environment.
      *
      * Reads the environment variables of the current environment in order to use them in the API request.

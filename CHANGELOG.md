@@ -6,6 +6,10 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Added
+
+- Environment variable `SERVER_NAME`
+
 ### Updated
 
 - Build documentation only for committed files in pre-commit hook

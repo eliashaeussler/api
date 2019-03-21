@@ -231,7 +231,11 @@ class SlackController extends BaseController
      */
     public function buildAttachmentFooter(): string
     {
-        return "api.elias-haeussler.de | " . ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION);
+        return sprintf(
+            "%s | %s",
+            GeneralUtility::getServerName(),
+            ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION)
+        );
     }
 
     /**
