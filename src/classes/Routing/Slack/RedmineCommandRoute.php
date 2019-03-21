@@ -235,24 +235,28 @@ class RedmineCommandRoute extends BaseRoute
 
             // Build default attachments for Slack message
             $attachments = [
-                [
-                    "title" => sprintf("%s #%s: %s", $issue["tracker"]["name"], $issue["id"], $issue["subject"]),
-                    "title_link" => $link,
-                    "mrkdwn_in" => ["fields"],
-                    "fallback" => $link,
-                    "color" => $actionColor,
-                    "author_name" => $issue["author"]["name"],
-                    "author_link" => $this->buildUri(["users", $issue["author"]["id"]], self::REQUEST_MODE_PLAIN),
-                    "author_icon" => $this->buildUri(["favicon.ico"], self::REQUEST_MODE_PLAIN),
-                ],
+                $this->controller->buildAttachmentForBotMessage(
+                    sprintf("%s #%s: %s", $issue["tracker"]["name"], $issue["id"], $issue["subject"]),
+                    $displayMode == self::ISSUE_DISPLAY_MODE_FULL
+                        ? mb_strimwidth($issue["description"], 0, $this->issueMaxDescriptionLength, "…")
+                        : "",
+                    "",
+                    $link,
+                    $displayMode == self::ISSUE_DISPLAY_MODE_SHORT,
+                    [
+                        "title_link" => $link,
+                        "color" => $actionColor,
+                        "author_name" => $issue["author"]["name"],
+                        "author_link" => $this->buildUri(["users", $issue["author"]["id"]], self::REQUEST_MODE_PLAIN),
+                        "author_icon" => $this->buildUri(["favicon.ico"], self::REQUEST_MODE_PLAIN),
+                    ],
+                    ["fields"]
+                ),
             ];
 
             // Add custom attachments depending on selected display mode
             switch ($displayMode) {
                 case self::ISSUE_DISPLAY_MODE_FULL:
-                    $attachments[0] += [
-                        "text" => mb_strimwidth($issue["description"], 0, $this->issueMaxDescriptionLength, "…"),
-                    ];
                     $attachments[] = [
                         "color" => $actionColor,
                         "fields" => [
@@ -299,7 +303,6 @@ class RedmineCommandRoute extends BaseRoute
                 case self::ISSUE_DISPLAY_MODE_SHORT:
                     $attachments[0] += [
                         "actions" => $this->buildIssueActions($issue),
-                        "footer" => $this->controller->buildAttachmentFooter(),
                     ];
                     break;
             }
