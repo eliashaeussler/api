@@ -156,6 +156,26 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getUriComponents">getUriComponents</a>(string $uri = &quot;&quot;)
+        
+                                            <p>Get components of given uri.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getServerName">getServerName</a>()
+        
+                                            <p>Get current server name from environment variable or server.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     static&nbsp;
                 </div>
                 <div class="col-md-8 type">
@@ -523,8 +543,83 @@ a maximum number of characters to be returned.</p>                            </
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_getUriComponents">
+        <div class="location">at         line 171</div>
+        <code>        static            array
+    <strong>getUriComponents</strong>(string $uri = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get components of given uri.</p>                    <p>Returns the components of a given uri. This contains all path components without GET parameters.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$uri</td>
+                <td>Uri which components should be returned</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>The uri components of the given uri</td>
+        </tr>
+    </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getServerName">
+        <div class="location">at         line 188</div>
+        <code>        static            string
+    <strong>getServerName</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get current server name from environment variable or server.</p>                    <p>Returns the server name by reading the appropriate environment variable. If it is not set,
+the default server name, provided by the server itself, will be returned.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The current server name</td>
+        </tr>
+    </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_loadEnvironment">
-        <div class="location">at         line 170</div>
+        <div class="location">at         line 201</div>
         <code>        static            
     <strong>loadEnvironment</strong>(string $file = &quot;.env&quot;, bool $silent = false)
         </code>
@@ -562,7 +657,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_getEnvironmentVariable">
-        <div class="location">at         line 194</div>
+        <div class="location">at         line 225</div>
         <code>        static            mixed
     <strong>getEnvironmentVariable</strong>(string $name, mixed $default = &quot;&quot;)
         </code>
@@ -609,7 +704,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_getEnvironmentVariableNames">
-        <div class="location">at         line 206</div>
+        <div class="location">at         line 237</div>
         <code>        static            array
     <strong>getEnvironmentVariableNames</strong>()
         </code>
@@ -641,7 +736,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_registerExceptionHandler">
-        <div class="location">at         line 227</div>
+        <div class="location">at         line 258</div>
         <code>        static            
     <strong>registerExceptionHandler</strong>()
         </code>
@@ -673,7 +768,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_isDebugEnabled">
-        <div class="location">at         line 246</div>
+        <div class="location">at         line 277</div>
         <code>        static            bool
     <strong>isDebugEnabled</strong>()
         </code>
@@ -705,7 +800,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_isRequestSecure">
-        <div class="location">at         line 258</div>
+        <div class="location">at         line 289</div>
         <code>        static            bool
     <strong>isRequestSecure</strong>()
         </code>

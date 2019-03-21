@@ -79,7 +79,7 @@
     </div>
 
     <p>    class
-    <strong>RedmineCommandRoute</strong>        extends <abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr>
+    <strong>RedmineCommandRoute</strong>        extends <a href="../../../../EliasHaeussler/Api/Routing/BaseRoute.html"><abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr></a>
 </p>
 
         
@@ -166,13 +166,23 @@ API key which will be used for authenticating an active user at the Redmine API.
             <table class="table table-condensed">
                     <tr>
                 <td class="type" id="property_controller">
-                                        protected                                        <abbr title="EliasHaeussler\Api\Controller\SlackController">SlackController</abbr>
+                                        protected                                        <a href="../../../../EliasHaeussler/Api/Controller/SlackController.html"><abbr title="EliasHaeussler\Api\Controller\SlackController">SlackController</abbr></a>
                 </td>
                 <td>$controller</td>
                 <td class="last">
                     
                                     </td>
                 <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_requestData">
+                                        protected                                        array
+                </td>
+                <td>$requestData</td>
+                <td class="last">
+                    
+                                    </td>
+                <td><small>from&nbsp;<a href="../../../../EliasHaeussler/Api/Routing/BaseRoute.html#property_requestData"><abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr></a></small></td>
             </tr>
                     <tr>
                 <td class="type" id="property_baseUri">
@@ -225,9 +235,19 @@ API key which will be used for authenticating an active user at the Redmine API.
                     
                 </div>
                 <div class="col-md-8 type">
+                    <a href="#method___construct">__construct</a>(<a href="../../../../EliasHaeussler/Api/Controller/BaseController.html"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> $controller)
+        
+                                            <p>Initialize request router for current API controller.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../EliasHaeussler/Api/Routing/BaseRoute.html#method___construct"><abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_processRequest">processRequest</a>()
         
-                                            <p>{@inheritdoc}</p>                </div>
+                                            <p>Process routing of API request.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -237,7 +257,7 @@ API key which will be used for authenticating an active user at the Redmine API.
                 <div class="col-md-8 type">
                     <a href="#method_initializeRequest">initializeRequest</a>()
         
-                                            <p>{@inheritdoc}</p>                </div>
+                                            <p>Initialize routing for API request.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -337,6 +357,40 @@ API key which will be used for authenticating an active user at the Redmine API.
 
             <div id="method-details">
                     <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">in <a href="../../../../EliasHaeussler/Api/Routing/BaseRoute.html#method___construct"><abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr></a> at         line 33</div>
+        <code>final                    
+    <strong>__construct</strong>(<a href="../../../../EliasHaeussler/Api/Controller/BaseController.html"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> $controller)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Initialize request router for current API controller.</p>                    <p>Initializes the router for the current API request with the appropriate API controller. This includes
+processing the concrete initialization by calling {see initializeRequest()}.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../../EliasHaeussler/Api/Controller/BaseController.html"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></td>
+                <td>$controller</td>
+                <td>API controller for current route</td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_processRequest">
         <div class="location">at         line 86</div>
         <code>                    
@@ -348,35 +402,10 @@ API key which will be used for authenticating an active user at the Redmine API.
     
 
                     <div class="method-description">
-                                    <p>{@inheritdoc}</p>                                                </div>
+                                    <p>Process routing of API request.</p>                    <p>This method processes the concrete API request and prints the result of it.</p>                            </div>
                 <div class="tags">
             
             
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></td>
-                <td>if no issue ID has been provided or an invalid action is provided</td>
-            </tr>
-                    <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></td>
-                <td>if the result from the Redmine API is invalid</td>
-            </tr>
-                    <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\IssueNotFoundException">IssueNotFoundException</abbr></td>
-                <td>if the requested issue could not be found</td>
-            </tr>
-                    <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\DatabaseException">DatabaseException</abbr></td>
-                <td>if persisting the API key failed</td>
-            </tr>
-                    <tr>
-                <td><a target="_blank" href="http://php.net/Exception">Exception</a></td>
-                <td>if the issues' start date cannot be instantiated as {see DateTime} object</td>
-            </tr>
-            </table>
-
             
             
             
@@ -396,27 +425,10 @@ API key which will be used for authenticating an active user at the Redmine API.
     
 
                     <div class="method-description">
-                                    <p>{@inheritdoc}</p>                                                </div>
+                                    <p>Initialize routing for API request.</p>                    <p>Defines necessary variables for the routing of the API request and ensures that it can be processed without errors.</p>                            </div>
                 <div class="tags">
             
             
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\InvalidEnvironmentException">InvalidEnvironmentException</abbr></td>
-                <td>if either the base URI or API key is not set or invalid</td>
-            </tr>
-                    <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></td>
-                <td>if no Slack command is set or no request data is available</td>
-            </tr>
-                    <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></td>
-                <td>if an invalid slash command has been provided</td>
-            </tr>
-            </table>
-
             
             
             
@@ -455,15 +467,15 @@ case if the requested issue could not be found in Redmine.</p>                  
 
                     <table class="table table-condensed">
                     <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></td>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/InvalidParameterException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></a></td>
                 <td>if no issue ID has been provided</td>
             </tr>
                     <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></td>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
                 <td>if the result from the Redmine API is invalid</td>
             </tr>
                     <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\IssueNotFoundException">IssueNotFoundException</abbr></td>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/IssueNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\IssueNotFoundException">IssueNotFoundException</abbr></a></td>
                 <td>if the requested issue could not be found</td>
             </tr>
                     <tr>
@@ -598,11 +610,11 @@ of the provided API key by accessing the Redmine API with the given key.</p>    
 
                     <table class="table table-condensed">
                     <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></td>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/InvalidParameterException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></a></td>
                 <td>if no API key was provided or the provided key is not valid</td>
             </tr>
                     <tr>
-                <td><abbr title="EliasHaeussler\Api\Exception\DatabaseException">DatabaseException</abbr></td>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/DatabaseException.html"><abbr title="EliasHaeussler\Api\Exception\DatabaseException">DatabaseException</abbr></a></td>
                 <td>if persisting the API key failed</td>
             </tr>
             </table>
