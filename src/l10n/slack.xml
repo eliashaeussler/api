@@ -52,6 +52,14 @@
         <text id="lunch.default.alreadySet">
             %s Slow down, my friend! Your default expiration time is already set to %s.
         </text>
+        <text id="lunch.help.text">
+            Use %%code{/lunch} to tell your team members that you're at lunch break. Some examples:
+
+            • %%code{/lunch}: Start or end your lunch break (default: %s minutes, your setting: %s minute%s)
+            • %%code{/lunch 30}: Start your lunch break for 30 minutes
+            • %%code{/lunch default 30}: Set your default lunch break time to 30 minutes
+            • %%code{/lunch default unset}: Unset your default lunch break time
+        </text>
 
         <text id="redmine.message.project">
             Project

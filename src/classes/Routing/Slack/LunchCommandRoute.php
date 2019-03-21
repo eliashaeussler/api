@@ -9,14 +9,11 @@ use EliasHaeussler\Api\Controller\SlackController;
 use EliasHaeussler\Api\Exception\AuthenticationException;
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\DatabaseException;
-use EliasHaeussler\Api\Exception\FileNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Service\LogService;
-use EliasHaeussler\Api\Utility\ConsoleUtility;
-use EliasHaeussler\Api\Utility\DataUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 
@@ -343,28 +340,25 @@ class LunchCommandRoute extends BaseRoute
 
     /**
      * Show help text for this command.
-     *
-     * @throws FileNotFoundException if the data file containing the help texts is not available
      */
     protected function showHelpText()
     {
-        $helpText = DataUtility::getData("slack", "lunch.help.text");
-        $plainMessage = sprintf(
-            implode(PHP_EOL, $helpText),
+        $helpText = LocalizationUtility::localize(
+            "lunch.help.text",
+            "slack",
+            "",
             self::DEFAULT_EXPIRATION,
             $this->expirationPeriod,
             $this->expirationPeriod == 1 ? "" : "s"
         );
-        $message = SlackMessage::convertPlaceholders($plainMessage);
+        $message = SlackMessage::convertPlaceholders($helpText);
         $attachments = [
             $this->controller->buildAttachmentForBotMessage(
-                SlackMessage::convertPlaceholders(DataUtility::getData("slack", "lunch.help.header")),
-                SlackMessage::convertPlaceholders(
-                    sprintf(
-                        DataUtility::getData("slack", "lunch.help.version"),
-                        ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION)
-                    )
-                )
+                "",
+                "",
+                "",
+                GeneralUtility::getServerName(),
+                true
             ),
         ];
 
