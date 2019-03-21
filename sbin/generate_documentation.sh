@@ -32,7 +32,7 @@ if [[ ! -f ${SAMI_PHAR_FILE} || ${FORCE_DOWNLOAD} ]]; then
 fi
 
 output "Building documentation..." ${ACTION} 0
-php ${SAMI_PHAR_FILE} update ${SAMI_CONFIG_FILE} $@ > /dev/null
+php ${SAMI_PHAR_FILE} -q update ${SAMI_CONFIG_FILE} $@
 output " Done." ${SUCCESS}
 
 print_success_message
