@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Updated
 
 - Build documentation only for committed files in pre-commit hook
+- SlackController: Allow adding more data when building message attachment footer
 
 ### Fixed
 

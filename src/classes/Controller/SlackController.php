@@ -186,20 +186,42 @@ class SlackController extends BaseController
     /**
      * Generate attachment for bot message.
      *
-     * @param string $header  Header text
-     * @param string $body    Body text
-     * @param string $preText Additional pre text
+     * @param string $header         Header text
+     * @param string $body           Body text
+     * @param string $preText        Additional pre text
+     * @param string $fallback       Fallback text
+     * @param bool   $addFooter      Define whether to add footer to attachment
+     * @param array  $additionalData Additional data, will be merged with the default data
+     * @param array  $markdown       Fields to format with Markdown
      *
      * @return array Attachment for bot message
      */
-    public function buildAttachmentForBotMessage(string $header, string $body, string $preText = ""): array
-    {
-        return [
+    public function buildAttachmentForBotMessage(
+        string $header,
+        string $body,
+        string $preText = "",
+        string $fallback = "",
+        bool $addFooter = false,
+        array $additionalData = [],
+        array $markdown = ["fields"]
+    ): array {
+        $attachment = [
             "title" => $header,
             "pretext" => $preText,
             "text" => $body,
-            "mrkdwn_in" => ["fields"],
+            "fallback" => $fallback,
+            "mrkdwn_in" => $markdown,
         ];
+
+        if ($addFooter) {
+            $attachment["footer"] = $this->buildAttachmentFooter();
+        }
+
+        if ($additionalData) {
+            $attachment = array_replace_recursive($attachment, $additionalData);
+        }
+
+        return $attachment;
     }
 
     /**

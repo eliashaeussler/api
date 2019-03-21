@@ -79,7 +79,7 @@
     </div>
 
     <p>    class
-    <strong>SlackController</strong>        extends <a href="../../../EliasHaeussler/Api/Controller/BaseController.html"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a>
+    <strong>SlackController</strong>        extends <abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr>
 </p>
 
         
@@ -95,11 +95,11 @@ route is mapped to an appropriate routing class which should be an instance of {
     <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-6">
-                                            <a href="../../../EliasHaeussler/Api/Controller/UserEnvironmentRequired.html"><abbr title="EliasHaeussler\Api\Controller\UserEnvironmentRequired">UserEnvironmentRequired</abbr></a>
+                                            <abbr title="EliasHaeussler\Api\Controller\UserEnvironmentRequired">UserEnvironmentRequired</abbr>
                                             
                 </div>
                 <div class="col-md-6">
-                    Set requirement of user environment for specific API controllers.
+                    
                 </div>
             </div>
             </div>
@@ -107,20 +107,6 @@ route is mapped to an appropriate routing class which should be an instance of {
             <h2>Constants</h2>
 
             <table class="table table-condensed">
-                    <tr>
-                <td>REQUEST_HEADER_PREFIX_PATTERN</td>
-                <td class="last">
-                    <p><em></em></p>
-                    <p></p>
-                                    </td>
-            </tr>
-                    <tr>
-                <td>ROUTE_MAPPINGS</td>
-                <td class="last">
-                    <p><em></em></p>
-                    <p></p>
-                                    </td>
-            </tr>
                     <tr>
                 <td>API_URI</td>
                 <td class="last">
@@ -143,6 +129,13 @@ route is mapped to an appropriate routing class which should be an instance of {
                                     </td>
             </tr>
                     <tr>
+                <td>ROUTE_MAPPINGS</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
                 <td>REQUIRED_SCOPES</td>
                 <td class="last">
                     <p><em></em></p>
@@ -155,46 +148,6 @@ route is mapped to an appropriate routing class which should be an instance of {
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                    <tr>
-                <td class="type" id="property_requestBody">
-                                        protected                                        string
-                </td>
-                <td>$requestBody</td>
-                <td class="last">
-                    
-                                    </td>
-                <td><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#property_requestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_requestHeaders">
-                                        protected                                        array
-                </td>
-                <td>$requestHeaders</td>
-                <td class="last">
-                    
-                                    </td>
-                <td><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#property_requestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_requestParameters">
-                                        protected                                        array
-                </td>
-                <td>$requestParameters</td>
-                <td class="last">
-                    
-                                    </td>
-                <td><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#property_requestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_route">
-                                        protected                                        string
-                </td>
-                <td>$route</td>
-                <td class="last">
-                    
-                                    </td>
-                <td><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#property_route"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></td>
-            </tr>
                     <tr>
                 <td class="type" id="property_database">
                                         protected                                        <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
@@ -286,150 +239,10 @@ route is mapped to an appropriate routing class which should be an instance of {
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method___construct">__construct</a>(string $route)
-        
-                                            <p>Initialize API request for selected controller.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method___construct"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
                     <a href="#method_call">call</a>()
         
-                                            <p>Process API request.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_buildMessage">buildMessage</a>(string $type, mixed $arg1, array ...$_)
-        
-                                            <p>Build message for Frontend.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getRequestBody">getRequestBody</a>()
-        
-                                            <p>Get body of current API request.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getRequestHeaders">getRequestHeaders</a>()
-        
-                                            <p>Get HTTP headers of current API request.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getRequestHeader">getRequestHeader</a>(string $header, bool $useRawInput = false)
-        
-                                            <p>Get value of given HTTP header.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeader"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getRequestParameters">getRequestParameters</a>()
-        
-                                            <p>Get API request parameters.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    mixed|null
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getRequestParameter">getRequestParameter</a>(string $key)
-        
-                                            <p>Get value of given API request parameters.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameter"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_setRoute">setRoute</a>(string $route)
-        
-                                            <p>Set current API request route.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_setRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_initializeRequest">initializeRequest</a>()
-        
-                                            <p>Initialize API request.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_readRequestBody">readRequestBody</a>()
-        
-                                            <p>Read body of current API request.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_readRequestHeaders">readRequestHeaders</a>()
-        
-                                            <p>Rad HTTP headers of current API request.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_readRequestParameters">readRequestParameters</a>()
-        
-                                            <p>Read GET and POST parameters of current API request.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_initializeEnvironment">initializeEnvironment</a>()
-        
                                             <p>{@inheritdoc}</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/UserEnvironmentRequired.html#method_initializeEnvironment"><abbr title="EliasHaeussler\Api\Controller\UserEnvironmentRequired">UserEnvironmentRequired</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_matchesRoute">matchesRoute</a>(string $route)
-        
-                                            <p>Check if given route matches the current route.</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_matchesRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -439,6 +252,16 @@ route is mapped to an appropriate routing class which should be an instance of {
                     <a href="#method_api">api</a>(string $function, string|array $data, bool $json = true, bool $authorize = true)
         
                                             <p>Call the Slack API with given function and data.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildMessage">buildMessage</a>(string $type, $arg1, ...$_)
+        
+                                            <p>{@inheritdoc}</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -456,7 +279,7 @@ route is mapped to an appropriate routing class which should be an instance of {
                     array
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_buildAttachmentForBotMessage">buildAttachmentForBotMessage</a>(string $header, string $body, string $preText = &quot;&quot;)
+                    <a href="#method_buildAttachmentForBotMessage">buildAttachmentForBotMessage</a>(string $header, string $body, string $preText = &quot;&quot;, string $fallback = &quot;&quot;, bool $addFooter = false, array $additionalData = [], array $markdown = [&quot;fields&quot;])
         
                                             <p>Generate attachment for bot message.</p>                </div>
                 <div class="col-md-2"></div>
@@ -596,6 +419,16 @@ route is mapped to an appropriate routing class which should be an instance of {
                     
                 </div>
                 <div class="col-md-8 type">
+                    <a href="#method_initializeRequest">initializeRequest</a>()
+        
+                                            <p>{@inheritdoc}</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_prepareCall">prepareCall</a>()
         
                                             <p>Check if request is verified before processing API request.</p>                </div>
@@ -698,41 +531,6 @@ route is mapped to an appropriate routing class which should be an instance of {
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method___construct">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method___construct"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 51</div>
-        <code>final                    
-    <strong>__construct</strong>(string $route)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Initialize API request for selected controller.</p>                    <p>Initializes the current API request for the selected controller by reading the request body and HTTP headers and
-defining the selected route. Finally, the concrete controller initialization will be processed. This is done by
-calling {see initializeRequest()}.</p>                            </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$route</td>
-                <td>API request route</td>
-            </tr>
-            </table>
-
-            
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_call">
         <div class="location">at         line 93</div>
         <code>                    
@@ -744,467 +542,23 @@ calling {see initializeRequest()}.</p>                            </div>
     
 
                     <div class="method-description">
-                                    <p>Process API request.</p>                    <p>This methods calls a concrete routing class to process the current API request. It's necessary to check both the
-validity and authenticity inside this method as it differs from different requests.</p>                            </div>
-                <div class="tags">
-            
-            
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
-                <td>if the routing class is not available</td>
-            </tr>
-                    <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/NoMappingDefinedException.html"><abbr title="EliasHaeussler\Api\Exception\NoMappingDefinedException">NoMappingDefinedException</abbr></a></td>
-                <td>if no route mapping is defined for the current route</td>
-            </tr>
-            </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_buildMessage">
-        <div class="location">at         line 147</div>
-        <code>                    string
-    <strong>buildMessage</strong>(string $type, mixed $arg1, array ...$_)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Build message for Frontend.</p>                    <p>Calls the appropriate method in {see Message} class to build a message in the Frontend. Note that it's required
-to pass all necessary arguments to this method if they are required by the appropriate method in {see Message}
-class. The first parameter <code>$type</code> defines the name of the method to be used for building the message.</p>                            </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$type</td>
-                <td>Message type, will be used to call the appropriate method in {see Message} class</td>
-            </tr>
-                    <tr>
-                <td>mixed</td>
-                <td>$arg1</td>
-                <td>First argument to be passed to appropriate method in {see Message} class. Required.</td>
-            </tr>
-                    <tr>
-                <td>array</td>
-                <td>...$_</td>
-                <td>More arguments to be passed to appropriate method in {see Message} class. Optional.</td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>string</td>
-            <td>The generated message, if successful, or an empty string, if the build process failed</td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
-                <td>if the {see Message} class is not available</td>
-            </tr>
-            </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getRequestBody">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 139</div>
-        <code>                    string
-    <strong>getRequestBody</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Get body of current API request.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>string</td>
-            <td>API request body</td>
-        </tr>
-    </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getRequestHeaders">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 149</div>
-        <code>                    array
-    <strong>getRequestHeaders</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Get HTTP headers of current API request.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
-            <td>Additional HTTP headers of API request</td>
-        </tr>
-    </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getRequestHeader">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeader"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 166</div>
-        <code>                    string
-    <strong>getRequestHeader</strong>(string $header, bool $useRawInput = false)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Get value of given HTTP header.</p>                    <p>Returns the value of a given HTTP header of the current API request. Note that you shouldn't provide the "HTTP_"
-prefix in the <code>$header</code> argument. Also note that hyphens will be replaced by underscores. This can be disabled
-by setting <code>$useRawInput</code> to <code>true</code>.</p>                            </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$header</td>
-                <td>Name of the HTTP header to return</td>
-            </tr>
-                    <tr>
-                <td>bool</td>
-                <td>$useRawInput</td>
-                <td>Define whether the raw name of the given HTTP header should be used</td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>string</td>
-            <td>Value of the given HTTP header</td>
-        </tr>
-    </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getRequestParameters">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 182</div>
-        <code>                    array
-    <strong>getRequestParameters</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Get API request parameters.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
-            <td>API request parameters</td>
-        </tr>
-    </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getRequestParameter">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameter"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 194</div>
-        <code>                    mixed|null
-    <strong>getRequestParameter</strong>(string $key)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Get value of given API request parameters.</p>                                                </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$key</td>
-                <td>Name of the API request parameter to return</td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>mixed|null</td>
-            <td>API request parameters</td>
-        </tr>
-    </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_setRoute">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_setRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 204</div>
-        <code>                    
-    <strong>setRoute</strong>(string $route)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Set current API request route.</p>                                                </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$route</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_initializeRequest">
-        <div class="location">at         line 463</div>
-        <code>            protected        
-    <strong>initializeRequest</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Initialize API request.</p>                    <p>Defines necessary variables for the API request and ensures that it can be processed without errors. This method
-can also be used to pre-check API conditions and user authentications.</p>                            </div>
-                <div class="tags">
-            
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_readRequestBody">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 222</div>
-        <code>            protected        
-    <strong>readRequestBody</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Read body of current API request.</p>                    <p>Reads the raw body of the current API request and stores it in the current object.</p>                            </div>
-                <div class="tags">
-            
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_readRequestHeaders">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 234</div>
-        <code>            protected        
-    <strong>readRequestHeaders</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Rad HTTP headers of current API request.</p>                    <p>Reads all HTTP headers of the current API request and stores them in the current object. Note that this method
-will only read headers starting with "HTTP_" as they can be customized by the sender. The prefix will be removed
-from the header name.</p>                            </div>
-                <div class="tags">
-            
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_readRequestParameters">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 258</div>
-        <code>            protected        
-    <strong>readRequestParameters</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Read GET and POST parameters of current API request.</p>                    <p>Reads the GET and POST parameters of the current API request and stores them together in the current object.</p>                            </div>
-                <div class="tags">
-            
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_initializeEnvironment">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/UserEnvironmentRequired.html#method_initializeEnvironment"><abbr title="EliasHaeussler\Api\Controller\UserEnvironmentRequired">UserEnvironmentRequired</abbr></a> at         line 24</div>
-        <code>            protected        
-    <strong>initializeEnvironment</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
                                     <p>{@inheritdoc}</p>                                                </div>
                 <div class="tags">
             
             
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_matchesRoute">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_matchesRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 281</div>
-        <code>            protected        bool
-    <strong>matchesRoute</strong>(string $route)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Check if given route matches the current route.</p>                                                </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
+                            <h4>Exceptions</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$route</td>
-                <td>Route to be checked against the current route</td>
+                <td><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></td>
+                <td>if the authentication process failed</td>
+            </tr>
+                    <tr>
+                <td><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></td>
+                <td>if the routing class is not available</td>
             </tr>
             </table>
 
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td><code>true</code> if the given route matches the current route, <code>false</code> otherwise</td>
-        </tr>
-    </table>
-
-            
             
             
             
@@ -1284,6 +638,58 @@ is set to <code>true</code>.</p>                            </div>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_buildMessage">
+        <div class="location">at         line 147</div>
+        <code>                    string
+    <strong>buildMessage</strong>(string $type, $arg1, ...$_)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>{@inheritdoc}</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$arg1</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>...$_</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_buildBotMessage">
         <div class="location">at         line 166</div>
         <code>                    string
@@ -1342,9 +748,9 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_buildAttachmentForBotMessage">
-        <div class="location">at         line 195</div>
+        <div class="location">at         line 199</div>
         <code>                    array
-    <strong>buildAttachmentForBotMessage</strong>(string $header, string $body, string $preText = &quot;&quot;)
+    <strong>buildAttachmentForBotMessage</strong>(string $header, string $body, string $preText = &quot;&quot;, string $fallback = &quot;&quot;, bool $addFooter = false, array $additionalData = [], array $markdown = [&quot;fields&quot;])
         </code>
     </h3>
     <div class="details">
@@ -1372,6 +778,26 @@ is set to <code>true</code>.</p>                            </div>
                 <td>$preText</td>
                 <td>Additional pre text</td>
             </tr>
+                    <tr>
+                <td>string</td>
+                <td>$fallback</td>
+                <td>Fallback text</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$addFooter</td>
+                <td>Define whether to add footer to attachment</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$additionalData</td>
+                <td>Additional data, will be merged with the default data</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$markdown</td>
+                <td>Fields to format with Markdown</td>
+            </tr>
             </table>
 
             
@@ -1394,7 +820,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_buildAttachmentFooter">
-        <div class="location">at         line 210</div>
+        <div class="location">at         line 232</div>
         <code>                    string
     <strong>buildAttachmentFooter</strong>()
         </code>
@@ -1426,7 +852,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_checkApiResult">
-        <div class="location">at         line 225</div>
+        <div class="location">at         line 251</div>
         <code>                    void
     <strong>checkApiResult</strong>(string $result)
         </code>
@@ -1463,11 +889,11 @@ is set to <code>true</code>.</p>                            </div>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></td>
                 <td>if API request failed or contains an invalid answer</td>
             </tr>
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/AuthenticationException.html"><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></td>
                 <td>if the user needs to re-authenticate himself</td>
             </tr>
             </table>
@@ -1481,7 +907,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserInformation">
-        <div class="location">at         line 275</div>
+        <div class="location">at         line 301</div>
         <code>                    mixed
     <strong>getUserInformation</strong>(bool $setLanguage = true)
         </code>
@@ -1518,11 +944,11 @@ is set to <code>true</code>.</p>                            </div>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></td>
                 <td>if API request failed or contains an invalid answer</td>
             </tr>
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/AuthenticationException.html"><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></td>
                 <td>if the user needs to re-authenticate himself</td>
             </tr>
             </table>
@@ -1536,7 +962,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRawCommandName">
-        <div class="location">at         line 313</div>
+        <div class="location">at         line 339</div>
         <code>                    string
     <strong>getRawCommandName</strong>()
         </code>
@@ -1564,11 +990,11 @@ the name of the slash command without its prepended slash.</p>                  
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></td>
                 <td>if no Slack command is set or no request data is available</td>
             </tr>
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidParameterException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></td>
                 <td>if an invalid slash command has been provided</td>
             </tr>
             </table>
@@ -1582,7 +1008,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getAuthToken">
-        <div class="location">at         line 335</div>
+        <div class="location">at         line 361</div>
         <code>                    string
     <strong>getAuthToken</strong>()
         </code>
@@ -1614,7 +1040,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getAuthState">
-        <div class="location">at         line 345</div>
+        <div class="location">at         line 371</div>
         <code>                    string
     <strong>getAuthState</strong>()
         </code>
@@ -1646,7 +1072,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getClientId">
-        <div class="location">at         line 355</div>
+        <div class="location">at         line 381</div>
         <code>                    string
     <strong>getClientId</strong>()
         </code>
@@ -1678,7 +1104,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getClientSecret">
-        <div class="location">at         line 365</div>
+        <div class="location">at         line 391</div>
         <code>                    string
     <strong>getClientSecret</strong>()
         </code>
@@ -1710,7 +1136,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestData">
-        <div class="location">at         line 380</div>
+        <div class="location">at         line 406</div>
         <code>                    array|string
     <strong>getRequestData</strong>(string $key = &quot;&quot;)
         </code>
@@ -1753,7 +1179,7 @@ an empty string, if no request data is available for the given key.</p>         
             </div>
                     <div class="method-item">
                     <h3 id="method_setRequestDataForKey">
-        <div class="location">at         line 394</div>
+        <div class="location">at         line 420</div>
         <code>                    void
     <strong>setRequestDataForKey</strong>(string $key, mixed $value)
         </code>
@@ -1801,7 +1227,7 @@ be useful i. e. to update the given text from Slack.</p>                        
             </div>
                     <div class="method-item">
                     <h3 id="method_getDatabase">
-        <div class="location">at         line 404</div>
+        <div class="location">at         line 430</div>
         <code>                    <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
     <strong>getDatabase</strong>()
         </code>
@@ -1833,7 +1259,7 @@ be useful i. e. to update the given text from Slack.</p>                        
             </div>
                     <div class="method-item">
                     <h3 id="method_loadUserData">
-        <div class="location">at         line 416</div>
+        <div class="location">at         line 442</div>
         <code>                    
     <strong>loadUserData</strong>()
         </code>
@@ -1851,7 +1277,7 @@ be useful i. e. to update the given text from Slack.</p>                        
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/AuthenticationException.html"><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></td>
                 <td>if user data is missing in the database</td>
             </tr>
             </table>
@@ -1865,7 +1291,7 @@ be useful i. e. to update the given text from Slack.</p>                        
             </div>
                     <div class="method-item">
                     <h3 id="method_isUserAuthenticated">
-        <div class="location">at         line 443</div>
+        <div class="location">at         line 469</div>
         <code>                    bool
     <strong>isUserAuthenticated</strong>()
         </code>
@@ -1896,8 +1322,48 @@ be useful i. e. to update the given text from Slack.</p>                        
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_initializeRequest">
+        <div class="location">at         line 489</div>
+        <code>            protected        
+    <strong>initializeRequest</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>{@inheritdoc}</p>                                                </div>
+                <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></td>
+                <td>if provided authentication state is invalid</td>
+            </tr>
+                    <tr>
+                <td><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></td>
+                <td>if user authentication or API request failed</td>
+            </tr>
+                    <tr>
+                <td><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></td>
+                <td>if the {see Message} class is not available</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_prepareCall">
-        <div class="location">at         line 510</div>
+        <div class="location">at         line 547</div>
         <code>            protected        
     <strong>prepareCall</strong>()
         </code>
@@ -1919,7 +1385,7 @@ if the request is not verified.</p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/AuthenticationException.html"><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></td>
                 <td>if the current request could not be verified</td>
             </tr>
                     <tr>
@@ -1937,7 +1403,7 @@ if the request is not verified.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_storeRequestData">
-        <div class="location">at         line 527</div>
+        <div class="location">at         line 564</div>
         <code>            protected        
     <strong>storeRequestData</strong>()
         </code>
@@ -1960,7 +1426,7 @@ if the request is not verified.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setAccessType">
-        <div class="location">at         line 538</div>
+        <div class="location">at         line 575</div>
         <code>            protected        
     <strong>setAccessType</strong>()
         </code>
@@ -1984,7 +1450,7 @@ user agent will be any type of "Slackbot".</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_isRequestValid">
-        <div class="location">at         line 559</div>
+        <div class="location">at         line 596</div>
         <code>            protected        bool
     <strong>isRequestValid</strong>()
         </code>
@@ -2012,7 +1478,7 @@ request data is already set but does not include a user id, the request is marke
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></td>
                 <td>if the request data is not set or has not been initialized yet</td>
             </tr>
             </table>
@@ -2026,7 +1492,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequiredScopes">
-        <div class="location">at         line 576</div>
+        <div class="location">at         line 613</div>
         <code>            protected        array
     <strong>getRequiredScopes</strong>()
         </code>
@@ -2058,7 +1524,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_routeRequiresAuthentication">
-        <div class="location">at         line 586</div>
+        <div class="location">at         line 623</div>
         <code>            protected        bool
     <strong>routeRequiresAuthentication</strong>()
         </code>
@@ -2090,7 +1556,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_isValidAuthState">
-        <div class="location">at         line 598</div>
+        <div class="location">at         line 635</div>
         <code>            protected        bool
     <strong>isValidAuthState</strong>()
         </code>
@@ -2122,7 +1588,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_isRequestVerified">
-        <div class="location">at         line 620</div>
+        <div class="location">at         line 657</div>
         <code>            protected        bool
     <strong>isRequestVerified</strong>(string $timestamp, string $signature)
         </code>
@@ -2192,7 +1658,7 @@ signature. If both signatures do not match, the request cannot be verified as we
             </div>
                     <div class="method-item">
                     <h3 id="method_showUserAuthenticationUri">
-        <div class="location">at         line 646</div>
+        <div class="location">at         line 686</div>
         <code>            protected        
     <strong>showUserAuthenticationUri</strong>()
         </code>
@@ -2210,7 +1676,7 @@ signature. If both signatures do not match, the request cannot be verified as we
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></td>
                 <td>if the {see Frontend} class is not available</td>
             </tr>
             </table>
@@ -2224,7 +1690,7 @@ signature. If both signatures do not match, the request cannot be verified as we
             </div>
                     <div class="method-item">
                     <h3 id="method_buildUserAuthenticationUri">
-        <div class="location">at         line 667</div>
+        <div class="location">at         line 707</div>
         <code>            protected        string
     <strong>buildUserAuthenticationUri</strong>()
         </code>
