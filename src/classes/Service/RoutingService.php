@@ -141,8 +141,7 @@ class RoutingService
     protected function analyzeRequestUri()
     {
         // Get URI components
-        $plainUri = strtok($_SERVER['REQUEST_URI'], "?");
-        $uriComponents = GeneralUtility::trimExplode('/', $plainUri);
+        $uriComponents = GeneralUtility::getUriComponents();
         $this->uri = implode('/', $uriComponents);
 
         // Apply blacklisted routes

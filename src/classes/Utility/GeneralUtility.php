@@ -160,6 +160,24 @@ class GeneralUtility
     }
 
     /**
+     * Get components of given uri.
+     *
+     * Returns the components of a given uri. This contains all path components without GET parameters.
+     *
+     * @param string $uri Uri which components should be returned
+     *
+     * @return array The uri components of the given uri
+     */
+    public static function getUriComponents(string $uri = ""): array
+    {
+        if (empty($uri)) {
+            $uri = $_SERVER['REQUEST_URI'];
+        }
+
+        return self::trimExplode('/', strtok($uri, "?"));
+    }
+
+    /**
      * Get current server name from environment variable or server.
      *
      * Returns the server name by reading the appropriate environment variable. If it is not set,
