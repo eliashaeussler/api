@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.1.0] - 2019-04-07
+
 ### Added
 
 - Environment variable `SERVER_NAME`
