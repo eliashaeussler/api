@@ -37,6 +37,7 @@ The API serves different endpoints which can be accessed from various clients.
 
 - Start or end your lunch break in Slack using slash command `/lunch`
 - Display Redmine issue information in Slack using slash command `/issue` or `/redmine issue`
+- Notify your team members in Slack that you're ready for stand-up using slash command `/standup`
 
 
 ## Requirements
@@ -162,6 +163,8 @@ requests in the form `<API_HOST>/slack/<parameters>`. It currently allows three 
   [`LunchCommandRoute`](src/classes/Routing/Slack/LunchCommandRoute.php) class
 - `redmine`: Process a request for the Slack slash commands `/redmine` or `/issue` using
   [`RedmineCommandRoute`](src/classes/Routing/Slack/RedmineCommandRoute.php) class
+- `standup`: Process a request for the Slack slash command `/standup` using
+  [`StandupCommandRoute`](src/classes/Routing/Slack/StandupCommandRoute.php) class
 
 
 ## Deployment
