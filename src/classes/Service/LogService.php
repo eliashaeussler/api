@@ -48,21 +48,21 @@ class LogService
 
     /** @var array Names for the different severity levels */
     const SEVERITY_NAME = [
-        self::SUCCESS => "Success",
-        self::DEBUG => "Debug",
-        self::NOTICE => "Notice",
-        self::WARNING => "Warning",
-        self::ERROR => "Error",
+        self::SUCCESS => 'Success',
+        self::DEBUG => 'Debug',
+        self::NOTICE => 'Notice',
+        self::WARNING => 'Warning',
+        self::ERROR => 'Error',
     ];
 
     /** @var string Path to store log files */
-    const LOG_DIRECTORY = TEMP_PATH . "/logs";
+    const LOG_DIRECTORY = TEMP_PATH . '/logs';
 
     /** @var string File name of the log files */
-    const LOG_FILE_NAME = "api.log";
+    const LOG_FILE_NAME = 'api.log';
 
     /** @var string File name pattern of rotated log files */
-    const LOG_FILE_NAME_ROTATION_PATTERN = "api.*.log";
+    const LOG_FILE_NAME_ROTATION_PATTERN = 'api.*.log';
 
     /** @var int Maximum file size of log files in bytes */
     const LOG_FILE_MAX_SIZE = 5242880;
@@ -79,7 +79,7 @@ class LogService
      */
     public static function log(string $message, int $severity = self::NOTICE): void
     {
-        if ($severity < GeneralUtility::getEnvironmentVariable("MINIMUM_LOG_LEVEL", self::NOTICE)) {
+        if ($severity < GeneralUtility::getEnvironmentVariable('MINIMUM_LOG_LEVEL', self::NOTICE)) {
             return;
         }
 
@@ -106,7 +106,7 @@ class LogService
             $fileName = self::LOG_FILE_NAME;
         }
 
-        return sprintf("%s/%s", self::LOG_DIRECTORY, $fileName);
+        return sprintf('%s/%s', self::LOG_DIRECTORY, $fileName);
     }
 
     /**
@@ -151,7 +151,7 @@ class LogService
     protected static function buildLogMessage(string $message, int $severity = self::NOTICE): string
     {
         // Set time prefix
-        $time = date("d.m.Y H:i:s");
+        $time = date('d.m.Y H:i:s');
 
         // Set severity prefix
         $severity = self::SEVERITY_NAME[$severity];
@@ -168,7 +168,7 @@ class LogService
         }
 
         // Build message
-        return sprintf("[%s] %s: %s", $time, $severity, $message);
+        return sprintf('[%s] %s: %s', $time, $severity, $message);
     }
 
     /**
@@ -204,7 +204,7 @@ class LogService
                 natsort($rotated_files);
                 $last_file = basename(end($rotated_files));
 
-                $file_pattern = sprintf("/^%s$/", str_replace("*", "(\\d+)", self::LOG_FILE_NAME_ROTATION_PATTERN));
+                $file_pattern = sprintf('/^%s$/', str_replace('*', '(\\d+)', self::LOG_FILE_NAME_ROTATION_PATTERN));
                 preg_match($file_pattern, $last_file, $matches);
                 if ($matches) {
                     $next_rotation = $matches[1] + 1;
@@ -212,7 +212,7 @@ class LogService
             }
 
             // Rotate file
-            $new_file = str_replace("*", $next_rotation, self::LOG_FILE_NAME_ROTATION_PATTERN);
+            $new_file = str_replace('*', $next_rotation, self::LOG_FILE_NAME_ROTATION_PATTERN);
             rename($log_file, self::getLogFileName($new_file));
             self::writeLogFile();
         }

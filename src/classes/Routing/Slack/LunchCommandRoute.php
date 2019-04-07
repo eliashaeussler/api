@@ -46,17 +46,17 @@ class LunchCommandRoute extends BaseRoute
 {
     /** @var array List of available emojis to be set in request */
     const EMOJI_LIST = [
-        "pancakes",
-        "cut_of_meat",
-        "hamburger",
-        "pizza",
-        "stuffed_flatbread",
-        "shallow_pan_of_food",
-        "stew",
-        "green_salad",
-        "curry",
-        "ramen",
-        "spaghetti",
+        'pancakes',
+        'cut_of_meat',
+        'hamburger',
+        'pizza',
+        'stuffed_flatbread',
+        'shallow_pan_of_food',
+        'stew',
+        'green_salad',
+        'curry',
+        'ramen',
+        'spaghetti',
     ];
 
     /** @var string Status message to be set in request */
@@ -66,10 +66,10 @@ class LunchCommandRoute extends BaseRoute
     const DEFAULT_EXPIRATION = 45;
 
     /** @var string API request parameter for showing the help */
-    const REQUEST_PARAMETER_HELP = "help";
+    const REQUEST_PARAMETER_HELP = 'help';
 
     /** @var string API request parameter for setting the default expiration time */
-    const REQUEST_PARAMETER_EXPIRE = "default";
+    const REQUEST_PARAMETER_EXPIRE = 'default';
 
     /** @var SlackController Slack API Controller */
     protected $controller;
@@ -81,7 +81,7 @@ class LunchCommandRoute extends BaseRoute
     protected $statusAlreadySet = false;
 
     /** @var string Selected emoji for status */
-    protected $emoji = "pizza";
+    protected $emoji = 'pizza';
 
     /** @var int Timestamp of status expiration */
     protected $expiration = 0;
@@ -114,22 +114,22 @@ class LunchCommandRoute extends BaseRoute
         }
 
         // Send API call
-        $result = $this->controller->api("users.profile.set", $this->requestData);
+        $result = $this->controller->api('users.profile.set', $this->requestData);
         $this->controller->checkApiResult($result);
 
         // Show success message
         if ($this->statusAlreadySet) {
             $message = LocalizationUtility::localize(
-                "lunch.message.endBreak", "slack", null,
-                SlackMessage::emoji("rocket")
+                'lunch.message.endBreak', 'slack', null,
+                SlackMessage::emoji('rocket')
             );
         } else {
             $expiration = new \DateTime();
             $expiration->setTimestamp($this->expiration);
             $message = LocalizationUtility::localize(
-                "lunch.message.startBreak", "slack", null,
+                'lunch.message.startBreak', 'slack', null,
                 $this->emoji,
-                $expiration->format("H:i")
+                $expiration->format('H:i')
             );
         }
 
@@ -149,21 +149,21 @@ class LunchCommandRoute extends BaseRoute
         // Ensure user data is available in database
         if (!$this->ensureUserDataIsAvailable()) {
             throw new DatabaseException(
-                LocalizationUtility::localize("exception.1547920929", "slack"),
+                LocalizationUtility::localize('exception.1547920929', 'slack'),
                 1547920929
             );
         }
 
         // Set provided request parameters
-        $this->requestParameters = trim($this->controller->getRequestData("text"));
+        $this->requestParameters = trim($this->controller->getRequestData('text'));
 
         // Check whether to set or reset current status
         $this->statusAlreadySet = $this->checkIfStatusIsSet();
 
         LogService::log(
-            sprintf("Slack status for user \"%s\" is %s set",
-                $this->controller->getRequestData("user_id"),
-                $this->statusAlreadySet ? "already" : "not"
+            sprintf('Slack status for user "%s" is %s set',
+                $this->controller->getRequestData('user_id'),
+                $this->statusAlreadySet ? 'already' : 'not'
             ),
             LogService::DEBUG
         );
@@ -174,10 +174,10 @@ class LunchCommandRoute extends BaseRoute
         // Status update
         $this->emoji = SlackMessage::emoji(self::EMOJI_LIST[array_rand(self::EMOJI_LIST)]);
         $this->requestData = [
-            "profile" => [
-                "status_text" => $this->statusAlreadySet ? "" : self::STATUS_MESSAGE,
-                "status_emoji" => $this->statusAlreadySet ? "" : $this->emoji,
-                "status_expiration" => $this->statusAlreadySet ? "" : $this->expiration,
+            'profile' => [
+                'status_text' => $this->statusAlreadySet ? '' : self::STATUS_MESSAGE,
+                'status_emoji' => $this->statusAlreadySet ? '' : $this->emoji,
+                'status_expiration' => $this->statusAlreadySet ? '' : $this->expiration,
             ],
         ];
     }
@@ -194,7 +194,7 @@ class LunchCommandRoute extends BaseRoute
     {
         $userInformation = $this->controller->getUserInformation();
 
-        return $userInformation["user"]["profile"]["status_text"] == self::STATUS_MESSAGE;
+        return $userInformation['user']['profile']['status_text'] == self::STATUS_MESSAGE;
     }
 
     /**
@@ -220,15 +220,15 @@ class LunchCommandRoute extends BaseRoute
         // Select expiration time from user data in database if request time is not valid or set
         if (!$expiration) {
             $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
-            $result = $queryBuilder->select("default_expiration")
-                ->from("slack_userdata")
-                ->where("user = :user_id")
-                ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+            $result = $queryBuilder->select('default_expiration')
+                ->from('slack_userdata')
+                ->where('user = :user_id')
+                ->setParameter('user_id', $this->controller->getRequestData('user_id'))
                 ->execute()
                 ->fetch();
 
-            if ($result && (int) $result["default_expiration"]) {
-                $expiration = (int) $result["default_expiration"];
+            if ($result && (int) $result['default_expiration']) {
+                $expiration = (int) $result['default_expiration'];
             } else {
                 // Use default expiration time if no expiration time is set in user data
                 $expiration = self::DEFAULT_EXPIRATION;
@@ -239,8 +239,8 @@ class LunchCommandRoute extends BaseRoute
         $this->expirationPeriod = $expiration;
 
         // Calculate expiration time from current time on
-        $interval = \DateInterval::createFromDateString(sprintf("%s min", $expiration));
-        $this->expiration = (int) (new \DateTime())->add($interval)->format("U");
+        $interval = \DateInterval::createFromDateString(sprintf('%s min', $expiration));
+        $this->expiration = (int) (new \DateTime())->add($interval)->format('U');
 
         return $this->expiration;
     }
@@ -254,12 +254,12 @@ class LunchCommandRoute extends BaseRoute
     {
         // Check if expiration time is set or delivered within request
         if ($time == 0) {
-            $parameterComponents = GeneralUtility::trimExplode(" ", $this->requestParameters);
+            $parameterComponents = GeneralUtility::trimExplode(' ', $this->requestParameters);
             if (count($parameterComponents) > 1) {
                 $time = (int) $parameterComponents[1] ?: self::DEFAULT_EXPIRATION;
             } else {
                 throw new InvalidRequestException(
-                    LocalizationUtility::localize("exception.1547919413", "slack"),
+                    LocalizationUtility::localize('exception.1547919413', 'slack'),
                     1547919413
                 );
             }
@@ -268,52 +268,52 @@ class LunchCommandRoute extends BaseRoute
         // Check if expiration time is at least one minute
         if ($time <= 0) {
             throw new \InvalidArgumentException(
-                LocalizationUtility::localize("exception.1547919926", "slack"),
+                LocalizationUtility::localize('exception.1547919926', 'slack'),
                 1547919926
             );
         }
 
         LogService::log(
             sprintf(
-                "Setting default expiration time to \"%s\" for user \"%s\"",
+                'Setting default expiration time to "%s" for user "%s"',
                 $time,
-                $this->controller->getRequestData("user_id")
+                $this->controller->getRequestData('user_id')
             ),
             LogService::DEBUG
         );
 
         // Update user data with default expiration time
         $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
-        $result = $queryBuilder->update("slack_userdata")
-            ->set("default_expiration", ":expiration")
-            ->where("user = :user_id")
-            ->setParameter("expiration", $time)
-            ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+        $result = $queryBuilder->update('slack_userdata')
+            ->set('default_expiration', ':expiration')
+            ->where('user = :user_id')
+            ->setParameter('expiration', $time)
+            ->setParameter('user_id', $this->controller->getRequestData('user_id'))
             ->execute();
 
         // Show message depending on result of database update
         if ($result) {
             $message = LocalizationUtility::localize(
-                "lunch.default.success", "slack", null,
-                SlackMessage::emoji("alarm_clock"),
+                'lunch.default.success', 'slack', null,
+                SlackMessage::emoji('alarm_clock'),
                 SlackMessage::bold(
                     sprintf(
-                        "%s %s",
+                        '%s %s',
                         $time,
-                        LocalizationUtility::localize("time.min" . ($time == 1 ? ".one" : ""), "slack")
+                        LocalizationUtility::localize('time.min' . ($time == 1 ? '.one' : ''), 'slack')
                     )
                 )
             );
             echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
         } else {
             $message = LocalizationUtility::localize(
-                "lunch.default.alreadySet", "slack", null,
-                SlackMessage::emoji("thinking_face"),
+                'lunch.default.alreadySet', 'slack', null,
+                SlackMessage::emoji('thinking_face'),
                 SlackMessage::bold(
                     sprintf(
-                        "%s %s",
+                        '%s %s',
                         $time,
-                        LocalizationUtility::localize("time.min" . ($time == 1 ? ".one" : ""), "slack")
+                        LocalizationUtility::localize('time.min' . ($time == 1 ? '.one' : ''), 'slack')
                     )
                 )
             );
@@ -329,17 +329,17 @@ class LunchCommandRoute extends BaseRoute
     protected function ensureUserDataIsAvailable(): bool
     {
         $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
-        $result = $queryBuilder->select("*")
-            ->from("slack_userdata")
-            ->where("user = :user_id")
-            ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+        $result = $queryBuilder->select('*')
+            ->from('slack_userdata')
+            ->where('user = :user_id')
+            ->setParameter('user_id', $this->controller->getRequestData('user_id'))
             ->execute()
             ->fetchAll();
 
         if (!$result) {
             $queryBuilder->resetQueryParts();
-            $result = $queryBuilder->insert("slack_userdata")
-                ->values(["user" => ":user_id"])
+            $result = $queryBuilder->insert('slack_userdata')
+                ->values(['user' => ':user_id'])
                 ->execute();
 
             if ($result == 0) {
@@ -356,19 +356,19 @@ class LunchCommandRoute extends BaseRoute
     protected function showHelpText()
     {
         $helpText = LocalizationUtility::localize(
-            "lunch.help.text",
-            "slack",
-            "",
+            'lunch.help.text',
+            'slack',
+            '',
             self::DEFAULT_EXPIRATION,
             $this->expirationPeriod,
-            $this->expirationPeriod == 1 ? "" : "s"
+            $this->expirationPeriod == 1 ? '' : 's'
         );
         $message = SlackMessage::convertPlaceholders($helpText);
         $attachments = [
             $this->controller->buildAttachmentForBotMessage(
-                "",
-                "",
-                "",
+                '',
+                '',
+                '',
                 GeneralUtility::getServerName(),
                 true
             ),

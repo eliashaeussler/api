@@ -54,7 +54,7 @@ class GeneralUtility
     {
         if (class_exists($className)) {
             if (!isset(self::$instances[$className])) {
-                LogService::log(sprintf("Initializing class \"%s\" the first time", $className), LogService::DEBUG);
+                LogService::log(sprintf('Initializing class "%s" the first time', $className), LogService::DEBUG);
 
                 self::$instances[$className] = new $className(...$constructorArguments);
             }
@@ -62,7 +62,7 @@ class GeneralUtility
             return self::$instances[$className];
         }
         throw new ClassNotFoundException(
-            LocalizationUtility::localize("exception.1543534319", null, null, $className),
+            LocalizationUtility::localize('exception.1543534319', null, null, $className),
             1543534319
         );
     }
@@ -146,12 +146,12 @@ class GeneralUtility
      */
     public static function convertArrayToString(array $array, string $separator = PHP_EOL): string
     {
-        $result = "";
+        $result = '';
         array_walk_recursive($array, function ($value, $key) use ($separator, &$result) {
-            $result .= sprintf("%s => %s", $key, $value) . $separator;
+            $result .= sprintf('%s => %s', $key, $value) . $separator;
         });
 
-        return substr_replace($result, "", -strlen($separator));
+        return substr_replace($result, '', -strlen($separator));
     }
 
     /**
@@ -163,12 +163,12 @@ class GeneralUtility
      */
     public static function getControllerName(string $class)
     {
-        $controller = ($pos = strrpos($class, "\\")) ? substr($class, $pos + 1) : $pos;
+        $controller = ($pos = strrpos($class, '\\')) ? substr($class, $pos + 1) : $pos;
         if ($controller === false) {
             return $class;
         }
 
-        return implode("", preg_split("/Controller$/", $controller, -1, PREG_SPLIT_NO_EMPTY));
+        return implode('', preg_split('/Controller$/', $controller, -1, PREG_SPLIT_NO_EMPTY));
     }
 
     /**
@@ -180,13 +180,13 @@ class GeneralUtility
      *
      * @return array The uri components of the given uri
      */
-    public static function getUriComponents(string $uri = ""): array
+    public static function getUriComponents(string $uri = ''): array
     {
         if (empty($uri)) {
             $uri = $_SERVER['REQUEST_URI'];
         }
 
-        return self::trimExplode('/', strtok($uri, "?"));
+        return self::trimExplode('/', strtok($uri, '?'));
     }
 
     /**
@@ -199,7 +199,7 @@ class GeneralUtility
      */
     public static function getServerName(): string
     {
-        return self::getEnvironmentVariable("SERVER_NAME", $_SERVER['HTTP_HOST']);
+        return self::getEnvironmentVariable('SERVER_NAME', $_SERVER['HTTP_HOST']);
     }
 
     /**
@@ -210,20 +210,20 @@ class GeneralUtility
      * @param string $file   File name of the .env file
      * @param bool   $silent Define whether to not throw errors if .env file could not be found
      */
-    public static function loadEnvironment(string $file = ".env", bool $silent = false)
+    public static function loadEnvironment(string $file = '.env', bool $silent = false)
     {
-        $path = ROOT_PATH . "/" . $file;
+        $path = ROOT_PATH . '/' . $file;
 
         if (isset(self::$dotenv[$path])) {
             $loader = self::$dotenv[$path];
         } else {
-            LogService::log(sprintf("Loading environment file \"%s/%s\" the first time", ROOT_PATH, $file), LogService::DEBUG);
+            LogService::log(sprintf('Loading environment file "%s/%s" the first time', ROOT_PATH, $file), LogService::DEBUG);
 
             $loader = new Dotenv(ROOT_PATH, $file);
             self::$dotenv[$path] = $loader;
         }
 
-        $loader->{$silent ? "safeLoad" : "load"}();
+        $loader->{$silent ? 'safeLoad' : 'load'}();
     }
 
     /**
@@ -234,7 +234,7 @@ class GeneralUtility
      *
      * @return mixed The value of the given environment variable
      */
-    public static function getEnvironmentVariable(string $name, $default = "")
+    public static function getEnvironmentVariable(string $name, $default = '')
     {
         $loader = new Loader(ROOT_PATH);
 
@@ -269,12 +269,12 @@ class GeneralUtility
      */
     public static function registerExceptionHandler()
     {
-        LogService::log("Registering custom exception handler", LogService::DEBUG);
+        LogService::log('Registering custom exception handler', LogService::DEBUG);
 
         $handler = new PrettyPageHandler();
         foreach (self::getEnvironmentVariableNames() as $key) {
-            $handler->blacklist("_ENV", $key);
-            $handler->blacklist("_SERVER", $key);
+            $handler->blacklist('_ENV', $key);
+            $handler->blacklist('_SERVER', $key);
         }
         $whoops = self::makeInstance(Run::class);
         $whoops->pushHandler($handler);
@@ -290,7 +290,7 @@ class GeneralUtility
     {
         self::loadEnvironment();
 
-        return (bool) static::getEnvironmentVariable("DEBUG_EXCEPTIONS", false);
+        return (bool) static::getEnvironmentVariable('DEBUG_EXCEPTIONS', false);
     }
 
     /**
@@ -300,6 +300,6 @@ class GeneralUtility
      */
     public static function isRequestSecure(): bool
     {
-        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== "off") || $_SERVER['SERVER_PORT'] == 443;
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
     }
 }

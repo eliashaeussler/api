@@ -50,27 +50,27 @@ class SlackController extends BaseController
     use UserEnvironmentRequired;
 
     /** @var string Base API uri of Slack */
-    const API_URI = "https://slack.com/api/";
+    const API_URI = 'https://slack.com/api/';
 
     /** @var string Base authentication uri of Slack */
-    const AUTHORIZE_URI = "https://slack.com/oauth/authorize";
+    const AUTHORIZE_URI = 'https://slack.com/oauth/authorize';
 
     /** @var string Route for authentication */
-    const ROUTE_AUTH = "authenticate";
+    const ROUTE_AUTH = 'authenticate';
 
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [
-        "lunch" => LunchCommandRoute::class,
-        "standup" => StandupCommandRoute::class,
-        "redmine" => RedmineCommandRoute::class,
+        'lunch' => LunchCommandRoute::class,
+        'standup' => StandupCommandRoute::class,
+        'redmine' => RedmineCommandRoute::class,
         self::ROUTE_AUTH => AuthenticateRoute::class,
     ];
 
     /** @var array Scopes which are required for each route during authentication */
     const REQUIRED_SCOPES = [
-        "lunch" => [
-            "users.profile:write",
-            "users:read",
+        'lunch' => [
+            'users.profile:write',
+            'users:read',
         ],
     ];
 
@@ -96,7 +96,7 @@ class SlackController extends BaseController
     protected $requestData;
 
     /** @var string Slack authentication token */
-    protected $authToken = "";
+    protected $authToken = '';
 
     /**
      * {@inheritdoc}
@@ -143,14 +143,14 @@ class SlackController extends BaseController
         $httpHeaders = [];
         if ($authorize) {
             $httpHeaders = [
-                sprintf("Authorization: %s %s", $this->authType, $this->authToken),
+                sprintf('Authorization: %s %s', $this->authType, $this->authToken),
             ];
         }
 
         // Send API call and store result
         $result = ConnectionUtility::sendRequest(self::API_URI . $function, $data, $httpHeaders, [], $json);
 
-        LogService::log(sprintf("Got API result from Slack: %s", $result), LogService::DEBUG);
+        LogService::log(sprintf('Got API result from Slack: %s', $result), LogService::DEBUG);
 
         return $result;
     }
@@ -186,12 +186,12 @@ class SlackController extends BaseController
         array $additionalConfiguration = []
     ): string {
         // Set correct content header
-        header("Content-Type: application/json");
+        header('Content-Type: application/json');
 
         // Set message
         if ($type == Message::MESSAGE_TYPE_ERROR) {
             /** @var \Exception $message */
-            $message = sprintf("%s %s", SlackMessage::emoji("no_entry"), $message->getMessage());
+            $message = sprintf('%s %s', SlackMessage::emoji('no_entry'), $message->getMessage());
         }
 
         LogService::log($message, LogService::NOTICE);
@@ -199,9 +199,9 @@ class SlackController extends BaseController
         // Build message
         $messageData = array_replace_recursive(
             [
-                "response_type" => $public ? "in_channel" : "ephemeral",
-                "text" => $message,
-                "attachments" => $attachments,
+                'response_type' => $public ? 'in_channel' : 'ephemeral',
+                'text' => $message,
+                'attachments' => $attachments,
             ],
             $additionalConfiguration
         );
@@ -225,22 +225,22 @@ class SlackController extends BaseController
     public function buildAttachmentForBotMessage(
         string $header,
         string $body,
-        string $preText = "",
-        string $fallback = "",
+        string $preText = '',
+        string $fallback = '',
         bool $addFooter = false,
         array $additionalData = [],
-        array $markdown = ["fields"]
+        array $markdown = ['fields']
     ): array {
         $attachment = [
-            "title" => $header,
-            "pretext" => $preText,
-            "text" => $body,
-            "fallback" => $fallback,
-            "mrkdwn_in" => $markdown,
+            'title' => $header,
+            'pretext' => $preText,
+            'text' => $body,
+            'fallback' => $fallback,
+            'mrkdwn_in' => $markdown,
         ];
 
         if ($addFooter) {
-            $attachment["footer"] = $this->buildAttachmentFooter();
+            $attachment['footer'] = $this->buildAttachmentFooter();
         }
 
         if ($additionalData) {
@@ -258,7 +258,7 @@ class SlackController extends BaseController
     public function buildAttachmentFooter(): string
     {
         return sprintf(
-            "%s | %s",
+            '%s | %s',
             GeneralUtility::getServerName(),
             ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION)
         );
@@ -278,7 +278,7 @@ class SlackController extends BaseController
     {
         if (!$result) {
             throw new InvalidRequestException(
-                LocalizationUtility::localize("exception.1545669514", "slack"),
+                LocalizationUtility::localize('exception.1545669514', 'slack'),
                 1545669514
             );
         }
@@ -286,21 +286,21 @@ class SlackController extends BaseController
         $result = json_decode($result, true);
 
         // Check for valid result from Slack
-        if ($result["ok"]) {
+        if ($result['ok']) {
             return;
         }
 
-        switch ($result["error"]) {
-            case "not_authed":
-            case "missing_scope":
-            case "token_revoked":
+        switch ($result['error']) {
+            case 'not_authed':
+            case 'missing_scope':
+            case 'token_revoked':
                 $authenticationUri = $this->buildUserAuthenticationUri();
                 throw new AuthenticationException(
                     LocalizationUtility::localize(
-                        "authentication.reauth.message", "slack", null,
+                        'authentication.reauth.message', 'slack', null,
                         SlackMessage::link(
                             $authenticationUri,
-                            LocalizationUtility::localize("authentication.reauth.linkText", "slack")
+                            LocalizationUtility::localize('authentication.reauth.linkText', 'slack')
                         )
                     ),
                     1551046280
@@ -308,7 +308,7 @@ class SlackController extends BaseController
 
             default:
                 throw new InvalidRequestException(
-                    LocalizationUtility::localize("exception.1551040956", "slack", null, $result['error']),
+                    LocalizationUtility::localize('exception.1551040956', 'slack', null, $result['error']),
                     1551040956
                 );
         }
@@ -328,24 +328,24 @@ class SlackController extends BaseController
     {
         // Set API parameters
         $data = [
-            "token" => $this->authToken,
-            "user" => $this->getRequestData("user_id"),
+            'token' => $this->authToken,
+            'user' => $this->getRequestData('user_id'),
         ];
 
         // Request user-preferred language if requested
         if ($setLanguage) {
-            $data["include_locale"] = true;
+            $data['include_locale'] = true;
         }
 
         // Send API call
-        $result = $this->api("users.info", $data, false);
+        $result = $this->api('users.info', $data, false);
 
         $this->checkApiResult($result);
         $result = json_decode($result, true);
 
         // Set user-preferred localization language
         if ($setLanguage) {
-            LocalizationUtility::readUserPreferredLanguages($result["user"]["locale"]);
+            LocalizationUtility::readUserPreferredLanguages($result['user']['locale']);
         }
 
         return $result;
@@ -364,16 +364,16 @@ class SlackController extends BaseController
      */
     public function getRawCommandName(): string
     {
-        if (!$this->requestData || !$this->requestData["command"]) {
-            throw new InvalidRequestException(LocalizationUtility::localize("exception.1552433612", "slack"), 1552433612);
+        if (!$this->requestData || !$this->requestData['command']) {
+            throw new InvalidRequestException(LocalizationUtility::localize('exception.1552433612', 'slack'), 1552433612);
         }
 
         // Get raw command name
-        $command = $this->requestData["command"];
-        preg_match("/^\\/([[:alnum:]]+)$/", $command, $matches);
+        $command = $this->requestData['command'];
+        preg_match('/^\\/([[:alnum:]]+)$/', $command, $matches);
 
         if (!$matches) {
-            throw new InvalidParameterException(LocalizationUtility::localize("exception.1552434032", "slack"), 1552434032);
+            throw new InvalidParameterException(LocalizationUtility::localize('exception.1552434032', 'slack'), 1552434032);
         }
 
         return strtolower($matches[1]);
@@ -429,9 +429,9 @@ class SlackController extends BaseController
      *
      * @return array|string API request data
      */
-    public function getRequestData(string $key = "")
+    public function getRequestData(string $key = '')
     {
-        return $key ? ($this->requestData[$key] ?? "") : $this->requestData;
+        return $key ? ($this->requestData[$key] ?? '') : $this->requestData;
     }
 
     /**
@@ -468,16 +468,16 @@ class SlackController extends BaseController
     public function loadUserData()
     {
         $queryBuilder = $this->database->createQueryBuilder();
-        $result = $queryBuilder->select("*")
-            ->from("slack_auth")
-            ->where("user = :user_id")
-            ->setParameter("user_id", $this->requestData['user_id'])
+        $result = $queryBuilder->select('*')
+            ->from('slack_auth')
+            ->where('user = :user_id')
+            ->setParameter('user_id', $this->requestData['user_id'])
             ->execute()
             ->fetch();
 
         if (empty($result)) {
             throw new AuthenticationException(
-                LocalizationUtility::localize("exception.1546798472", "slack"),
+                LocalizationUtility::localize('exception.1546798472', 'slack'),
                 1546798472
             );
         }
@@ -495,10 +495,10 @@ class SlackController extends BaseController
     public function isUserAuthenticated(): bool
     {
         $queryBuilder = $this->database->createQueryBuilder();
-        $result = $queryBuilder->select("COUNT(*) AS count")
-            ->from("slack_auth")
-            ->where("user = :user_id")
-            ->setParameter("user_id", $this->requestData['user_id'])
+        $result = $queryBuilder->select('COUNT(*) AS count')
+            ->from('slack_auth')
+            ->where('user = :user_id')
+            ->setParameter('user_id', $this->requestData['user_id'])
             ->execute()
             ->fetch();
 
@@ -518,11 +518,11 @@ class SlackController extends BaseController
         $this->database = GeneralUtility::makeInstance(ConnectionService::class)->getDatabase();
 
         // Set base app credentials and authentication settings
-        $this->clientId = GeneralUtility::getEnvironmentVariable("SLACK_CLIENT_ID");
-        $this->clientSecret = GeneralUtility::getEnvironmentVariable("SLACK_CLIENT_SECRET");
-        $this->signingSecret = GeneralUtility::getEnvironmentVariable("SLACK_SIGNING_SECRET");
-        $this->authState = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_STATE");
-        $this->authType = GeneralUtility::getEnvironmentVariable("SLACK_AUTH_TYPE");
+        $this->clientId = GeneralUtility::getEnvironmentVariable('SLACK_CLIENT_ID');
+        $this->clientSecret = GeneralUtility::getEnvironmentVariable('SLACK_CLIENT_SECRET');
+        $this->signingSecret = GeneralUtility::getEnvironmentVariable('SLACK_SIGNING_SECRET');
+        $this->authState = GeneralUtility::getEnvironmentVariable('SLACK_AUTH_STATE');
+        $this->authType = GeneralUtility::getEnvironmentVariable('SLACK_AUTH_TYPE');
 
         // Store data from request body and user-specific environment variables
         $this->storeRequestData();
@@ -562,12 +562,12 @@ class SlackController extends BaseController
     protected function prepareCall()
     {
         // Get timestamp and signature from request
-        $requestTimestamp = $this->getRequestHeader("X-Slack-Request-Timestamp");
-        $requestSignature = $this->getRequestHeader("X-Slack-Signature");
+        $requestTimestamp = $this->getRequestHeader('X-Slack-Request-Timestamp');
+        $requestSignature = $this->getRequestHeader('X-Slack-Signature');
 
         if (!$this->isRequestVerified($requestTimestamp, $requestSignature)) {
             throw new AuthenticationException(
-                LocalizationUtility::localize("exception.1543541836", "slack"),
+                LocalizationUtility::localize('exception.1543541836', 'slack'),
                 1543541836
             );
         }
@@ -589,13 +589,13 @@ class SlackController extends BaseController
      */
     protected function setAccessType()
     {
-        $userAgent = $this->getRequestHeader("User-Agent");
-        $accessType = strpos($userAgent, "Slackbot") !== false
+        $userAgent = $this->getRequestHeader('User-Agent');
+        $accessType = strpos($userAgent, 'Slackbot') !== false
             ? RoutingService::ACCESS_TYPE_BOT
             : RoutingService::ACCESS_TYPE_BROWSER;
         RoutingService::setAccess($accessType);
 
-        LogService::log(sprintf("Setting access type \"%s\" for current request", $accessType), LogService::DEBUG);
+        LogService::log(sprintf('Setting access type "%s" for current request', $accessType), LogService::DEBUG);
     }
 
     /**
@@ -612,7 +612,7 @@ class SlackController extends BaseController
     {
         if (!$this->requestData) {
             throw new InvalidRequestException(
-                LocalizationUtility::localize("exception.1545685035", "slack"),
+                LocalizationUtility::localize('exception.1545685035', 'slack'),
                 1545685035
             );
         }
@@ -672,17 +672,17 @@ class SlackController extends BaseController
     protected function isRequestVerified(string $timestamp, string $signature): bool
     {
         // Check if request is older than 5 minutes
-        $interval = \DateInterval::createFromDateString("5 minutes");
+        $interval = \DateInterval::createFromDateString('5 minutes');
         $lowerBound = (new \DateTime())->sub($interval)->format('U');
         if ($lowerBound > $timestamp) {
             return false;
         }
 
         // Test if request is authenticated
-        $apiVersionNumber = "v0";
-        $baseString = implode(":", [$apiVersionNumber, $timestamp, $this->requestBody]);
-        $hashString = hash_hmac("sha256", $baseString, $this->signingSecret);
-        $calculatedSignature = $apiVersionNumber . "=" . $hashString;
+        $apiVersionNumber = 'v0';
+        $baseString = implode(':', [$apiVersionNumber, $timestamp, $this->requestBody]);
+        $hashString = hash_hmac('sha256', $baseString, $this->signingSecret);
+        $calculatedSignature = $apiVersionNumber . '=' . $hashString;
         if ($calculatedSignature != $signature) {
             return false;
         }
@@ -701,11 +701,11 @@ class SlackController extends BaseController
         echo $this->buildMessage(
             Message::MESSAGE_TYPE_WARNING,
             LocalizationUtility::localize(
-                "authentication.invite", "slack", null,
-                SlackMessage::emoji("warning"),
+                'authentication.invite', 'slack', null,
+                SlackMessage::emoji('warning'),
                 SlackMessage::link(
                     $uri,
-                    LocalizationUtility::localize("authentication.invite.linkText", "slack")
+                    LocalizationUtility::localize('authentication.invite.linkText', 'slack')
                 )
             )
         );
@@ -718,10 +718,10 @@ class SlackController extends BaseController
      */
     protected function buildUserAuthenticationUri()
     {
-        return self::AUTHORIZE_URI . "?" . http_build_query([
-            "scope" => implode(",", $this->getRequiredScopes()),
-            "client_id" => $this->clientId,
-            "state" => $this->authState,
+        return self::AUTHORIZE_URI . '?' . http_build_query([
+            'scope' => implode(',', $this->getRequiredScopes()),
+            'client_id' => $this->clientId,
+            'state' => $this->authState,
         ]);
     }
 }

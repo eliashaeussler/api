@@ -34,16 +34,16 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
 class Message
 {
     /** @var string Message type for successful messages */
-    const MESSAGE_TYPE_SUCCESS = "success";
+    const MESSAGE_TYPE_SUCCESS = 'success';
 
     /** @var string Message type for notices */
-    const MESSAGE_TYPE_NOTICE = "notice";
+    const MESSAGE_TYPE_NOTICE = 'notice';
 
     /** @var string Message type for warnings */
-    const MESSAGE_TYPE_WARNING = "warning";
+    const MESSAGE_TYPE_WARNING = 'warning';
 
     /** @var string Message type for error messages */
-    const MESSAGE_TYPE_ERROR = "error";
+    const MESSAGE_TYPE_ERROR = 'error';
 
     /** @var Template Page template */
     protected $template;
@@ -77,10 +77,10 @@ class Message
         }
 
         return $this->template->renderTemplate([
-            "message" => [
-                "type" => $type,
-                "header" => nl2br($header),
-                "body" => nl2br($body),
+            'message' => [
+                'type' => $type,
+                'header' => nl2br($header),
+                'body' => nl2br($body),
             ],
         ]);
     }
@@ -95,7 +95,7 @@ class Message
      */
     public function success(string $header, string $body): string
     {
-        LogService::log(sprintf("%s: %s", $header, $body), LogService::SUCCESS);
+        LogService::log(sprintf('%s: %s', $header, $body), LogService::SUCCESS);
 
         return $this->message($header, $body, self::MESSAGE_TYPE_SUCCESS);
     }
@@ -110,7 +110,7 @@ class Message
      */
     public function notice(string $header, string $body): string
     {
-        LogService::log(sprintf("%s: %s", $header, $body), LogService::NOTICE);
+        LogService::log(sprintf('%s: %s', $header, $body), LogService::NOTICE);
 
         return $this->message($header, $body);
     }
@@ -125,9 +125,9 @@ class Message
      */
     public function warning(string $header, string $body): string
     {
-        LogService::log(sprintf("%s: %s", $header, $body), LogService::WARNING);
+        LogService::log(sprintf('%s: %s', $header, $body), LogService::WARNING);
 
-        $header = sprintf("Warning: %s", $header);
+        $header = sprintf('Warning: %s', $header);
 
         return $this->message($header, $body, self::MESSAGE_TYPE_WARNING);
     }
@@ -141,12 +141,12 @@ class Message
      */
     public function error(\Exception $object): string
     {
-        LogService::log(sprintf("%s: %s", get_class($object), $object->getMessage()), LogService::ERROR);
+        LogService::log(sprintf('%s: %s', get_class($object), $object->getMessage()), LogService::ERROR);
 
-        $header = sprintf("Error: %s", get_class($object));
+        $header = sprintf('Error: %s', get_class($object));
         $body = $object->getMessage();
         if (($code = $object->getCode()) > 0) {
-            $body .= " [" . $code . "]";
+            $body .= ' [' . $code . ']';
         }
         if (GeneralUtility::isDebugEnabled()) {
             $body .= PHP_EOL . PHP_EOL . $object->getTraceAsString();

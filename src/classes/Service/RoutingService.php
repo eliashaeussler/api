@@ -76,7 +76,7 @@ class RoutingService
     {
         GeneralUtility::loadEnvironment();
 
-        LogService::log(sprintf("Debugging is %senabled", GeneralUtility::isDebugEnabled() ? "" : "not "), LogService::DEBUG);
+        LogService::log(sprintf('Debugging is %senabled', GeneralUtility::isDebugEnabled() ? '' : 'not '), LogService::DEBUG);
 
         $this->analyzeRequestUri();
         $this->initializeDatabase();
@@ -158,14 +158,14 @@ class RoutingService
 
         // Apply blacklisted routes
         if (in_array($this->uri, $this->getRouteBlacklist())) {
-            LogService::log(sprintf("Blocking request with route \"%s\"", $this->uri), LogService::NOTICE);
+            LogService::log(sprintf('Blocking request with route "%s"', $this->uri), LogService::NOTICE);
             exit;
         }
 
         // Check if request is done with an insecure connection
         if (!GeneralUtility::isRequestSecure()) {
             LogService::log(
-                "Request is not secured with HTTPS. Consider accessing the API with the HTTPS protocol.",
+                'Request is not secured with HTTPS. Consider accessing the API with the HTTPS protocol.',
                 LogService::WARNING
             );
         }
@@ -173,24 +173,24 @@ class RoutingService
         // Set controller
         if (empty($uriComponents[0])) {
             throw new EmptyControllerException(
-                LocalizationUtility::localize("exception.1543532177"),
+                LocalizationUtility::localize('exception.1543532177'),
                 1543532177
             );
         }
         $this->namespace = $uriComponents[0];
 
-        LogService::log(sprintf("Setting request controller to \"%s\"", $this->namespace), LogService::DEBUG);
+        LogService::log(sprintf('Setting request controller to "%s"', $this->namespace), LogService::DEBUG);
 
         // Set controller parameters
         if (empty($uriComponents[1])) {
             throw new EmptyParametersException(
-                LocalizationUtility::localize("exception.1551041868", null, null, $this->namespace),
+                LocalizationUtility::localize('exception.1551041868', null, null, $this->namespace),
                 1551041868
             );
         }
         $this->parameters = $uriComponents[1];
 
-        LogService::log(sprintf("Setting controller parameters to \"%s\"", $this->parameters), LogService::DEBUG);
+        LogService::log(sprintf('Setting controller parameters to "%s"', $this->parameters), LogService::DEBUG);
     }
 
     /**
@@ -204,10 +204,10 @@ class RoutingService
     protected function initializeController()
     {
         // Generate controller class name
-        $controllerName = ucfirst($this->namespace) . "Controller";
-        $controllerClass = "EliasHaeussler\\Api\\Controller\\" . $controllerName;
+        $controllerName = ucfirst($this->namespace) . 'Controller';
+        $controllerClass = 'EliasHaeussler\\Api\\Controller\\' . $controllerName;
 
-        LogService::log(sprintf("Initializing controller \"%s\"", $controllerClass), LogService::DEBUG);
+        LogService::log(sprintf('Initializing controller "%s"', $controllerClass), LogService::DEBUG);
 
         // Check if controller class is available and can be instantiated
         try {
@@ -217,7 +217,7 @@ class RoutingService
             }
         } catch (\Exception $e) {
             throw new InvalidControllerException(
-                LocalizationUtility::localize("exception.1543532513", null, null, $controllerName),
+                LocalizationUtility::localize('exception.1543532513', null, null, $controllerName),
                 1543532513
             );
         }
@@ -232,6 +232,6 @@ class RoutingService
      */
     protected function getRouteBlacklist(): array
     {
-        return GeneralUtility::trimExplode(",", GeneralUtility::getEnvironmentVariable("ROUTE_BLACKLIST"));
+        return GeneralUtility::trimExplode(',', GeneralUtility::getEnvironmentVariable('ROUTE_BLACKLIST'));
     }
 }

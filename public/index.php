@@ -4,9 +4,9 @@
  */
 declare(strict_types=1);
 
-define("ROOT_PATH", dirname(__DIR__));
-define("SOURCE_PATH", ROOT_PATH . "/src");
-define("TEMP_PATH", ROOT_PATH . "/temp");
+define('ROOT_PATH', dirname(__DIR__));
+define('SOURCE_PATH', ROOT_PATH . '/src');
+define('TEMP_PATH', ROOT_PATH . '/temp');
 require ROOT_PATH . '/vendor/autoload.php';
 
 use Doctrine\DBAL\DBALException;
@@ -31,7 +31,7 @@ try {
     if ($e instanceof DBALException && !GeneralUtility::isDebugEnabled()) {
         $e = new DatabaseException(
             sprintf(
-                "Sorry, but there was a problem during interaction with the database in %s:%s.",
+                'Sorry, but there was a problem during interaction with the database in %s:%s.',
                 basename($e->getFile()),
                 $e->getLine()
             ), 1546801779
@@ -40,7 +40,7 @@ try {
 
     try {
         // Use custom exception handler if debugging is enabled
-        if (GeneralUtility::isDebugEnabled() && class_exists("\\Whoops\\Run")) {
+        if (GeneralUtility::isDebugEnabled() && class_exists('\\Whoops\\Run')) {
             GeneralUtility::registerExceptionHandler();
             GeneralUtility::makeInstance(\Whoops\Run::class)->handleException($e);
         }

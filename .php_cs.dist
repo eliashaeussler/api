@@ -20,10 +20,10 @@ return PhpCsFixer\Config::create()
         'linebreak_after_opening_tag' => true,
         'list_syntax' => true,
         'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
+        'no_blank_lines_after_phpdoc' => false,
         'no_blank_lines_before_namespace' => true,
         'phpdoc_to_comment' => false,
         'single_blank_line_before_namespace' => false,
-        'single_quote' => false,
         'yoda_style' => false,
     ])
     ->setFinder($finder);

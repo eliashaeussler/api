@@ -46,7 +46,7 @@ abstract class BaseRoute
     {
         $this->controller = $controller;
 
-        LogService::log(sprintf("Initializing request for route \"%s\"", static::class), LogService::DEBUG);
+        LogService::log(sprintf('Initializing request for route "%s"', static::class), LogService::DEBUG);
 
         $this->initializeRequest();
     }

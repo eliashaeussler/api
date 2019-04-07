@@ -55,13 +55,13 @@ class AuthenticateRoute extends BaseRoute
      */
     public function processRequest()
     {
-        LogService::log("Processing user authentication", LogService::DEBUG);
+        LogService::log('Processing user authentication', LogService::DEBUG);
 
         // Send API call
-        $result = $this->controller->api("oauth.access", [
-            "client_id" => $this->controller->getClientId(),
-            "client_secret" => $this->controller->getClientSecret(),
-            "code" => $this->controller->getRequestParameter("code"),
+        $result = $this->controller->api('oauth.access', [
+            'client_id' => $this->controller->getClientId(),
+            'client_secret' => $this->controller->getClientSecret(),
+            'code' => $this->controller->getRequestParameter('code'),
         ], false, false);
 
         $this->controller->checkApiResult($result);
@@ -69,36 +69,36 @@ class AuthenticateRoute extends BaseRoute
 
         // Check if user is already available in database
         $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
-        $userIsAvailable = $queryBuilder->select("user")
-            ->from("slack_auth")
-            ->where($queryBuilder->expr()->eq("user", ":user"))
-            ->setParameter("user", $result["user_id"])
+        $userIsAvailable = $queryBuilder->select('user')
+            ->from('slack_auth')
+            ->where($queryBuilder->expr()->eq('user', ':user'))
+            ->setParameter('user', $result['user_id'])
             ->execute()
             ->rowCount() > 0;
         $queryBuilder->resetQueryParts();
 
-        LogService::log(sprintf("User \"%s\" is %savailable", $result["user_id"], $userIsAvailable ? "" : "not "), LogService::DEBUG);
+        LogService::log(sprintf('User "%s" is %savailable', $result['user_id'], $userIsAvailable ? '' : 'not '), LogService::DEBUG);
 
         // Save authentication credentials
         if ($userIsAvailable) {
-            $dbResult = $queryBuilder->update("slack_auth")
-                ->set("token", ":token")
-                ->set("scope", ":scope")
-                ->where($queryBuilder->expr()->eq("user", ":user"))
-                ->setParameter("token", $result["access_token"])
-                ->setParameter("scope", $result["scope"])
-                ->setParameter("user", $result["user_id"])
+            $dbResult = $queryBuilder->update('slack_auth')
+                ->set('token', ':token')
+                ->set('scope', ':scope')
+                ->where($queryBuilder->expr()->eq('user', ':user'))
+                ->setParameter('token', $result['access_token'])
+                ->setParameter('scope', $result['scope'])
+                ->setParameter('user', $result['user_id'])
                 ->execute();
         } else {
-            $dbResult = $queryBuilder->insert("slack_auth")
+            $dbResult = $queryBuilder->insert('slack_auth')
                 ->values([
-                    "user" => ":user",
-                    "token" => ":token",
-                    "scope" => ":scope",
+                    'user' => ':user',
+                    'token' => ':token',
+                    'scope' => ':scope',
                 ])
-                ->setParameter("user", $result["user_id"])
-                ->setParameter("token", $result["access_token"])
-                ->setParameter("scope", $result["scope"])
+                ->setParameter('user', $result['user_id'])
+                ->setParameter('token', $result['access_token'])
+                ->setParameter('scope', $result['scope'])
                 ->execute();
         }
 
@@ -106,18 +106,18 @@ class AuthenticateRoute extends BaseRoute
         if ($dbResult > 0) {
             echo $this->controller->buildMessage(
                 Message::MESSAGE_TYPE_SUCCESS,
-                LocalizationUtility::localize("authentication.success.header", "slack"),
-                LocalizationUtility::localize("authentication.success.message", "slack")
+                LocalizationUtility::localize('authentication.success.header', 'slack'),
+                LocalizationUtility::localize('authentication.success.message', 'slack')
             );
         } else {
             echo $this->controller->buildMessage(
                 Message::MESSAGE_TYPE_WARNING,
-                LocalizationUtility::localize("authentication.error.header", "slack"),
-                LocalizationUtility::localize("authentication.error.message", "slack")
+                LocalizationUtility::localize('authentication.error.header', 'slack'),
+                LocalizationUtility::localize('authentication.error.message', 'slack')
             );
         }
 
-        LogService::log("Finished user authentication", LogService::DEBUG);
+        LogService::log('Finished user authentication', LogService::DEBUG);
     }
 
     /**
@@ -129,7 +129,7 @@ class AuthenticateRoute extends BaseRoute
     {
         if (!$this->isValidAuthState()) {
             throw new AuthenticationException(
-                LocalizationUtility::localize("exception.1545662028", "slack"),
+                LocalizationUtility::localize('exception.1545662028', 'slack'),
                 1545662028
             );
         }
@@ -144,6 +144,6 @@ class AuthenticateRoute extends BaseRoute
      */
     protected function isValidAuthState(): bool
     {
-        return $this->controller->getRequestParameter("state") == $this->controller->getAuthState();
+        return $this->controller->getRequestParameter('state') == $this->controller->getAuthState();
     }
 }

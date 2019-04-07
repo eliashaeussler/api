@@ -67,8 +67,8 @@ class ConnectionUtility
             if ($json) {
                 $postData = json_encode($postData);
                 $requestData[CURLOPT_HTTPHEADER] = [
-                    "Content-Type: " . "application/json; charset=utf-8",
-                    "Content-Length: " . strlen($postData),
+                    'Content-Type: ' . 'application/json; charset=utf-8',
+                    'Content-Length: ' . strlen($postData),
                 ];
             }
 
@@ -91,7 +91,7 @@ class ConnectionUtility
 
         LogService::log(
             sprintf(
-                "Sending request to \"%s\" with data %s",
+                'Sending request to "%s" with data %s',
                 $uri,
                 GeneralUtility::convertArrayToString($requestData)
             ),

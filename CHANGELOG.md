@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Updated
 
 - Switch from MIT License to [GNU General Public License v3.0](LICENSE)
+- Improve PHP-CS-Fixer configuration
 
 
 

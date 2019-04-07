@@ -29,22 +29,22 @@ use EliasHaeussler\Api\Exception\InvalidFileException;
 class LocalizationUtility
 {
     /** @var string Regex pattern to match language code */
-    const LANGUAGE_CODE_PATTERN = "/^[^-]+/";
+    const LANGUAGE_CODE_PATTERN = '/^[^-]+/';
 
     /** @var string Path where localization files are stored */
-    const LOCALIZATION_PATH = SOURCE_PATH . "/l10n";
+    const LOCALIZATION_PATH = SOURCE_PATH . '/l10n';
 
     /** @var string Pattern of localization file names */
-    const LOCALIZATION_FILE_PATTERN = "%s.xml";
+    const LOCALIZATION_FILE_PATTERN = '%s.xml';
 
     /** @var string Default localization file name */
-    const DEFAULT_FILE_NAME = "default";
+    const DEFAULT_FILE_NAME = 'default';
 
     /** @var string Xpath to localization nodes in localization files */
-    const LOCALIZATION_TEXT_XPATH = "//l10n/body/text[@id]";
+    const LOCALIZATION_TEXT_XPATH = '//l10n/body/text[@id]';
 
     /** @var string Default localization language */
-    const DEFAULT_LANGUAGE = "en";
+    const DEFAULT_LANGUAGE = 'en';
 
     /** @var array Cache of localization files */
     protected static $fileCache = [];
@@ -68,13 +68,13 @@ class LocalizationUtility
      *
      * @return string The localized text
      */
-    public static function localize(string $id, ?string $type = self::DEFAULT_FILE_NAME, ?string $default = "", ...$arguments): string
+    public static function localize(string $id, ?string $type = self::DEFAULT_FILE_NAME, ?string $default = '', ...$arguments): string
     {
         if ($type == null) {
             $type = self::DEFAULT_FILE_NAME;
         }
         if ($default == null) {
-            $default = "";
+            $default = '';
         }
 
         // Set localization language
@@ -89,10 +89,10 @@ class LocalizationUtility
             foreach ([self::$userPreferredLanguage, self::DEFAULT_LANGUAGE] as $language) {
                 // Get localization file nodes
                 $type = strtolower($type);
-                $nodes = self::$fileCache[$type][$language]["nodes"] ?? [];
+                $nodes = self::$fileCache[$type][$language]['nodes'] ?? [];
 
                 if (isset($nodes[$id])) {
-                    $text = preg_replace("/\\n\\s*/", PHP_EOL, $nodes[$id]);
+                    $text = preg_replace('/\\n\\s*/', PHP_EOL, $nodes[$id]);
 
                     return sprintf($text, ...$arguments);
                 }
@@ -116,10 +116,10 @@ class LocalizationUtility
     public static function readUserPreferredLanguages(?string $source = null): void
     {
         if (!$source) {
-            $source = $_SERVER["HTTP_ACCEPT_LANGUAGE"] ?? "";
+            $source = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '';
         }
 
-        $browserLanguages = GeneralUtility::trimExplode(",", $source);
+        $browserLanguages = GeneralUtility::trimExplode(',', $source);
         $browserLanguages = array_map(function ($language) {
             preg_match(self::LANGUAGE_CODE_PATTERN, $language, $matches);
 
@@ -169,24 +169,24 @@ class LocalizationUtility
 
         foreach (array_keys($fileCache) as $language) {
             // Parse XML nodes
-            $xml = new \SimpleXMLElement($fileCache[$language]["contents"]);
+            $xml = new \SimpleXMLElement($fileCache[$language]['contents']);
             $nodes = $xml->xpath(self::LOCALIZATION_TEXT_XPATH);
 
             if ($nodes === false) {
                 throw new InvalidFileException(
                     sprintf(
-                        "The localization file for the type \"%s\" contains invalid nodes and cannot be parsed correctly.",
+                        'The localization file for the type "%s" contains invalid nodes and cannot be parsed correctly.',
                         $type
                     ), 1551035667
                 );
             }
 
             // Add localizations to cache
-            $fileCache[$language]["nodes"] = [];
+            $fileCache[$language]['nodes'] = [];
             foreach ($nodes as $node) {
                 $id = (string) $node->xpath('@id')[0];
                 $text = trim((string) $node);
-                $fileCache[$language]["nodes"][$id] = $text;
+                $fileCache[$language]['nodes'][$id] = $text;
             }
         }
     }
@@ -206,20 +206,20 @@ class LocalizationUtility
     {
         $type = strtolower($type);
         $fileName = sprintf(self::LOCALIZATION_FILE_PATTERN, $type);
-        $filePath = sprintf("%s/{%s.,}%s", self::LOCALIZATION_PATH, self::$userPreferredLanguage, $fileName);
+        $filePath = sprintf('%s/{%s.,}%s', self::LOCALIZATION_PATH, self::$userPreferredLanguage, $fileName);
 
         if (!isset(self::$fileCache[$type])) {
             self::$fileCache[$type] = [];
         }
 
         foreach (glob($filePath, GLOB_BRACE) as $file) {
-            preg_match("/^([a-z]{2})\\./", basename($file), $matches);
+            preg_match('/^([a-z]{2})\\./', basename($file), $matches);
             $language = $matches ? $matches[1] : self::DEFAULT_LANGUAGE;
 
             // Get file contents
             if (!($fileContents = @file_get_contents($file))) {
                 throw new FileNotFoundException(
-                    sprintf("The localization file \"%s\" could not be found or is not readable.", $fileName),
+                    sprintf('The localization file "%s" could not be found or is not readable.', $fileName),
                     1551035147
                 );
             }
@@ -229,8 +229,8 @@ class LocalizationUtility
             if (!isset(self::$fileCache[$type][$language])) {
                 self::$fileCache[$type][$language] = [];
             }
-            self::$fileCache[$type][$language]["parse_time"] = time();
-            self::$fileCache[$type][$language]["contents"] = $fileContents;
+            self::$fileCache[$type][$language]['parse_time'] = time();
+            self::$fileCache[$type][$language]['contents'] = $fileContents;
         }
     }
 }

@@ -47,12 +47,12 @@ class ExtendedStyle extends SymfonyStyle
      * @param array|string $message The notice message
      * @param string       $prefix  Optional first line message
      */
-    public function notice($message, string $prefix = "")
+    public function notice($message, string $prefix = '')
     {
         if ($prefix) {
             $message = is_array($message) ? array_merge([$prefix], $message) : [$prefix, $message];
         }
-        $this->block($message, null, "fg=black;bg=yellow", "  ", true, false);
+        $this->block($message, null, 'fg=black;bg=yellow', '  ', true, false);
     }
 
     /**
@@ -63,6 +63,6 @@ class ExtendedStyle extends SymfonyStyle
     protected function registerCustomOutputStyles(OutputInterface $output)
     {
         $outputStyle = new OutputFormatterStyle('blue', null, ['bold']);
-        $output->getFormatter()->setStyle("param", $outputStyle);
+        $output->getFormatter()->setStyle('param', $outputStyle);
     }
 }

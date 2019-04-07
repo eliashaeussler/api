@@ -45,15 +45,15 @@ class DatabaseMigrateCommand extends BaseCommand
     protected function configure()
     {
         // Base configuration
-        $this->setName("database:migrate")
-            ->setDescription(LocalizationUtility::localize("database.migrate.description", "console"))
-            ->setHelp(LocalizationUtility::localize("database.migrate.help", "console"));
+        $this->setName('database:migrate')
+            ->setDescription(LocalizationUtility::localize('database.migrate.description', 'console'))
+            ->setHelp(LocalizationUtility::localize('database.migrate.help', 'console'));
 
         // Arguments
         $this->addArgument(
-            "file",
+            'file',
             InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-            LocalizationUtility::localize("database.migrate.argument_file", "console")
+            LocalizationUtility::localize('database.migrate.argument_file', 'console')
         );
     }
 
@@ -71,9 +71,9 @@ class DatabaseMigrateCommand extends BaseCommand
         // Update database schema
         /** @var ConnectionService $connectionService */
         $connectionService = GeneralUtility::makeInstance(ConnectionService::class);
-        $connectionService->migrate($input->getArgument("file"));
+        $connectionService->migrate($input->getArgument('file'));
 
         // Show success message
-        $this->io->success(LocalizationUtility::localize("database.migrate.success", "console"));
+        $this->io->success(LocalizationUtility::localize('database.migrate.success', 'console'));
     }
 }

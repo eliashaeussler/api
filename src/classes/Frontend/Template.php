@@ -34,10 +34,10 @@ use Twig\TemplateWrapper;
 class Template
 {
     /** @var string Path containing Twig templates */
-    const TEMPLATE_PATH = SOURCE_PATH . "/templates";
+    const TEMPLATE_PATH = SOURCE_PATH . '/templates';
 
     /** @var string File name of default Twig template */
-    const DEFAULT_TEMPLATE = "default.twig";
+    const DEFAULT_TEMPLATE = 'default.twig';
 
     /** @var string File name of Twig template */
     protected $file;
@@ -75,7 +75,7 @@ class Template
      */
     public function renderTemplate(array $parameters = [])
     {
-        LogService::log("Rendering Twig template", LogService::DEBUG);
+        LogService::log('Rendering Twig template', LogService::DEBUG);
 
         return $this->template->render($parameters);
     }
@@ -85,16 +85,16 @@ class Template
      */
     protected function initializeTwig()
     {
-        LogService::log("Initializing Twig template", LogService::DEBUG);
+        LogService::log('Initializing Twig template', LogService::DEBUG);
 
         // Initialize environment
         $loader = new FilesystemLoader(self::TEMPLATE_PATH);
         $this->environment = new Environment($loader);
 
         // Register Globals
-        $this->environment->addGlobal("year", date("Y"));
-        $this->environment->addGlobal("commit", ConsoleUtility::describeHistory());
-        $this->environment->addGlobal("version", ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION));
+        $this->environment->addGlobal('year', date('Y'));
+        $this->environment->addGlobal('commit', ConsoleUtility::describeHistory());
+        $this->environment->addGlobal('version', ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION));
     }
 
     /**
@@ -104,7 +104,7 @@ class Template
      */
     protected function loadTemplate()
     {
-        LogService::log(sprintf("Loading Twig template \"%s\"", $this->file), LogService::DEBUG);
+        LogService::log(sprintf('Loading Twig template "%s"', $this->file), LogService::DEBUG);
 
         $this->template = $this->environment->load($this->file);
     }

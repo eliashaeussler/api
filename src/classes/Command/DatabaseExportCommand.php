@@ -40,9 +40,9 @@ class DatabaseExportCommand extends BaseCommand
     protected function configure()
     {
         // Base configuration
-        $this->setName("database:export")
-            ->setDescription(LocalizationUtility::localize("database.export.description", "console"))
-            ->setHelp(LocalizationUtility::localize("database.export.help", "console"));
+        $this->setName('database:export')
+            ->setDescription(LocalizationUtility::localize('database.export.description', 'console'))
+            ->setHelp(LocalizationUtility::localize('database.export.help', 'console'));
     }
 
     /**

@@ -18,7 +18,6 @@ namespace EliasHaeussler\Api\Controller;
  */
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
-use EliasHaeussler\Api\Exception\InvalidParameterException;
 use EliasHaeussler\Api\Exception\NoMappingDefinedException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Routing\BaseRoute;
@@ -35,7 +34,7 @@ use EliasHaeussler\Api\Utility\LocalizationUtility;
 abstract class BaseController
 {
     /** @var string Regex pattern for matching HTTP prefix in request header */
-    const REQUEST_HEADER_PREFIX_PATTERN = "/^(\\s?HTTP_)/";
+    const REQUEST_HEADER_PREFIX_PATTERN = '/^(\\s?HTTP_)/';
 
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [];
@@ -85,7 +84,7 @@ abstract class BaseController
     {
         if (!array_key_exists($this->route, $this::ROUTE_MAPPINGS)) {
             throw new NoMappingDefinedException(
-                LocalizationUtility::localize("exception.1552821753", null, "", $this->route),
+                LocalizationUtility::localize('exception.1552821753', null, '', $this->route),
                 1552821753
             );
         }
@@ -94,7 +93,7 @@ abstract class BaseController
         $route_method = $this::ROUTE_MAPPINGS[$this->route];
 
         LogService::log(
-            sprintf("Routing to \"%s\" from controller \"%s\"", $route_method, static::class),
+            sprintf('Routing to "%s" from controller "%s"', $route_method, static::class),
             LogService::DEBUG
         );
 
@@ -130,18 +129,18 @@ abstract class BaseController
 
         // Define fallback method and arguments if requested method is not available
         if (!in_array($method, $availableMethods)) {
-            $method = "message";
+            $method = 'message';
 
             // Ensure that header and body arguments are always set
             if (count($arguments) < 2) {
                 $messageParts = explode("\r\n", $arguments[0]);
                 $header = $messageParts[0];
-                $body = count($messageParts) > 1 ? $messageParts[1] : "";
+                $body = count($messageParts) > 1 ? $messageParts[1] : '';
                 $arguments = [$header, $body, $type ?: Message::MESSAGE_TYPE_NOTICE];
             }
         }
 
-        return call_user_func([$object, $method], ...$arguments) ?: "";
+        return call_user_func([$object, $method], ...$arguments) ?: '';
     }
 
     /**
@@ -179,12 +178,12 @@ abstract class BaseController
     public function getRequestHeader(string $header, bool $useRawInput = false): string
     {
         $normalizedHeader = strtoupper($header);
-        $normalizedHeader = preg_replace($this::REQUEST_HEADER_PREFIX_PATTERN, "", $normalizedHeader);
+        $normalizedHeader = preg_replace($this::REQUEST_HEADER_PREFIX_PATTERN, '', $normalizedHeader);
         if (!$useRawInput) {
-            $normalizedHeader = str_replace("-", "_", $normalizedHeader);
+            $normalizedHeader = str_replace('-', '_', $normalizedHeader);
         }
 
-        return $this->requestHeaders[$normalizedHeader] ?? "";
+        return $this->requestHeaders[$normalizedHeader] ?? '';
     }
 
     /**
@@ -251,12 +250,12 @@ abstract class BaseController
         // Get HTTP headers
         $allHeaders = $_SERVER;
         $httpHeaders = array_filter($allHeaders, function ($header) {
-            return stripos(trim($header), "HTTP_") === 0;
+            return stripos(trim($header), 'HTTP_') === 0;
         }, ARRAY_FILTER_USE_KEY);
 
         // Normalize HTTP headers by removing "HTTP_" prefix
         array_walk($httpHeaders, function (&$value, $header) use (&$headers) {
-            $header = preg_replace($this::REQUEST_HEADER_PREFIX_PATTERN, "", $header);
+            $header = preg_replace($this::REQUEST_HEADER_PREFIX_PATTERN, '', $header);
             $headers[$header] = $value;
         }, ARRAY_FILTER_USE_KEY);
 

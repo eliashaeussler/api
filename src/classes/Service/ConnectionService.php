@@ -45,13 +45,13 @@ use PhpMyAdmin\SqlParser\Statements\CreateStatement;
 class ConnectionService
 {
     /** @var string Location of SQL database schema files */
-    const SCHEMA_PATH = SOURCE_PATH . "/schemas";
+    const SCHEMA_PATH = SOURCE_PATH . '/schemas';
 
     /** @var string File pattern of SQL schema files */
-    const SCHEMA_FILE_PATTERN = "*.sql";
+    const SCHEMA_FILE_PATTERN = '*.sql';
 
     /** @var string Table name prefix for temporary tables */
-    const TEMPORARY_TABLE_PREFIX = "zzz___";
+    const TEMPORARY_TABLE_PREFIX = 'zzz___';
 
     /** @var Connection Database connection */
     protected $database;
@@ -86,12 +86,12 @@ class ConnectionService
     public function connect()
     {
         $parameters = [
-            "host" => GeneralUtility::getEnvironmentVariable("DB_HOST", "localhost"),
-            "user" => GeneralUtility::getEnvironmentVariable("DB_USER"),
-            "password" => GeneralUtility::getEnvironmentVariable("DB_PASSWORD"),
-            "dbname" => GeneralUtility::getEnvironmentVariable("DB_NAME"),
-            "port" => GeneralUtility::getEnvironmentVariable("DB_PORT", 3306),
-            "driver" => "pdo_mysql",
+            'host' => GeneralUtility::getEnvironmentVariable('DB_HOST', 'localhost'),
+            'user' => GeneralUtility::getEnvironmentVariable('DB_USER'),
+            'password' => GeneralUtility::getEnvironmentVariable('DB_PASSWORD'),
+            'dbname' => GeneralUtility::getEnvironmentVariable('DB_NAME'),
+            'port' => GeneralUtility::getEnvironmentVariable('DB_PORT', 3306),
+            'driver' => 'pdo_mysql',
         ];
         $this->database = $this->establishConnection($parameters);
     }
@@ -142,7 +142,7 @@ class ConnectionService
 
                 // Get table name
                 $definedQuery = $definedSchema[0];
-                $definedTableName = trim($definedSchema[1], " `");
+                $definedTableName = trim($definedSchema[1], ' `');
                 $tempTableName = self::TEMPORARY_TABLE_PREFIX . $definedTableName;
 
                 // Create table schema
@@ -151,7 +151,7 @@ class ConnectionService
                     $db->exec($definedQuery);
                 } else {
                     // Fetch all data from table
-                    $currentDataSet = $queryBuilder->select("*")
+                    $currentDataSet = $queryBuilder->select('*')
                         ->from($definedTableName)
                         ->execute()
                         ->fetchAll();
@@ -226,8 +226,8 @@ class ConnectionService
         bool $dryRun = true
     ): array {
         $report = [
-            "tables" => [],
-            "fields" => [],
+            'tables' => [],
+            'fields' => [],
         ];
 
         if ($dropFields || $dropTables) {
@@ -254,7 +254,7 @@ class ConnectionService
 
                     // Normalize schemas
                     array_walk($definedSchemas, function (&$schema) {
-                        $table = strtolower(trim($schema[1], " `"));
+                        $table = strtolower(trim($schema[1], ' `'));
                         $schema[1] = $table;
                     });
 
@@ -269,7 +269,7 @@ class ConnectionService
                                 if (!$dryRun) {
                                     $schemaManager->dropTable($currentTableName);
                                 }
-                                $report["tables"][] = $currentTable;
+                                $report['tables'][] = $currentTable;
                             }
                         }
                     }
@@ -324,9 +324,9 @@ class ConnectionService
                                 if ($currentSchema->name == $definedTableName) {
                                     $tableDiff->removedColumns = $currentSchema->removedColumns;
 
-                                    $report["fields"][] = [
-                                        "table" => $currentTable,
-                                        "fields" => $currentSchema->removedColumns,
+                                    $report['fields'][] = [
+                                        'table' => $currentTable,
+                                        'fields' => $currentSchema->removedColumns,
                                     ];
                                 }
                             }
@@ -365,7 +365,7 @@ class ConnectionService
     {
         if (!$files) {
             throw new InvalidFileException(
-                LocalizationUtility::localize("exception.1546890034"),
+                LocalizationUtility::localize('exception.1546890034'),
                 1546890034
             );
         }
@@ -385,20 +385,20 @@ class ConnectionService
 
             if ($path === false) {
                 throw new FileNotFoundException(
-                    LocalizationUtility::localize("exception.1546890434", null, null, $file),
+                    LocalizationUtility::localize('exception.1546890434', null, null, $file),
                     1546890434
                 );
             }
 
             // Connect to database
             $con = $this->establishConnection([
-                "path" => $path,
-                "driver" => "pdo_sqlite",
+                'path' => $path,
+                'driver' => 'pdo_sqlite',
             ]);
 
             if (!$con->isConnected()) {
                 throw new DatabaseException(
-                    LocalizationUtility::localize("exception.1546890846", null, null, $path),
+                    LocalizationUtility::localize('exception.1546890846', null, null, $path),
                     1546890846
                 );
             }
@@ -415,7 +415,7 @@ class ConnectionService
 
                 // Fetch all data
                 $queryBuilder = $con->createQueryBuilder();
-                $result = $queryBuilder->select("*")
+                $result = $queryBuilder->select('*')
                     ->from($table->getName())
                     ->execute()
                     ->fetchAll();
@@ -436,7 +436,7 @@ class ConnectionService
 
                     if (!$insResult) {
                         throw new DatabaseException(
-                            LocalizationUtility::localize("exception.1546892040", null, null, $path),
+                            LocalizationUtility::localize('exception.1546892040', null, null, $path),
                             1546892040
                         );
                     }
@@ -455,13 +455,13 @@ class ConnectionService
     public function export(): void
     {
         // Define script name and parameters
-        $scriptName = "mysqldump";
+        $scriptName = 'mysqldump';
         $parameters = [
-            "host" => $this->database->getHost(),
-            "user" => $this->database->getUsername(),
-            "password" => $this->database->getPassword(),
+            'host' => $this->database->getHost(),
+            'user' => $this->database->getUsername(),
+            'password' => $this->database->getPassword(),
             $this->database->getDatabase(),
-            "default-character-set" => "utf8",
+            'default-character-set' => 'utf8',
         ];
 
         // Build and execute command with parameters
@@ -496,7 +496,7 @@ class ConnectionService
     protected function establishConnection(array $parameters): Connection
     {
         LogService::log(
-            sprintf("Trying to connect to database \"%s\" on host \"%s\"", $parameters["dbname"], $parameters["host"]),
+            sprintf('Trying to connect to database "%s" on host "%s"', $parameters['dbname'], $parameters['host']),
             LogService::DEBUG
         );
 
@@ -525,13 +525,13 @@ class ConnectionService
             $files = is_array($controllers) ? $controllers : [$controllers];
             array_walk($files, function (&$controller) {
                 $file = strtolower(GeneralUtility::getControllerName($controller));
-                $fileName = GeneralUtility::replaceFirst(self::SCHEMA_FILE_PATTERN, "*", $file);
-                $controller = self::SCHEMA_PATH . "/" . $fileName;
+                $fileName = GeneralUtility::replaceFirst(self::SCHEMA_FILE_PATTERN, '*', $file);
+                $controller = self::SCHEMA_PATH . '/' . $fileName;
             });
 
         // Get all available schema files
         } else {
-            if (($allFiles = glob(self::SCHEMA_PATH . "/" . self::SCHEMA_FILE_PATTERN)) !== false) {
+            if (($allFiles = glob(self::SCHEMA_PATH . '/' . self::SCHEMA_FILE_PATTERN)) !== false) {
                 $files = $allFiles;
             }
         }
@@ -558,7 +558,7 @@ class ConnectionService
         $contents = @file_get_contents($file);
         if (!$contents) {
             throw new FileNotFoundException(
-                LocalizationUtility::localize("exception.1546889136", null, null, $file),
+                LocalizationUtility::localize('exception.1546889136', null, null, $file),
                 1546889136
             );
         }

@@ -5,9 +5,9 @@
  */
 declare(strict_types=1);
 
-define("ROOT_PATH", __DIR__);
-define("SOURCE_PATH", ROOT_PATH . "/src");
-define("TEMP_PATH", ROOT_PATH . "/temp");
+define('ROOT_PATH', __DIR__);
+define('SOURCE_PATH', ROOT_PATH . '/src');
+define('TEMP_PATH', ROOT_PATH . '/temp');
 require ROOT_PATH . '/vendor/autoload.php';
 
 use EliasHaeussler\Api\Command\DatabaseExportCommand;
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Application;
 GeneralUtility::loadEnvironment();
 
 // Create application
-$app = new Application("Elias Häußler API console", ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION));
+$app = new Application('Elias Häußler API console', ConsoleUtility::describeHistory(ConsoleUtility::HISTORY_TYPE_VERSION));
 
 // Register commands
 $app->add(new DatabaseExportCommand());

@@ -39,16 +39,16 @@ class LogfileClearCommand extends BaseCommand
     protected function configure()
     {
         // Base configuration
-        $this->setName("logfile:clear")
-            ->setDescription(LocalizationUtility::localize("logfile.clear.description", "console"))
-            ->setHelp(LocalizationUtility::localize("logfile.clear.help", "console"));
+        $this->setName('logfile:clear')
+            ->setDescription(LocalizationUtility::localize('logfile.clear.description', 'console'))
+            ->setHelp(LocalizationUtility::localize('logfile.clear.help', 'console'));
 
         // Options
         $this->addOption(
-            "keep-current",
+            'keep-current',
             null,
             InputOption::VALUE_NONE,
-            LocalizationUtility::localize("logfile.clear.option_keep-current", "console")
+            LocalizationUtility::localize('logfile.clear.option_keep-current', 'console')
         );
     }
 
@@ -58,23 +58,23 @@ class LogfileClearCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Clear log files
-        $result = LogService::clearLogFiles($input->getOption("keep-current"));
+        $result = LogService::clearLogFiles($input->getOption('keep-current'));
 
         // Show result messages
         if ($result) {
             foreach ($result as $log_file => $state) {
                 if ($state) {
                     $this->io->success(
-                        LocalizationUtility::localize("logfile.clear.success_file", "console", null, $log_file)
+                        LocalizationUtility::localize('logfile.clear.success_file', 'console', null, $log_file)
                     );
                 } else {
                     $this->io->warning(
-                        LocalizationUtility::localize("logfile.clear.warning_file", "console", null, $log_file)
+                        LocalizationUtility::localize('logfile.clear.warning_file', 'console', null, $log_file)
                     );
                 }
             }
         } else {
-            $this->io->success(LocalizationUtility::localize("logfile.clear.noFilesRemoved", "console"));
+            $this->io->success(LocalizationUtility::localize('logfile.clear.noFilesRemoved', 'console'));
         }
     }
 }

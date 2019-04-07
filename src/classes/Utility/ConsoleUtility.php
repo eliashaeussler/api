@@ -47,13 +47,13 @@ class ConsoleUtility
     public static function buildCommand(string $scriptName, array $parameters = []): string
     {
         if (!$scriptName) {
-            throw new \InvalidArgumentException("Please specify a script name to be used.", 1547904016);
+            throw new \InvalidArgumentException('Please specify a script name to be used.', 1547904016);
         }
 
         $command = $scriptName;
         foreach ($parameters as $parameter => $value) {
             if (is_int($parameter)) {
-                $command .= " " . $value;
+                $command .= ' ' . $value;
             } else {
                 $command .= sprintf(
                     (strlen($parameter) == 1 ? " -%s '%s'" : " --%s='%s'"),
@@ -78,14 +78,14 @@ class ConsoleUtility
         // Get command and file name (as fallback) for history description mode
         switch ($mode) {
             case self::HISTORY_TYPE_VERSION:
-                $command = sprintf("git --git-dir=%s/.git describe --tags 2> /dev/null", ROOT_PATH);
-                $fileName = ROOT_PATH . "/VERSION";
+                $command = sprintf('git --git-dir=%s/.git describe --tags 2> /dev/null', ROOT_PATH);
+                $fileName = ROOT_PATH . '/VERSION';
                 break;
 
             case self::HISTORY_TYPE_REVISION:
             default:
                 $command = sprintf('git --git-dir=%s/.git log --pretty="%%h" -n1 HEAD 2> /dev/null', ROOT_PATH);
-                $fileName = ROOT_PATH . "/REVISION";
+                $fileName = ROOT_PATH . '/REVISION';
                 break;
         }
 
@@ -100,6 +100,6 @@ class ConsoleUtility
             return trim(fgets(fopen($fileName, 'r')));
         }
 
-        return "";
+        return '';
     }
 }

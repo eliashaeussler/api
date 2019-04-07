@@ -45,31 +45,31 @@ use EliasHaeussler\Api\Utility\LocalizationUtility;
 class RedmineCommandRoute extends BaseRoute
 {
     /** @var string XML as API request method */
-    const REQUEST_MODE_XML = "xml";
+    const REQUEST_MODE_XML = 'xml';
 
     /** @var string JSON as API request method */
-    const REQUEST_MODE_JSON = "json";
+    const REQUEST_MODE_JSON = 'json';
 
     /** @var string Plain request mode for default URIs */
-    const REQUEST_MODE_PLAIN = "";
+    const REQUEST_MODE_PLAIN = '';
 
     /** @var string Default slash command */
-    const DEFAULT_COMMAND = "/redmine";
+    const DEFAULT_COMMAND = '/redmine';
 
     /** @var string Issue display mode for short result */
-    const ISSUE_DISPLAY_MODE_SHORT = "short";
+    const ISSUE_DISPLAY_MODE_SHORT = 'short';
 
     /** @var string Issue display mode for full result */
-    const ISSUE_DISPLAY_MODE_FULL = "full";
+    const ISSUE_DISPLAY_MODE_FULL = 'full';
 
     /** @var string Default display mode for issues */
     const DEFAULT_ISSUE_DISPLAY_MODE = self::ISSUE_DISPLAY_MODE_SHORT;
 
     /** @var string Action for authenticating the user at the Redmine API */
-    const ACTION_AUTH = "auth";
+    const ACTION_AUTH = 'auth';
 
     /** @var string Action for getting issue information */
-    const ACTION_ISSUE = "issue";
+    const ACTION_ISSUE = 'issue';
 
     /** @var SlackController Slack API Controller */
     protected $controller;
@@ -108,7 +108,7 @@ class RedmineCommandRoute extends BaseRoute
 
             default:
                 throw new InvalidParameterException(
-                    LocalizationUtility::localize("exception.1552436109", "slack", "", $this->action),
+                    LocalizationUtility::localize('exception.1552436109', 'slack', '', $this->action),
                     1552436109
                 );
         }
@@ -134,17 +134,17 @@ class RedmineCommandRoute extends BaseRoute
         }
 
         // Get base URI
-        $this->baseUri = GeneralUtility::getEnvironmentVariable("SLACK_REDMINE_BASE_URI");
+        $this->baseUri = GeneralUtility::getEnvironmentVariable('SLACK_REDMINE_BASE_URI');
 
         if (!$this->baseUri || parse_url($this->baseUri) === false) {
             throw new InvalidEnvironmentException(
-                LocalizationUtility::localize("exception.1552348174", "slack"),
+                LocalizationUtility::localize('exception.1552348174', 'slack'),
                 1552348174
             );
         }
 
         // Set selected action
-        if ($this->controller->getRequestData("command") == self::DEFAULT_COMMAND) {
+        if ($this->controller->getRequestData('command') == self::DEFAULT_COMMAND) {
             $this->action = $this->extractActionFromRequestText();
         } else {
             $this->action = $this->controller->getRawCommandName();
@@ -155,7 +155,7 @@ class RedmineCommandRoute extends BaseRoute
             $this->apiKey = $this->retrieveApiKey();
             if (!$this->apiKey) {
                 throw new InvalidEnvironmentException(
-                    LocalizationUtility::localize("exception.1552348219", "slack"),
+                    LocalizationUtility::localize('exception.1552348219', 'slack'),
                     1552348219
                 );
             }
@@ -176,11 +176,11 @@ class RedmineCommandRoute extends BaseRoute
      */
     protected function showIssueData(): void
     {
-        $text = $this->controller->getRequestData("text");
-        $textComponents = GeneralUtility::trimExplode(" ", (string) $text);
+        $text = $this->controller->getRequestData('text');
+        $textComponents = GeneralUtility::trimExplode(' ', (string) $text);
 
         if (empty($textComponents) || !is_numeric($textComponents[0])) {
-            throw new InvalidParameterException(LocalizationUtility::localize("exception.1552436599", "slack"), 1552436599);
+            throw new InvalidParameterException(LocalizationUtility::localize('exception.1552436599', 'slack'), 1552436599);
         }
 
         // Get requested issue ID
@@ -196,73 +196,73 @@ class RedmineCommandRoute extends BaseRoute
                 $displayMode = $mode;
             } else {
                 throw new InvalidParameterException(
-                    LocalizationUtility::localize("exception.1552768435", "slack", "", implode("`, `", $allowedModes)),
+                    LocalizationUtility::localize('exception.1552768435', 'slack', '', implode('`, `', $allowedModes)),
                     1552768435
                 );
             }
         }
 
         // Request issue data from API
-        $uri = $this->buildUri(["issues", $issueID]);
+        $uri = $this->buildUri(['issues', $issueID]);
         $request = $this->sendAuthenticatedRequest($uri);
 
-        LogService::log(sprintf("Got API result from Redmine: %s", $request), LogService::DEBUG);
+        LogService::log(sprintf('Got API result from Redmine: %s', $request), LogService::DEBUG);
 
         // Show error if API could not be accessed
         if ($request === false) {
             throw new InvalidRequestException(
-                LocalizationUtility::localize("exception.1552348511", "slack"),
+                LocalizationUtility::localize('exception.1552348511', 'slack'),
                 1552348511
             );
         }
 
         // Print issue data to Slack
         if ($result = json_decode($request, true)) {
-            $issue = $result["issue"];
+            $issue = $result['issue'];
 
             // Get link to issue
             $link = $this->buildIssueLink($issue);
 
             // Get priorities
-            $uri = $this->buildUri(["enumerations", "issue_priorities"]);
+            $uri = $this->buildUri(['enumerations', 'issue_priorities']);
             $request = $this->sendAuthenticatedRequest($uri);
 
-            LogService::log(sprintf("Got API result from Redmine: %s", $request), LogService::DEBUG);
+            LogService::log(sprintf('Got API result from Redmine: %s', $request), LogService::DEBUG);
 
             $priorities = json_decode($request, true);
 
             // Set action color based on priority
-            $defaultPriority = current(array_filter($priorities["issue_priorities"], function ($priority) {
-                return $priority["is_default"];
+            $defaultPriority = current(array_filter($priorities['issue_priorities'], function ($priority) {
+                return $priority['is_default'];
             }));
-            if ($issue["priority"]["id"] == $defaultPriority["id"]) {
-                $actionColor = "good";
+            if ($issue['priority']['id'] == $defaultPriority['id']) {
+                $actionColor = 'good';
             } else {
-                if ($issue["priority"]["id"] > $defaultPriority["id"]) {
-                    $actionColor = "danger";
+                if ($issue['priority']['id'] > $defaultPriority['id']) {
+                    $actionColor = 'danger';
                 } else {
-                    $actionColor = "";
+                    $actionColor = '';
                 }
             }
 
             // Build default attachments for Slack message
             $attachments = [
                 $this->controller->buildAttachmentForBotMessage(
-                    sprintf("%s #%s: %s", $issue["tracker"]["name"], $issue["id"], $issue["subject"]),
+                    sprintf('%s #%s: %s', $issue['tracker']['name'], $issue['id'], $issue['subject']),
                     $displayMode == self::ISSUE_DISPLAY_MODE_FULL
-                        ? mb_strimwidth($issue["description"], 0, $this->issueMaxDescriptionLength, "…")
-                        : "",
-                    "",
+                        ? mb_strimwidth($issue['description'], 0, $this->issueMaxDescriptionLength, '…')
+                        : '',
+                    '',
                     $link,
                     $displayMode == self::ISSUE_DISPLAY_MODE_SHORT,
                     [
-                        "title_link" => $link,
-                        "color" => $actionColor,
-                        "author_name" => $issue["author"]["name"],
-                        "author_link" => $this->buildUri(["users", $issue["author"]["id"]], self::REQUEST_MODE_PLAIN),
-                        "author_icon" => $this->buildUri(["favicon.ico"], self::REQUEST_MODE_PLAIN),
+                        'title_link' => $link,
+                        'color' => $actionColor,
+                        'author_name' => $issue['author']['name'],
+                        'author_link' => $this->buildUri(['users', $issue['author']['id']], self::REQUEST_MODE_PLAIN),
+                        'author_icon' => $this->buildUri(['favicon.ico'], self::REQUEST_MODE_PLAIN),
                     ],
-                    ["fields"]
+                    ['fields']
                 ),
             ];
 
@@ -270,60 +270,60 @@ class RedmineCommandRoute extends BaseRoute
             switch ($displayMode) {
                 case self::ISSUE_DISPLAY_MODE_FULL:
                     $attachments[] = [
-                        "color" => $actionColor,
-                        "fields" => [
+                        'color' => $actionColor,
+                        'fields' => [
                             [
-                                "title" => LocalizationUtility::localize("redmine.message.project", "slack"),
-                                "value" => SlackMessage::link(
-                                    $this->buildUri(["projects", $issue["project"]["id"]], self::REQUEST_MODE_PLAIN),
-                                    $issue["project"]["name"]
+                                'title' => LocalizationUtility::localize('redmine.message.project', 'slack'),
+                                'value' => SlackMessage::link(
+                                    $this->buildUri(['projects', $issue['project']['id']], self::REQUEST_MODE_PLAIN),
+                                    $issue['project']['name']
                                 ),
                             ],
-                            isset($issue["assigned_to"]) ? [
-                                "title" => LocalizationUtility::localize("redmine.message.assignedTo", "slack"),
-                                "value" => SlackMessage::link(
-                                    $this->buildUri(["users", $issue["assigned_to"]["id"]], self::REQUEST_MODE_PLAIN),
-                                    $issue["assigned_to"]["name"]
+                            isset($issue['assigned_to']) ? [
+                                'title' => LocalizationUtility::localize('redmine.message.assignedTo', 'slack'),
+                                'value' => SlackMessage::link(
+                                    $this->buildUri(['users', $issue['assigned_to']['id']], self::REQUEST_MODE_PLAIN),
+                                    $issue['assigned_to']['name']
                                 ),
                             ] : null,
                             [
-                                "title" => LocalizationUtility::localize("redmine.message.status", "slack"),
-                                "value" => $issue["status"]["name"],
-                                "short" => true,
+                                'title' => LocalizationUtility::localize('redmine.message.status', 'slack'),
+                                'value' => $issue['status']['name'],
+                                'short' => true,
                             ],
                             [
-                                "title" => LocalizationUtility::localize("redmine.message.done", "slack"),
-                                "value" => sprintf("%s%%", $issue["done_ratio"]),
-                                "short" => true,
+                                'title' => LocalizationUtility::localize('redmine.message.done', 'slack'),
+                                'value' => sprintf('%s%%', $issue['done_ratio']),
+                                'short' => true,
                             ],
                             [
-                                "title" => LocalizationUtility::localize("redmine.message.priority", "slack"),
-                                "value" => $issue["priority"]["name"],
-                                "short" => true,
+                                'title' => LocalizationUtility::localize('redmine.message.priority', 'slack'),
+                                'value' => $issue['priority']['name'],
+                                'short' => true,
                             ],
                             [
-                                "title" => LocalizationUtility::localize("redmine.message.startDate", "slack"),
-                                "value" => SlackMessage::date(new \DateTime($issue["start_date"]), "{date_short_pretty}"),
-                                "short" => true,
+                                'title' => LocalizationUtility::localize('redmine.message.startDate', 'slack'),
+                                'value' => SlackMessage::date(new \DateTime($issue['start_date']), '{date_short_pretty}'),
+                                'short' => true,
                             ],
                         ],
-                        "actions" => $this->buildIssueActions($issue),
-                        "footer" => $this->controller->buildAttachmentFooter(),
+                        'actions' => $this->buildIssueActions($issue),
+                        'footer' => $this->controller->buildAttachmentFooter(),
                     ];
                     break;
 
                 case self::ISSUE_DISPLAY_MODE_SHORT:
                     $attachments[0] += [
-                        "actions" => $this->buildIssueActions($issue),
+                        'actions' => $this->buildIssueActions($issue),
                     ];
                     break;
             }
 
             // Print message to Slack
-            echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, "", $attachments, true);
+            echo $this->controller->buildBotMessage(Message::MESSAGE_TYPE_SUCCESS, '', $attachments, true);
         } else {
             throw new IssueNotFoundException(
-                LocalizationUtility::localize("exception.1552347666", "slack", "", $issueID),
+                LocalizationUtility::localize('exception.1552347666', 'slack', '', $issueID),
                 1552347666
             );
         }
@@ -339,7 +339,7 @@ class RedmineCommandRoute extends BaseRoute
      */
     protected function buildIssueLink(array $issue, array $optionalArguments = []): string
     {
-        return $this->buildUri(array_merge(["issues", $issue["id"]], $optionalArguments), self::REQUEST_MODE_PLAIN);
+        return $this->buildUri(array_merge(['issues', $issue['id']], $optionalArguments), self::REQUEST_MODE_PLAIN);
     }
 
     /**
@@ -355,26 +355,26 @@ class RedmineCommandRoute extends BaseRoute
 
         return [
             [
-                "type" => "button",
-                "text" => LocalizationUtility::localize(
-                    "redmine.button.showIssue", "slack", "", SlackMessage::emoji("bug")
+                'type' => 'button',
+                'text' => LocalizationUtility::localize(
+                    'redmine.button.showIssue', 'slack', '', SlackMessage::emoji('bug')
                 ),
-                "url" => $link,
-                "style" => "primary",
+                'url' => $link,
+                'style' => 'primary',
             ],
             [
-                "type" => "button",
-                "text" => LocalizationUtility::localize(
-                    "redmine.button.editIssue", "slack", "", SlackMessage::emoji("pencil2")
+                'type' => 'button',
+                'text' => LocalizationUtility::localize(
+                    'redmine.button.editIssue', 'slack', '', SlackMessage::emoji('pencil2')
                 ),
-                "url" => $link . "/edit",
+                'url' => $link . '/edit',
             ],
             [
-                "type" => "button",
-                "text" => LocalizationUtility::localize(
-                    "redmine.button.logTime", "slack", "", SlackMessage::emoji("alarm_clock")
+                'type' => 'button',
+                'text' => LocalizationUtility::localize(
+                    'redmine.button.logTime', 'slack', '', SlackMessage::emoji('alarm_clock')
                 ),
-                "url" => $this->buildIssueLink($issue, ["time_entries", "new"]),
+                'url' => $this->buildIssueLink($issue, ['time_entries', 'new']),
             ],
         ];
     }
@@ -391,41 +391,41 @@ class RedmineCommandRoute extends BaseRoute
     protected function persistUserApiKey(): void
     {
         // Get provided API key
-        $apiKey = $this->controller->getRequestData("text");
+        $apiKey = $this->controller->getRequestData('text');
 
         if (empty($apiKey)) {
-            throw new InvalidParameterException(LocalizationUtility::localize("exception.1552439117", "slack"), 1552439117);
+            throw new InvalidParameterException(LocalizationUtility::localize('exception.1552439117', 'slack'), 1552439117);
         }
 
         // Set API key
         $this->apiKey = $apiKey;
 
         // Test if API key is valid
-        $uri = $this->buildUri(["users"], self::REQUEST_MODE_JSON, ["limit" => 1]);
+        $uri = $this->buildUri(['users'], self::REQUEST_MODE_JSON, ['limit' => 1]);
         $request = $this->sendAuthenticatedRequest($uri);
 
         if (!$request) {
             throw new InvalidParameterException(
-                LocalizationUtility::localize("exception.1552519493", "slack", "", $apiKey),
+                LocalizationUtility::localize('exception.1552519493', 'slack', '', $apiKey),
                 1552519493
             );
         }
 
         // Check if an API key is already available for the current user
         $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
-        $availableApiKey = $queryBuilder->select("api_key")
-            ->from("slack_redmine_api_keys")
-            ->where("user = :user_id")
-            ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+        $availableApiKey = $queryBuilder->select('api_key')
+            ->from('slack_redmine_api_keys')
+            ->where('user = :user_id')
+            ->setParameter('user_id', $this->controller->getRequestData('user_id'))
             ->execute()
             ->fetch();
 
         if ($availableApiKey) {
             // Show notice if provided API key is already available in database
-            if ($availableApiKey["api_key"] == $this->apiKey) {
+            if ($availableApiKey['api_key'] == $this->apiKey) {
                 echo $this->controller->buildBotMessage(
                     Message::MESSAGE_TYPE_NOTICE,
-                    LocalizationUtility::localize("redmine.auth.alreadyAuthenticated", "slack", "", SlackMessage::emoji("shushing_face"))
+                    LocalizationUtility::localize('redmine.auth.alreadyAuthenticated', 'slack', '', SlackMessage::emoji('shushing_face'))
                 );
 
                 return;
@@ -433,35 +433,35 @@ class RedmineCommandRoute extends BaseRoute
 
             // Update existing API key with new one
             $result = $queryBuilder->resetQueryParts()
-                ->update("slack_redmine_api_keys")
-                ->set("api_key", ":api_key")
-                ->where("user = :user_id")
-                ->setParameter("api_key", $apiKey)
-                ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+                ->update('slack_redmine_api_keys')
+                ->set('api_key', ':api_key')
+                ->where('user = :user_id')
+                ->setParameter('api_key', $apiKey)
+                ->setParameter('user_id', $this->controller->getRequestData('user_id'))
                 ->execute();
 
             if ($result) {
                 echo $this->controller->buildBotMessage(
                     Message::MESSAGE_TYPE_SUCCESS,
-                    LocalizationUtility::localize("redmine.auth.successfullyUpdated", "slack", "", SlackMessage::emoji("tada"))
+                    LocalizationUtility::localize('redmine.auth.successfullyUpdated', 'slack', '', SlackMessage::emoji('tada'))
                 );
             }
         } else {
             // Add new API key to database
             $result = $queryBuilder->resetQueryParts()
-                ->insert("slack_redmine_api_keys")
+                ->insert('slack_redmine_api_keys')
                 ->values([
-                    "api_key" => ":api_key",
-                    "user" => ":user_id",
+                    'api_key' => ':api_key',
+                    'user' => ':user_id',
                 ])
-                ->setParameter("api_key", $apiKey)
-                ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+                ->setParameter('api_key', $apiKey)
+                ->setParameter('user_id', $this->controller->getRequestData('user_id'))
                 ->execute();
 
             if ($result) {
                 echo $this->controller->buildBotMessage(
                     Message::MESSAGE_TYPE_SUCCESS,
-                    LocalizationUtility::localize("redmine.auth.successful", "slack", "", SlackMessage::emoji("tada"))
+                    LocalizationUtility::localize('redmine.auth.successful', 'slack', '', SlackMessage::emoji('tada'))
                 );
             }
         }
@@ -469,7 +469,7 @@ class RedmineCommandRoute extends BaseRoute
         // Show error message if persisting the API key failed
         if (!$result) {
             throw new DatabaseException(
-                LocalizationUtility::localize("exception.1552520966", "slack"),
+                LocalizationUtility::localize('exception.1552520966', 'slack'),
                 1552520966
             );
         }
@@ -488,12 +488,12 @@ class RedmineCommandRoute extends BaseRoute
     protected function extractActionFromRequestText(): string
     {
         // Extract action from request text
-        $delimiter = " ";
-        $requestData = explode($delimiter, $this->controller->getRequestData("text"));
+        $delimiter = ' ';
+        $requestData = explode($delimiter, $this->controller->getRequestData('text'));
         $action = strtolower(array_shift($requestData));
 
         // Update request text with shifted array
-        $this->controller->setRequestDataForKey("text", implode($delimiter, $requestData));
+        $this->controller->setRequestDataForKey('text', implode($delimiter, $requestData));
 
         return $action;
     }
@@ -525,22 +525,22 @@ class RedmineCommandRoute extends BaseRoute
 
         if (!in_array($method, $allowed_methods)) {
             throw new \InvalidArgumentException(
-                LocalizationUtility::localize("exception.1552241288", implode("`, `", $allowed_methods)),
+                LocalizationUtility::localize('exception.1552241288', implode('`, `', $allowed_methods)),
                 1552241288
             );
         }
 
         // Build base URI
-        $scopes = array_merge([$this->baseUri], array_map("trim", $scopes));
-        $uri = implode("/", $scopes);
+        $scopes = array_merge([$this->baseUri], array_map('trim', $scopes));
+        $uri = implode('/', $scopes);
 
         if (strlen($method) > 0) {
-            $uri .= "." . $method;
+            $uri .= '.' . $method;
         }
 
         // Add arguments, if set
         if (count($arguments) > 0) {
-            $uri = strtolower($uri) . "?" . http_build_query($arguments);
+            $uri = strtolower($uri) . '?' . http_build_query($arguments);
         }
 
         return $uri;
@@ -553,7 +553,7 @@ class RedmineCommandRoute extends BaseRoute
      */
     protected function buildAuthenticationHeader(): string
     {
-        return "X-Redmine-API-Key: " . $this->apiKey;
+        return 'X-Redmine-API-Key: ' . $this->apiKey;
     }
 
     /**
@@ -564,13 +564,13 @@ class RedmineCommandRoute extends BaseRoute
     protected function retrieveApiKey(): string
     {
         $queryBuilder = $this->controller->getDatabase()->createQueryBuilder();
-        $result = $queryBuilder->select("api_key")
-            ->from("slack_redmine_api_keys")
-            ->where("user = :user_id")
-            ->setParameter("user_id", $this->controller->getRequestData("user_id"))
+        $result = $queryBuilder->select('api_key')
+            ->from('slack_redmine_api_keys')
+            ->where('user = :user_id')
+            ->setParameter('user_id', $this->controller->getRequestData('user_id'))
             ->execute()
             ->fetch();
 
-        return $result ? $result["api_key"] : "";
+        return $result ? $result['api_key'] : '';
     }
 }

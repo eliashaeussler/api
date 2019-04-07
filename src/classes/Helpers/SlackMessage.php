@@ -32,20 +32,20 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
 class SlackMessage
 {
     /** @var string Regex pattern to identify format placeholders */
-    const PLACEHOLDER_PATTERN = "/%%(%s){([^}]*)}/i";
+    const PLACEHOLDER_PATTERN = '/%%(%s){([^}]*)}/i';
 
     /** @var array Available message formats and their corresponding characters */
     const MESSAGE_FORMATS = [
-        "emoji" => ":",
-        "bold" => "*",
-        "code" => "`",
-        "italic" => "_",
-        "strike" => "~",
-        "link" => "<>",
+        'emoji' => ':',
+        'bold' => '*',
+        'code' => '`',
+        'italic' => '_',
+        'strike' => '~',
+        'link' => '<>',
     ];
 
     /** @var string Character separating URL and link text */
-    const LINK_TEXT_SEPARATOR = "|";
+    const LINK_TEXT_SEPARATOR = '|';
 
     /** @var array List of special mentions within Slack messages */
     const SPECIAL_MENTIONS = [
@@ -71,7 +71,7 @@ class SlackMessage
     public static function __callStatic(string $name, array $arguments): string
     {
         if (count($arguments) == 0) {
-            throw new \InvalidArgumentException("Please provide a valid text to be formatted.", 1550189187);
+            throw new \InvalidArgumentException('Please provide a valid text to be formatted.', 1550189187);
         }
 
         $text = trim($arguments[0]);
@@ -92,13 +92,13 @@ class SlackMessage
      *
      * @return string The formatted link
      */
-    public static function link(string $url, string $label = ""): string
+    public static function link(string $url, string $label = ''): string
     {
         $label = trim($label);
-        list($prefix, $suffix) = GeneralUtility::splitIntoCharacters(self::MESSAGE_FORMATS["link"], 2);
+        list($prefix, $suffix) = GeneralUtility::splitIntoCharacters(self::MESSAGE_FORMATS['link'], 2);
 
         return self::wrapTextWithCharacters(
-            !empty($label) ? sprintf("%s|%s", $url, $label) : $url,
+            !empty($label) ? sprintf('%s|%s', $url, $label) : $url,
             $prefix,
             $suffix
         );
@@ -144,7 +144,7 @@ class SlackMessage
      *
      * @see https://api.slack.com/docs/message-formatting#formatting_dates
      */
-    public static function date(\DateTime $date, string $format = "{date_pretty}", string $link = "", string $fallback = ""): string
+    public static function date(\DateTime $date, string $format = '{date_pretty}', string $link = '', string $fallback = ''): string
     {
         $timestamp = $date->getTimestamp();
         $contents = [
@@ -156,7 +156,7 @@ class SlackMessage
             $fallback = $date->format('d.m.Y');
         }
 
-        return sprintf("<!date^%s|%s>", implode("^", array_filter($contents)), $fallback);
+        return sprintf('<!date^%s|%s>', implode('^', array_filter($contents)), $fallback);
     }
 
     /**
@@ -178,7 +178,7 @@ class SlackMessage
             }
             $format = trim($matches[1]);
             $value = trim($matches[2]);
-            $value = $format == "link" ? explode(self::LINK_TEXT_SEPARATOR, $value, 2) : (array) $value;
+            $value = $format == 'link' ? explode(self::LINK_TEXT_SEPARATOR, $value, 2) : (array) $value;
 
             return self::$format(...$value);
         }, $text);
@@ -193,7 +193,7 @@ class SlackMessage
      *
      * @return string The wrapped text
      */
-    protected static function wrapTextWithCharacters(string $text, string $prefix, string $suffix = ""): string
+    protected static function wrapTextWithCharacters(string $text, string $prefix, string $suffix = ''): string
     {
         $text = trim($text);
         $prefix = trim($prefix);
@@ -201,7 +201,7 @@ class SlackMessage
             $suffix = $prefix;
         }
 
-        return !empty($text) ? ($prefix . $text . $suffix) : "";
+        return !empty($text) ? ($prefix . $text . $suffix) : '';
     }
 
     /**
@@ -211,6 +211,6 @@ class SlackMessage
      */
     protected static function buildPlaceholderPatternFromMessageFormats(): string
     {
-        return sprintf(self::PLACEHOLDER_PATTERN, implode("|", array_keys(self::MESSAGE_FORMATS)));
+        return sprintf(self::PLACEHOLDER_PATTERN, implode('|', array_keys(self::MESSAGE_FORMATS)));
     }
 }
