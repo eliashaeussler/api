@@ -158,15 +158,21 @@ class SlackController extends BaseController
     /**
      * Build message for Bot.
      *
-     * @param string            $type        Message type
-     * @param string|\Exception $message     Message
-     * @param array             $attachments Attachments
-     * @param bool              $public      Define whether to post message publicly
+     * @param string            $type                    Message type
+     * @param string|\Exception $message                 Message
+     * @param array             $attachments             Attachments
+     * @param bool              $public                  Define whether to post message publicly
+     * @param array             $additionalConfiguration Additional configuration, will be merged with default configuration
      *
      * @return string The rendered message
      */
-    public function buildBotMessage(string $type, $message, array $attachments = [], bool $public = false): string
-    {
+    public function buildBotMessage(
+        string $type,
+        $message,
+        array $attachments = [],
+        bool $public = false,
+        array $additionalConfiguration = []
+    ): string {
         // Set correct content header
         header("Content-Type: application/json");
 
@@ -178,11 +184,17 @@ class SlackController extends BaseController
 
         LogService::log($message, LogService::NOTICE);
 
-        return json_encode([
-            "response_type" => $public ? "in_channel" : "ephemeral",
-            "text" => $message,
-            "attachments" => $attachments,
-        ]);
+        // Build message
+        $messageData = array_replace_recursive(
+            [
+                "response_type" => $public ? "in_channel" : "ephemeral",
+                "text" => $message,
+                "attachments" => $attachments,
+            ],
+            $additionalConfiguration
+        );
+
+        return json_encode($messageData);
     }
 
     /**
