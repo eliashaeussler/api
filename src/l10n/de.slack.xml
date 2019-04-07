@@ -90,6 +90,16 @@
             %s Chill' mal! Du hast dich mit diesem API-Schlüssel bereits erfolgreich authentifiziert.
         </text>
 
+        <text id="standup.message">
+            Hey, %s! %s ist bereit zum %s.
+        </text>
+        <text id="standup.message.highlight">
+            Stand-up
+        </text>
+        <text id="standup.message.button">
+            %s Anruf beitreten
+        </text>
+
         <text id="exception.1543541836">
             Authentifizierung fehlgeschlagen. Bitte kontaktiere deinen Slack-Admin.
         </text>

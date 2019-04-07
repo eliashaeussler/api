@@ -35,6 +35,13 @@ class SlackMessage
     /** @var string Character separating URL and link text */
     const LINK_TEXT_SEPARATOR = "|";
 
+    /** @var array List of special mentions within Slack messages */
+    const SPECIAL_MENTIONS = [
+        'here',
+        'channel',
+        'everyone',
+    ];
+
     /**
      * Magic method to style text with a specific message format.
      *
@@ -83,6 +90,34 @@ class SlackMessage
             $prefix,
             $suffix
         );
+    }
+
+    /**
+     * Generation mention for users or teams.
+     *
+     * @param string $name   The mention name, can be a special mention, user ID or team ID
+     * @param bool   $isTeam Defines whether to mention a team
+     *
+     * @return string The formatted mention
+     */
+    public static function mention(string $name, bool $isTeam = false): string
+    {
+        $name = trim($name);
+        $prefix = '<@';
+        $suffix = '>';
+
+        if (in_array(strtolower($name), self::SPECIAL_MENTIONS)) {
+            // Check for special mentions
+            $prefix = '<!';
+            $name = strtolower($name);
+        } else {
+            // Check for teams
+            if ($isTeam) {
+                $prefix = '<!subteam^';
+            }
+        }
+
+        return self::wrapTextWithCharacters($name, $prefix, $suffix);
     }
 
     /**

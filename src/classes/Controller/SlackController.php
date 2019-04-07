@@ -15,6 +15,7 @@ use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\Slack\AuthenticateRoute;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
 use EliasHaeussler\Api\Routing\Slack\RedmineCommandRoute;
+use EliasHaeussler\Api\Routing\Slack\StandupCommandRoute;
 use EliasHaeussler\Api\Service\ConnectionService;
 use EliasHaeussler\Api\Service\LogService;
 use EliasHaeussler\Api\Service\RoutingService;
@@ -48,6 +49,7 @@ class SlackController extends BaseController
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [
         "lunch" => LunchCommandRoute::class,
+        "standup" => StandupCommandRoute::class,
         "redmine" => RedmineCommandRoute::class,
         self::ROUTE_AUTH => AuthenticateRoute::class,
     ];

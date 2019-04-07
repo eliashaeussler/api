@@ -98,6 +98,16 @@
             %s Cool down! You're already authenticated with this API key, so there's nothing to do right now.
         </text>
 
+        <text id="standup.message">
+            Hey, %s! %s is ready for %s.
+        </text>
+        <text id="standup.message.highlight">
+            stand-up
+        </text>
+        <text id="standup.message.button">
+            %s Join the call
+        </text>
+
         <text id="exception.1543541836">
             Authentication failed. Please contact your Slack admin.
         </text>

@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Added
 
 - Environment variable `SERVER_NAME`
+- SlackController: Routing for `/standup` slash command using [`StandupCommandRoute`](src/classes/Routing/Slack/StandupCommandRoute.php) class
 
 ### Updated
 

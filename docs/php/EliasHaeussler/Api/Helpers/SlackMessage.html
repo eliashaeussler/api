@@ -113,6 +113,13 @@
                     <p></p>
                                     </td>
             </tr>
+                    <tr>
+                <td>SPECIAL_MENTIONS</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                                    </td>
+            </tr>
             </table>
 
     
@@ -138,6 +145,16 @@
                     <a href="#method_link">link</a>(string $url, string $label = &quot;&quot;)
         
                                             <p>Generate link.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_mention">mention</a>(string $name, bool $isTeam = false)
+        
+                                            <p>Generation mention for users or teams.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -188,7 +205,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___callStatic">
-        <div class="location">at         line 52</div>
+        <div class="location">at         line 59</div>
         <code>        static            string
     <strong>__callStatic</strong>(string $name, array $arguments)
         </code>
@@ -246,7 +263,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_link">
-        <div class="location">at         line 76</div>
+        <div class="location">at         line 83</div>
         <code>        static            string
     <strong>link</strong>(string $url, string $label = &quot;&quot;)
         </code>
@@ -292,8 +309,55 @@ be passed as first argument.</p>                            </div>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_mention">
+        <div class="location">at         line 103</div>
+        <code>        static            string
+    <strong>mention</strong>(string $name, bool $isTeam = false)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Generation mention for users or teams.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td>The mention name, can be a special mention, user ID or team ID</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$isTeam</td>
+                <td>Defines whether to mention a team</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The formatted mention</td>
+        </tr>
+    </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_date">
-        <div class="location">at         line 100</div>
+        <div class="location">at         line 135</div>
         <code>        static            string
     <strong>date</strong>(<a target="_blank" href="http://php.net/DateTime">DateTime</a> $date, string $format = &quot;{date_pretty}&quot;, string $link = &quot;&quot;, string $fallback = &quot;&quot;)
         </code>
@@ -345,12 +409,6 @@ be passed as first argument.</p>                            </div>
                             <h4>See also</h4>
 
                     <table class="table table-condensed">
-                    <tr>
-                <td>
-                                            <a href="https://api.slack.com/docs/message-formatting#formatting_dates">https://api.slack.com/docs/message-formatting#formatting_dates</a>
-                                    </td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -361,7 +419,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_convertPlaceholders">
-        <div class="location">at         line 122</div>
+        <div class="location">at         line 157</div>
         <code>        static            string
     <strong>convertPlaceholders</strong>(string $text)
         </code>
@@ -403,7 +461,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_wrapTextWithCharacters">
-        <div class="location">at         line 149</div>
+        <div class="location">at         line 184</div>
         <code>        static    protected        string
     <strong>wrapTextWithCharacters</strong>(string $text, string $prefix, string $suffix = &quot;&quot;)
         </code>
@@ -455,7 +513,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_buildPlaceholderPatternFromMessageFormats">
-        <div class="location">at         line 165</div>
+        <div class="location">at         line 200</div>
         <code>        static    protected        string
     <strong>buildPlaceholderPatternFromMessageFormats</strong>()
         </code>
