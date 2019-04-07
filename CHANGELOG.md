@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.1.1] - 2019-04-08
+
 ### Updated
 
 - Switch from MIT License to [GNU General Public License v3.0](LICENSE)
