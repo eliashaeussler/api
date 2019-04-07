@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 /**
- * Copyright (c) 2019 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
+ * Copyright (c) 2019 Elias Häußler <elias@haeussler.dev>. All rights reserved.
  */
 declare(strict_types=1);
 

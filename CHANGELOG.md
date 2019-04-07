@@ -6,7 +6,9 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Updated
 
+- Switch from MIT License to [GNU General Public License v3.0](LICENSE)
 
 
 

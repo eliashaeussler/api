@@ -253,4 +253,4 @@ to remove old logs and clear disk space as the log files might exceed in its siz
 
 ## License
 
-[MIT License](LICENSE.md)
+[GNU General Public License v3.0](LICENSE)

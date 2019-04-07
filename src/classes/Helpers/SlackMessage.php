@@ -1,9 +1,21 @@
 <?php
 /**
- * Copyright (c) 2019 Elias Häußler <mail@elias-haeussler.de>. All rights reserved.
+ * Copyright (c) 2019 Elias Häußler <elias@haeussler.dev>. All rights reserved.
  */
 declare(strict_types=1);
 namespace EliasHaeussler\Api\Helpers;
+
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
@@ -14,8 +26,8 @@ use EliasHaeussler\Api\Utility\GeneralUtility;
  *
  * @see https://api.slack.com/docs/message-formatting
  *
- * @author Elias Häußler <mail@elias-haeussler.de>
- * @license MIT
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-3.0+
  */
 class SlackMessage
 {

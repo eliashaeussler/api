@@ -2,11 +2,13 @@
   "name": "eliashaeussler/api",
   "description": "API for projects of Elias Häußler",
   "type": "library",
-  "license": "GPL-2.0+",
+  "license": "GPL-3.0+",
   "authors": [
     {
       "name": "Elias Häußler",
-      "email": "mail@elias-haeussler.de"
+      "email": "elias@haeussler.dev",
+      "homepage": "https://haeussler.dev",
+      "role": "Developer"
     }
   ],
   "require": {
