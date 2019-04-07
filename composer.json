@@ -10,16 +10,16 @@
     }
   ],
   "require": {
-    "vlucas/phpdotenv": "^2.5",
-    "twig/twig": "^2.6",
-    "doctrine/dbal": "^2.9",
-    "symfony/console": "^4.2",
-    "phpmyadmin/sql-parser": "^4.3",
+    "php": "^7.1",
     "ext-curl": "*",
     "ext-json": "*",
-    "ext-simplexml": "*",
     "ext-mbstring": "*",
-    "php": "^7.1"
+    "ext-simplexml": "*",
+    "doctrine/dbal": "^2.9",
+    "phpmyadmin/sql-parser": "^4.3",
+    "symfony/console": "^4.2",
+    "twig/twig": "^2.6",
+    "vlucas/phpdotenv": "^2.5"
   },
   "require-dev": {
     "filp/whoops": "^2.3",
@@ -29,5 +29,8 @@
     "psr-4": {
       "EliasHaeussler\\Api\\": "src/classes/"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }
