@@ -1,4 +1,4 @@
-![license](https://img.shields.io/github/license/eliashaeussler/api.svg)
+[![license](https://img.shields.io/github/license/eliashaeussler/api.svg)](LICENSE)
 [![release](https://img.shields.io/github/release/eliashaeussler/api.svg)](https://github.com/eliashaeussler/api/releases/)
 
 
