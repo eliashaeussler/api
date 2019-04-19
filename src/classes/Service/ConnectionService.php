@@ -129,9 +129,9 @@ class ConnectionService
 
         foreach ($schemaFiles as $schemaFile) {
             // Get contents of schema file
-            $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $definedSchemas);
+            $definedSchemas = $this->readContentsOfSchemaFiles($schemaFile)[$schemaFile];
 
-            if ($schemaCount === false || $schemaCount == 0) {
+            if (count($definedSchemas) === 0) {
                 continue;
             }
 
@@ -244,19 +244,25 @@ class ConnectionService
             $schemaFiles = $this->getListOfSchemaFiles($controllers);
 
             if ($schemaFiles) {
-                foreach ($schemaFiles as $schemaFile) {
-                    // Get contents of schema file
-                    $schemaCount = $this->readContentsOfSchemaFile($schemaFile, $definedSchemas);
+                // Get contents of schema files
+                $definedSchemas = $this->readContentsOfSchemaFiles($schemaFiles);
+                $definedTables = [];
 
-                    if ($schemaCount === false || $schemaCount == 0) {
-                        continue;
-                    }
-
-                    // Normalize schemas
-                    array_walk($definedSchemas, function (&$schema) {
+                // Normalize schemas
+                foreach (array_keys($definedSchemas) as $schemaFile) {
+                    array_walk($definedSchemas[$schemaFile], function (&$schema) use (&$definedTables) {
                         $table = strtolower(trim($schema[1], ' `'));
                         $schema[1] = $table;
+                        $definedTables[] = $table;
                     });
+                }
+
+                foreach ($schemaFiles as $schemaFile) {
+                    $currentDefinedSchemas = $definedSchemas[$schemaFile];
+
+                    if (count($currentDefinedSchemas) == 0) {
+                        continue;
+                    }
 
                     // Drop tables
                     if ($dropTables) {
@@ -265,7 +271,7 @@ class ConnectionService
                             $normalizedTableName = strtolower(trim($currentTableName));
 
                             // Drop table if it's not listed in the defined schemas
-                            if (!in_array($normalizedTableName, array_column($definedSchemas, 1))) {
+                            if (!in_array($normalizedTableName, $definedTables) && !in_array($currentTable, $report['tables'])) {
                                 if (!$dryRun) {
                                     $schemaManager->dropTable($currentTableName);
                                 }
@@ -276,13 +282,13 @@ class ConnectionService
 
                     // Drop fields
                     if ($dropFields) {
-                        foreach ($definedSchemas as $definedSchema) {
+                        foreach ($currentDefinedSchemas as $definedSchema) {
                             // Get table name
                             $definedQuery = $definedSchema[0];
                             $definedTableName = $definedSchema[1];
                             $tempTableName = self::TEMPORARY_TABLE_PREFIX . $definedTableName;
 
-                            // Do not continue if tables does not exist currently
+                            // Do not continue if table does not exist currently
                             if (!$schemaManager->tablesExist([$definedTableName])) {
                                 continue;
                             }
@@ -540,29 +546,36 @@ class ConnectionService
     }
 
     /**
-     * Read contents of database schema file.
+     * Read contents of database schema files.
      *
-     * Reads the contents of a database schema file and returns the number of `CREATE TABLE` statements within it.
-     * The `CREATE TABLE` statements will be stored in a by-reference variable which can then be accessed after
-     * calling this method.
+     * Reads the contents of database schemas file and returns the `CREATE TABLE` statements within each of them.
      *
-     * @param string     $file    Schema file
-     * @param array|null $schemas Result of {@see preg_match_all} containing `CREATE TABLE` statements
+     * @param string|array $files Schema files
      *
      * @throws FileNotFoundException if a table schema file is not available
      *
-     * @return int Number of `CREATE TABLE` statements inside schema file
+     * @return array `CREATE TABLE` statements inside each schema file
      */
-    protected function readContentsOfSchemaFile(string $file, ?array &$schemas): int
+    protected function readContentsOfSchemaFiles($files): array
     {
-        $contents = @file_get_contents($file);
-        if (!$contents) {
-            throw new FileNotFoundException(
-                LocalizationUtility::localize('exception.1546889136', null, null, $file),
-                1546889136
-            );
+        if (!is_array($files)) {
+            $files = [$files];
         }
 
-        return preg_match_all("/CREATE TABLE(.*?)\\(\n(?:.*?)\\);/ims", $contents, $schemas, PREG_SET_ORDER);
+        $schemas = [];
+
+        foreach ($files as $file) {
+            $contents = @file_get_contents($file);
+            if (!$contents) {
+                throw new FileNotFoundException(
+                    LocalizationUtility::localize('exception.1546889136', null, null, $file),
+                    1546889136
+                );
+            }
+
+            preg_match_all("/CREATE TABLE(.*?)\\(\n(?:.*?)\\);/ims", $contents, $schemas[$file], PREG_SET_ORDER);
+        }
+
+        return $schemas;
     }
 }

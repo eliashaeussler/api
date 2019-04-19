@@ -13,6 +13,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Fixed
 
 - Add missing localizations to [database:schema](src/classes/Command/DatabaseSchemaCommand.php) console command
+- Fix dropping of database components in case multiple schema files are available
 
 
 
