@@ -17,6 +17,7 @@ namespace EliasHaeussler\Api\Service;
  * GNU General Public License for more details.
  */
 
+use EliasHaeussler\Api\Command\BaseCommand;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 
 /**
@@ -67,6 +68,12 @@ class LogService
     /** @var int Maximum file size of log files in bytes */
     const LOG_FILE_MAX_SIZE = 5242880;
 
+    /** @var int Log level for CLI requests */
+    protected static $cliLogLevel = self::WARNING;
+
+    /** @var BaseCommand Current console command instance, used for logging on high verbosity */
+    protected static $consoleCommandInstance;
+
     /**
      * Write a message to the log file using a given severity.
      *
@@ -79,7 +86,12 @@ class LogService
      */
     public static function log(string $message, int $severity = self::NOTICE): void
     {
-        if ($severity < GeneralUtility::getEnvironmentVariable('MINIMUM_LOG_LEVEL', self::NOTICE)) {
+        $logLevel = GeneralUtility::getEnvironmentVariable('MINIMUM_LOG_LEVEL', self::NOTICE);
+        if (PHP_SAPI == 'cli') {
+            $logLevel = self::$cliLogLevel;
+        }
+
+        if ($severity < $logLevel) {
             return;
         }
 
@@ -91,6 +103,11 @@ class LogService
 
         // Write log message to log file
         file_put_contents(self::getLogFileName(), $message, FILE_APPEND);
+
+        // Log message in console if verbosity is high enough
+        if (PHP_SAPI == 'cli' && self::$consoleCommandInstance !== null) {
+            self::$consoleCommandInstance->log($message, $severity);
+        }
     }
 
     /**
@@ -135,6 +152,26 @@ class LogService
         }
 
         return $result;
+    }
+
+    /**
+     * Set log level for CLI requests.
+     *
+     * @param int $cliLogLevel Log level for CLI requests
+     */
+    public static function setCliLogLevel(int $cliLogLevel): void
+    {
+        self::$cliLogLevel = $cliLogLevel;
+    }
+
+    /**
+     * Set current console command instance.
+     *
+     * @param BaseCommand $consoleCommandInstance Current console command instance
+     */
+    public static function setConsoleCommandInstance(BaseCommand $consoleCommandInstance): void
+    {
+        self::$consoleCommandInstance = $consoleCommandInstance;
     }
 
     /**

@@ -6,7 +6,9 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Added
 
+- Log messages from [LogService](src/classes/Service/LogService.php) in console, based on the current verbosity level
 
 
 

@@ -18,6 +18,7 @@ namespace EliasHaeussler\Api\Command;
  */
 
 use EliasHaeussler\Api\Helpers\ExtendedStyle;
+use EliasHaeussler\Api\Service\LogService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,11 +35,49 @@ abstract class BaseCommand extends Command
     protected $io;
 
     /**
+     * Write log message from LogService to console.
+     *
+     * @param string $message  The log message
+     * @param int    $severity Severity of the message
+     */
+    public function log(string $message, int $severity): void
+    {
+        switch ($severity) {
+            case LogService::SUCCESS:
+            case LogService::DEBUG:
+            case LogService::NOTICE:
+                $this->io->write($message);
+                break;
+
+            case LogService::WARNING:
+                $this->io->warning($message);
+                break;
+
+            case LogService::ERROR:
+                $this->io->error($message);
+                break;
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
+
+        // Set IO style
         $this->io = new ExtendedStyle($input, $output);
+
+        // Register CLI command within log service
+        LogService::setConsoleCommandInstance($this);
+
+        // Set verbosity level
+        LogService::setCliLogLevel([
+            OutputInterface::VERBOSITY_NORMAL => LogService::WARNING,
+            OutputInterface::VERBOSITY_VERBOSE => LogService::NOTICE,
+            OutputInterface::VERBOSITY_VERY_VERBOSE => LogService::DEBUG,
+            OutputInterface::VERBOSITY_DEBUG => LogService::SUCCESS,
+        ][$this->io->getVerbosity()]);
     }
 }
