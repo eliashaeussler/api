@@ -155,7 +155,9 @@ class DatabaseSchemaCommand extends BaseCommand
 
                 // Ask to drop components for security reasons
                 if (!$input->getOption('force') && !$dryRun) {
-                    $question = LocalizationUtility::localize('database.schema.drop_components', 'console', null, $dropComponentsString);
+                    $question = LocalizationUtility::localize(
+                        'database.schema.drop_components', 'console', null, $dropComponentsString
+                    );
                     if (!$this->io->confirm($question, false)) {
                         return;
                     }
@@ -194,11 +196,17 @@ class DatabaseSchemaCommand extends BaseCommand
                 // Show report of dropped components
                 if (count($droppedTables) + count($droppedFields) > 0) {
                     if (count($droppedTables) > 0) {
-                        $this->io->title($dryRun ? 'Tables to drop' : 'Dropped tables');
+                        $this->io->title($dryRun
+                            ? LocalizationUtility::localize('database.schema.droppedTables_dryRun', 'console')
+                            : LocalizationUtility::localize('database.schema.droppedTables', 'console')
+                        );
                         $this->io->listing($droppedTables);
                     }
                     if (count($droppedFields) > 0) {
-                        $this->io->title($dryRun ? 'Fields to drop' : 'Dropped fields');
+                        $this->io->title($dryRun
+                            ? LocalizationUtility::localize('database.schema.droppedFields_dryRun', 'console')
+                            : LocalizationUtility::localize('database.schema.droppedFields', 'console')
+                        );
                         $this->io->listing($droppedFields);
                     }
                     if ($dryRun) {
@@ -210,9 +218,9 @@ class DatabaseSchemaCommand extends BaseCommand
                 } else {
                     if ($dryRun) {
                         $this->io->notice(
-                        LocalizationUtility::localize('database.schema.dryRun_result_message', 'console'),
-                        LocalizationUtility::localize('database.schema.dryRun_result_prefix', 'console')
-                    );
+                            LocalizationUtility::localize('database.schema.dryRun_result_message', 'console'),
+                            LocalizationUtility::localize('database.schema.dryRun_result_prefix', 'console')
+                        );
                     } else {
                         $this->io->success(LocalizationUtility::localize('database.schema.success_drop', 'console'));
                     }

@@ -10,6 +10,10 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 - Log messages from [LogService](src/classes/Service/LogService.php) in console, based on the current verbosity level
 
+### Fixed
+
+- Add missing localizations to [database:schema](src/classes/Command/DatabaseSchemaCommand.php) console command
+
 
 
 ## [4.1.1] - 2019-04-08

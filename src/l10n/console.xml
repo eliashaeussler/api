@@ -73,6 +73,18 @@
         <text id="database.schema.success_drop">
             No tables or fields have been dropped.
         </text>
+        <text id="database.schema.droppedTables">
+            Dropped tables
+        </text>
+        <text id="database.schema.droppedTables_dryRun">
+            Tables to drop
+        </text>
+        <text id="database.schema.droppedFields">
+            Dropped fields
+        </text>
+        <text id="database.schema.droppedFields_dryRun">
+            Fields to drop
+        </text>
 
         <text id="logfile.clear.description">
             Clear log files
