@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Added
 
 - Log messages from [LogService](src/classes/Service/LogService.php) in console, based on the current verbosity level
+- Scheduler service to be used for scheduling tasks for execution in the future using [SchedulerService](src/classes/Service/SchedulerService.php) class
 
 ### Fixed
 

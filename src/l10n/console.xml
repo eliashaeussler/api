@@ -104,5 +104,33 @@
         <text id="logfile.clear.noFilesRemoved">
             No log files have been removed.
         </text>
+
+        <text id="scheduler.run.description">
+            Run scheduled tasks
+        </text>
+        <text id="scheduler.run.help">
+            This command executes tasks which were scheduled by a controller
+        </text>
+        <text id="scheduler.run.option_task">
+            Execute only tasks matching the given class name or FQN
+        </text>
+        <text id="scheduler.run.option_uid">
+            Execute a specific command matching the given uid
+        </text>
+        <text id="scheduler.run.successfulTasks_title">
+            Successful tasks
+        </text>
+        <text id="scheduler.run.failedTasks_title">
+            Failed tasks
+        </text>
+        <text id="scheduler.run.error">
+            Some tasks could not be executed. Check the list above for further details.
+        </text>
+        <text id="scheduler.run.success">
+            Successfully executed %s task(s).
+        </text>
+        <text id="scheduler.run.noTasksFound">
+            No tasks were scheduled for execution.
+        </text>
     </body>
 </l10n>

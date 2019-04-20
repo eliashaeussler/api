@@ -14,6 +14,7 @@ use EliasHaeussler\Api\Command\DatabaseExportCommand;
 use EliasHaeussler\Api\Command\DatabaseMigrateCommand;
 use EliasHaeussler\Api\Command\DatabaseSchemaCommand;
 use EliasHaeussler\Api\Command\LogfileClearCommand;
+use EliasHaeussler\Api\Command\SchedulerRunCommand;
 use EliasHaeussler\Api\Utility\ConsoleUtility;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use Symfony\Component\Console\Application;
@@ -29,6 +30,7 @@ $app->add(new DatabaseExportCommand());
 $app->add(new DatabaseMigrateCommand());
 $app->add(new DatabaseSchemaCommand());
 $app->add(new LogfileClearCommand());
+$app->add(new SchedulerRunCommand());
 
 // Run application
 /** @noinspection PhpUnhandledExceptionInspection */

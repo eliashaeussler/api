@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<l10n>
+    <meta>
+        <author>Elias Häußler</author>
+        <author_email>elias@haeussler.dev</author_email>
+        <copyright>2019 Elias Häußler. All rights reserved.</copyright>
+        <license>GPL-3.0+</license>
+    </meta>
+
+    <body>
+        <text id="exception.1555447804">
+            Die Klasse "%s" kann nicht für die Registrierung eines Scheduler-Tasks verwendet werden.
+        </text>
+        <text id="exception.1555448279">
+            Argument "%s" für den Scheduler-Task der Klasse "%s" wurde nicht übergeben.
+        </text>
+        <text id="exception.1555448628">
+            Die Ausführungszeit eines Scheduler-Tasks kann nicht in der Vergangenheit liegen.
+        </text>
+        <text id="exception.1555677032">
+            Argument "%s" wird für die Ausführung von "%s::%s" benötigt.
+        </text>
+        <text id="exception.1555753795">
+            Zu wenige Argumente für die Ausführung des Scheduler-Tasks "%s" übergeben.
+        </text>
+        <text id="exception.1555753824">
+            Zu viele Argumente für die Ausführung des Scheduler-Tasks "%s" übergeben.
+        </text>
+    </body>
+</l10n>

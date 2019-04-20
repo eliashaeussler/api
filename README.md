@@ -30,6 +30,7 @@ The API serves different endpoints which can be accessed from various clients.
     + [`database:migrate`](#databasemigrate)
     + [`database:schema`](#databaseschema)
     + [`logfile:clear`](#logfileclear)
+    + [`scheduler:run`](#schedulerrun)
 - [License](#license)
 
 
@@ -251,6 +252,17 @@ to remove old logs and clear disk space as the log files might exceed in its siz
 
 ```bash
 ./console.php logfile:clear [--keep-current]
+```
+
+### `scheduler:run`
+
+This command allows you to run scheduled tasks. If all parameters are omitted, the command executes all
+tasks which were scheduled for execution in the past. In case either one of the `--uid` or `--task` are
+specified, only the tasks matching the appropriate patterns are executed. If both parameters are set,
+the appropriated constraints are AND-combined.
+
+```bash
+./console.php scheduler:run [-u|--uid <uid>] [-t|--task <task>]
 ```
 
 
