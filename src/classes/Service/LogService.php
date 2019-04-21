@@ -200,9 +200,9 @@ class LogService
             $trace = ob_get_contents();
             ob_end_clean();
             $message .= PHP_EOL . $trace;
-        } else {
-            $message .= PHP_EOL;
         }
+
+        $message .= PHP_EOL;
 
         // Build message
         return sprintf('[%s] %s: %s', $time, $severity, $message);
