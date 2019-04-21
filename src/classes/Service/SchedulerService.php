@@ -88,12 +88,12 @@ class SchedulerService
             if (array_key_exists($parameterName, $arguments)) {
                 $sortedParameters[] = $arguments[$parameterName];
             } else {
-                throw new MissingParameterException(
-                    LocalizationUtility::localize(
-                        'exception.1555677032', 'sys', null, $parameterName, $className, self::TASK_METHOD
-                    ),
-                    1555677032
+                LogService::log(
+                    sprintf('Parameter "%s" is missing for task "%s".', $parameterName, $className),
+                    LogService::WARNING
                 );
+
+                $sortedParameters[] = $reflectionParameter->getDefaultValue();
             }
         }
 
