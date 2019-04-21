@@ -15,6 +15,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 - Add missing localizations to [database:schema](src/classes/Command/DatabaseSchemaCommand.php) console command
 - Fix dropping of database components in case multiple schema files are available
+- SlackController: Allow checking of API request result in case the request failed and the return value is a boolean
 
 
 

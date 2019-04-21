@@ -269,14 +269,14 @@ class SlackController extends BaseController
      *
      * Checks if the provided, raw JSON-encoded result from an API request is valid and contains a valid answer.
      *
-     * @param string $result Raw result from API request, parsed as JSON
+     * @param string|bool $result Raw result from API request, parsed as JSON
      *
      * @throws InvalidRequestException if API request failed or contains an invalid answer
      * @throws AuthenticationException if the user needs to re-authenticate himself
      */
-    public function checkApiResult(string $result): void
+    public function checkApiResult($result): void
     {
-        if (!$result) {
+        if (!$result || !is_string($result)) {
             throw new InvalidRequestException(
                 LocalizationUtility::localize('exception.1545669514', 'slack'),
                 1545669514
