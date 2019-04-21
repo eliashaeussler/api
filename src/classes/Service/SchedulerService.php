@@ -151,13 +151,13 @@ class SchedulerService
         }
 
         // Check if all required parameters are given
-        /** @var \ReflectionParameter[] $filteredParameters */
-        $filteredParameters = array_udiff($reflectionParameters, array_keys($arguments), function (\ReflectionParameter $a, $b) {
-            return $a->getName() === $b ? 0 : -1;
+        array_walk($reflectionParameters, function (\ReflectionParameter &$parameter) {
+            $parameter = $parameter->getName();
         });
+        $filteredParameters = array_diff($reflectionParameters, array_keys($arguments));
         if (count($filteredParameters) > 0) {
             throw new \InvalidArgumentException(
-                LocalizationUtility::localize('exception.1555448279', 'sys', null, $filteredParameters[0]->getName(), $className),
+                LocalizationUtility::localize('exception.1555448279', 'sys', null, current($filteredParameters), $className),
                 1555448279
             );
         }
