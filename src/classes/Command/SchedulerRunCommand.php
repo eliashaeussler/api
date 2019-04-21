@@ -18,8 +18,6 @@ namespace EliasHaeussler\Api\Command;
  */
 
 use EliasHaeussler\Api\Exception\ClassNotFoundException;
-use EliasHaeussler\Api\Exception\InvalidClassException;
-use EliasHaeussler\Api\Exception\MissingParameterException;
 use EliasHaeussler\Api\Service\SchedulerService;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,6 +34,24 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SchedulerRunCommand extends BaseCommand
 {
+    /** @var int Uid of currently executed task */
+    protected $currentTask;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
+     */
+    public function log(string $message, int $severity): void
+    {
+        parent::log($message, $severity);
+
+        // Write log to currently executed task in database
+        if ($this->currentTask !== null) {
+            SchedulerService::log($this->currentTask, $message);
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -71,11 +87,8 @@ class SchedulerRunCommand extends BaseCommand
     /**
      * {@inheritdoc}
      *
-     * @throws ClassNotFoundException    if the {@see ConnectionService} class is not available
-     * @throws InvalidClassException     if the class for the scheduled task is not available
-     * @throws MissingParameterException if a necessary method parameter was not registered within the task
-     * @throws \ReflectionException      if the task class or method does not exist
-     * @throws \Exception                if the {@see DateTime} object cannot be instantiated
+     * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
+     * @throws \Exception             if the {@see DateTime} object cannot be instantiated
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -101,11 +114,19 @@ class SchedulerRunCommand extends BaseCommand
 
             // Execute tasks
             foreach ($tasks as $task) {
-                $result = SchedulerService::executeTask(
-                    $task['task'],
-                    unserialize($task['arguments']),
-                    new \DateTime($task['scheduled_execution'])
-                );
+                $taskUid = (int) $task['uid'];
+                $this->currentTask = $taskUid;
+
+                try {
+                    $result = SchedulerService::executeTask(
+                        $task['task'],
+                        unserialize($task['arguments']),
+                        new \DateTime($task['scheduled_execution'])
+                    );
+                } catch (\Exception $e) {
+                    $this->io->error($e->getMessage());
+                    $result = false;
+                }
 
                 if ($result) {
                     $successfulTasks[] = $task;
@@ -113,7 +134,9 @@ class SchedulerRunCommand extends BaseCommand
                     $failedTasks[] = $task;
                 }
 
-                SchedulerService::finalizeExecution((int) $task['uid'], $result);
+                SchedulerService::finalizeExecution($taskUid, $result);
+
+                $this->currentTask = null;
             }
 
             // Show success or error messages and list executed tasks

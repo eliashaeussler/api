@@ -22,7 +22,6 @@ use EliasHaeussler\Api\Exception\ClassNotFoundException;
 use EliasHaeussler\Api\Exception\InvalidClassException;
 use EliasHaeussler\Api\Exception\InvalidExecutionTimeException;
 use EliasHaeussler\Api\Exception\InvalidMethodSignatureException;
-use EliasHaeussler\Api\Exception\MissingParameterException;
 use EliasHaeussler\Api\Task\AbstractTask;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
@@ -55,9 +54,8 @@ class SchedulerService
      * @param array     $arguments     Arguments which will be passed to the task method
      * @param \DateTime $executionTime Scheduled task execution time
      *
-     * @throws MissingParameterException if a necessary method parameter was not registered within the task
-     * @throws \ReflectionException      if the task class or method does not exist
-     * @throws InvalidClassException     if the class for the scheduled task is not available
+     * @throws \ReflectionException  if the task class or method does not exist
+     * @throws InvalidClassException if the class for the scheduled task is not available
      *
      * @return bool `true` if the task was successfully executed, `false` otherwise
      */
@@ -258,6 +256,27 @@ class SchedulerService
             ->set('status', $queryBuilder->createNamedParameter($executionResult, ParameterType::BOOLEAN))
             ->set('last_execution_time', $queryBuilder->createNamedParameter(new \DateTime(), 'datetime'))
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, ParameterType::INTEGER)))
+            ->execute();
+    }
+
+    /**
+     * Log message for a given task.
+     *
+     * Appends the log of a given task with the given log message.
+     *
+     * @param int    $taskUid Uid of the task whose log should be appended by the given log message
+     * @param string $message Log message to be appended to the log of the given task
+     *
+     * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
+     */
+    public static function log(int $taskUid, string $message): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionService::class)->getDatabase()->createQueryBuilder();
+        $queryBuilder->update('sys_scheduled_tasks')
+            ->set('log', 'CONCAT(log, :message)')
+            ->where($queryBuilder->expr()->eq('uid', ':uid'))
+            ->setParameter('message', $message)
+            ->setParameter('uid', $taskUid, ParameterType::INTEGER)
             ->execute();
     }
 

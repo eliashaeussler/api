@@ -6,6 +6,7 @@ CREATE TABLE `sys_scheduled_tasks` (
   `scheduled_execution` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_execution_time` TIMESTAMP,
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  `log` TEXT NOT NULL DEFAULT '',
 
   PRIMARY KEY (`uid`)
 );
