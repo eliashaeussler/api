@@ -36,6 +36,9 @@ abstract class BaseController
     /** @var string Regex pattern for matching HTTP prefix in request header */
     const REQUEST_HEADER_PREFIX_PATTERN = '/^(\\s?HTTP_)/';
 
+    /** @var string Route for CLI requests */
+    const ROUTE_CLI = '__cli__';
+
     /** @var array Classes for each available route */
     const ROUTE_MAPPINGS = [];
 

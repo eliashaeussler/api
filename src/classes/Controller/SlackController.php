@@ -529,7 +529,7 @@ class SlackController extends BaseController
         $this->setAccessType();
 
         // Do not handle request as default if authentication is in progress
-        if ($this->matchesRoute(self::ROUTE_AUTH)) {
+        if ($this->matchesRoute(self::ROUTE_AUTH) || $this->matchesRoute(self::ROUTE_CLI)) {
             return;
         }
 

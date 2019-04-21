@@ -23,7 +23,7 @@ use EliasHaeussler\Api\Exception\InvalidClassException;
 use EliasHaeussler\Api\Exception\InvalidExecutionTimeException;
 use EliasHaeussler\Api\Exception\InvalidMethodSignatureException;
 use EliasHaeussler\Api\Exception\MissingParameterException;
-use EliasHaeussler\Api\Task\TaskInterface;
+use EliasHaeussler\Api\Task\AbstractTask;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 
@@ -32,8 +32,8 @@ use EliasHaeussler\Api\Utility\LocalizationUtility;
  *
  * This class provides a service to schedule and execute tasks. Tasks are working processes
  * which need to be executed at a given time in the future. If the execution time was met,
- * the scheduler service can be used to execute the tasks. Each task needs to implement the
- * {@see TaskInterface} in order to serve as scheduler task.
+ * the scheduler service can be used to execute the tasks. Each task needs to extend the
+ * {@see AbstractTask} class in order to serve as scheduler task.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-3.0+
@@ -47,7 +47,7 @@ class SchedulerService
      * Execute a scheduled task.
      *
      * Runs a scheduled task if it meets the requirements. These are the following:
-     * - Task must implement the {@see TaskInterface}
+     * - Task must extend the {@see AbstractTask} class
      * - Arguments must match the task method signature
      * - Execution time must be in the past or equal the current time
      *
@@ -55,9 +55,9 @@ class SchedulerService
      * @param array     $arguments     Arguments which will be passed to the task method
      * @param \DateTime $executionTime Scheduled task execution time
      *
-     * @throws InvalidClassException     if the class for the scheduled task is not available
      * @throws MissingParameterException if a necessary method parameter was not registered within the task
      * @throws \ReflectionException      if the task class or method does not exist
+     * @throws InvalidClassException     if the class for the scheduled task is not available
      *
      * @return bool `true` if the task was successfully executed, `false` otherwise
      */
@@ -98,7 +98,9 @@ class SchedulerService
         }
 
         // Execute task
-        return call_user_func([$className, self::TASK_METHOD], ...$sortedParameters);
+        $classObject = new $className();
+
+        return $classObject->{self::TASK_METHOD}(...$sortedParameters);
     }
 
     /**
@@ -106,7 +108,7 @@ class SchedulerService
      *
      * Stores a specific task in the database in order to make them execute at the given
      * execution time. It's important that the task meets the requirements, such as
-     * implementing the {@see TaskInterface} and serving the correct arguments needed for
+     * extending the {@see AbstractTask} class and serving the correct arguments needed for
      * executing the appropriate task method. Also, the execution time has to be in the
      * future.
      *
@@ -115,10 +117,10 @@ class SchedulerService
      * @param array     $arguments Arguments which will be passed to the task method
      *
      * @throws ClassNotFoundException          if the {@see ConnectionService} class is not available
-     * @throws InvalidClassException           if the task class does not implement the {@see TaskInterface}
+     * @throws InvalidClassException           if the task class does not extend the {@see AbstractTask} class
      * @throws InvalidExecutionTimeException   if the scheduled execution time is not in the future
      * @throws InvalidMethodSignatureException if the number of arguments does not match the number of task method arguments
-     * @throws \ReflectionException            if the task class does not exist*@throws \Exception*@throws \Exception
+     * @throws \ReflectionException            if the task class does not exist
      * @throws \Exception                      if the {@see DateTime} object cannot be instantiated
      *
      * @return bool `true` if the task was successfully scheduled, `false` otherwise
@@ -129,7 +131,7 @@ class SchedulerService
         $reflectionParameters = $reflectionClass->getMethod(self::TASK_METHOD)->getParameters();
 
         // Check if class implements task interface
-        if (!$reflectionClass->implementsInterface(TaskInterface::class)) {
+        if (!$reflectionClass->isSubclassOf(AbstractTask::class)) {
             throw new InvalidClassException(
                 LocalizationUtility::localize('exception.1555447804', 'sys', null, $className),
                 1555447804
@@ -264,7 +266,7 @@ class SchedulerService
      *
      * Writes a scheduled task to the database.
      *
-     * @param string    $className Name of the task class, must implement the {@see TaskInterface}
+     * @param string    $className Name of the task class, must extend the {@see AbstractTask} class
      * @param \DateTime $execution Time of scheduled execution
      * @param array     $arguments Arguments passed to the task method
      *

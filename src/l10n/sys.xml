@@ -26,5 +26,8 @@
         <text id="exception.1555753824">
             Too many arguments provided for execution of scheduler task "%s".
         </text>
+        <text id="exception.1555877278">
+            Controller class "%s" could not be verified for task "%s".
+        </text>
     </body>
 </l10n>
