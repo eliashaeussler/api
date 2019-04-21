@@ -59,6 +59,13 @@ class SchedulerRunCommand extends BaseCommand
             InputOption::VALUE_OPTIONAL,
             LocalizationUtility::localize('scheduler.run.option_uid', 'console')
         );
+        $this->addOption(
+            'limit',
+            'l',
+            InputOption::VALUE_OPTIONAL,
+            LocalizationUtility::localize('scheduler.run.option_limit', 'console'),
+            20
+        );
     }
 
     /**
@@ -72,7 +79,21 @@ class SchedulerRunCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tasks = SchedulerService::getScheduledTasks((int) $input->getOption('uid'), $input->getOption('task'));
+        $limit = (int) $input->getOption('limit');
+
+        if ($limit < 1) {
+            $this->io->error(
+                LocalizationUtility::localize('scheduler.run.error_noLimit', 'console')
+            );
+
+            return;
+        }
+
+        $tasks = SchedulerService::getScheduledTasks(
+            (int) $input->getOption('uid'),
+            $input->getOption('task'),
+            $limit
+        );
 
         if (count($tasks) > 0) {
             $successfulTasks = [];

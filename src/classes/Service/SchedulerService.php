@@ -188,7 +188,7 @@ class SchedulerService
      *
      * @return array Result set of the tasks which are scheduled for execution
      */
-    public static function getScheduledTasks(int $uid = null, string $className = null): array
+    public static function getScheduledTasks(int $uid = null, string $className = null, int $limit = 20): array
     {
         if ($className && strpos($className, 'EliasHaeussler\\Api') !== 0) {
             $className = 'EliasHaeussler\\Api\\Task\\' . ltrim($className, '\\');
@@ -231,6 +231,10 @@ class SchedulerService
                 'status', $queryBuilder->createNamedParameter(0, ParameterType::INTEGER)
             )
         );
+
+        // Set ordering and limitation
+        $queryBuilder->orderBy('scheduled_execution');
+        $queryBuilder->setMaxResults($limit);
 
         return $queryBuilder->execute()->fetchAll();
     }
