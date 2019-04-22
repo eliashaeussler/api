@@ -115,6 +115,13 @@ route is mapped to an appropriate routing class which should be an instance of {
                                     </td>
             </tr>
                     <tr>
+                <td>ROUTE_CLI</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
                 <td>ROUTE_MAPPINGS</td>
                 <td class="last">
                     <p><em></em></p>
@@ -476,7 +483,7 @@ route is mapped to an appropriate routing class which should be an instance of {
                     void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_checkApiResult">checkApiResult</a>(string $result)
+                    <a href="#method_checkApiResult">checkApiResult</a>(string|bool $result)
         
                                             <p>Check if result from API request is valid.</p>                </div>
                 <div class="col-md-2"></div>
@@ -699,7 +706,7 @@ route is mapped to an appropriate routing class which should be an instance of {
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method___construct"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 63</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method___construct"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 66</div>
         <code>final                    
     <strong>__construct</strong>(string $route)
         </code>
@@ -834,7 +841,7 @@ class. The first parameter <code>$type</code> defines the name of the method to 
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestBody">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 151</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 154</div>
         <code>                    string
     <strong>getRequestBody</strong>()
         </code>
@@ -866,7 +873,7 @@ class. The first parameter <code>$type</code> defines the name of the method to 
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestHeaders">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 161</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 164</div>
         <code>                    array
     <strong>getRequestHeaders</strong>()
         </code>
@@ -898,7 +905,7 @@ class. The first parameter <code>$type</code> defines the name of the method to 
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestHeader">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeader"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 178</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeader"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 181</div>
         <code>                    string
     <strong>getRequestHeader</strong>(string $header, bool $useRawInput = false)
         </code>
@@ -947,7 +954,7 @@ by setting <code>$useRawInput</code> to <code>true</code>.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestParameters">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 194</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 197</div>
         <code>                    array
     <strong>getRequestParameters</strong>()
         </code>
@@ -979,7 +986,7 @@ by setting <code>$useRawInput</code> to <code>true</code>.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestParameter">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameter"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 206</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameter"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 209</div>
         <code>                    mixed|null
     <strong>getRequestParameter</strong>(string $key)
         </code>
@@ -1021,7 +1028,7 @@ by setting <code>$useRawInput</code> to <code>true</code>.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_setRoute">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_setRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 216</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_setRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 219</div>
         <code>                    
     <strong>setRoute</strong>(string $route)
         </code>
@@ -1078,7 +1085,7 @@ can also be used to pre-check API conditions and user authentications.</p>      
             </div>
                     <div class="method-item">
                     <h3 id="method_readRequestBody">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 234</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 237</div>
         <code>            protected        
     <strong>readRequestBody</strong>()
         </code>
@@ -1101,7 +1108,7 @@ can also be used to pre-check API conditions and user authentications.</p>      
             </div>
                     <div class="method-item">
                     <h3 id="method_readRequestHeaders">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 246</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 249</div>
         <code>            protected        
     <strong>readRequestHeaders</strong>()
         </code>
@@ -1126,7 +1133,7 @@ from the header name.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_readRequestParameters">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 270</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 273</div>
         <code>            protected        
     <strong>readRequestParameters</strong>()
         </code>
@@ -1172,7 +1179,7 @@ from the header name.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_matchesRoute">
-        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_matchesRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 293</div>
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_matchesRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         line 296</div>
         <code>            protected        bool
     <strong>matchesRoute</strong>(string $route)
         </code>
@@ -1453,7 +1460,7 @@ is set to <code>true</code>.</p>                            </div>
                     <h3 id="method_checkApiResult">
         <div class="location">at         line 277</div>
         <code>                    void
-    <strong>checkApiResult</strong>(string $result)
+    <strong>checkApiResult</strong>(string|bool $result)
         </code>
     </h3>
     <div class="details">
@@ -1467,7 +1474,7 @@ is set to <code>true</code>.</p>                            </div>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
+                <td>string|bool</td>
                 <td>$result</td>
                 <td>Raw result from API request, parsed as JSON</td>
             </tr>
@@ -1922,7 +1929,7 @@ be useful i. e. to update the given text from Slack.</p>                        
             </div>
                     <div class="method-item">
                     <h3 id="method_prepareCall">
-        <div class="location">at         line 573</div>
+        <div class="location">at         line 562</div>
         <code>            protected        
     <strong>prepareCall</strong>()
         </code>
@@ -1962,7 +1969,7 @@ if the request is not verified.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_storeRequestData">
-        <div class="location">at         line 590</div>
+        <div class="location">at         line 579</div>
         <code>            protected        
     <strong>storeRequestData</strong>()
         </code>
@@ -1985,7 +1992,7 @@ if the request is not verified.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setAccessType">
-        <div class="location">at         line 601</div>
+        <div class="location">at         line 590</div>
         <code>            protected        
     <strong>setAccessType</strong>()
         </code>
@@ -2009,7 +2016,7 @@ user agent will be any type of "Slackbot".</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_isRequestValid">
-        <div class="location">at         line 622</div>
+        <div class="location">at         line 611</div>
         <code>            protected        bool
     <strong>isRequestValid</strong>()
         </code>
@@ -2051,7 +2058,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequiredScopes">
-        <div class="location">at         line 639</div>
+        <div class="location">at         line 628</div>
         <code>            protected        array
     <strong>getRequiredScopes</strong>()
         </code>
@@ -2083,7 +2090,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_routeRequiresAuthentication">
-        <div class="location">at         line 649</div>
+        <div class="location">at         line 638</div>
         <code>            protected        bool
     <strong>routeRequiresAuthentication</strong>()
         </code>
@@ -2115,7 +2122,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_isValidAuthState">
-        <div class="location">at         line 661</div>
+        <div class="location">at         line 650</div>
         <code>            protected        bool
     <strong>isValidAuthState</strong>()
         </code>
@@ -2147,7 +2154,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_isRequestVerified">
-        <div class="location">at         line 683</div>
+        <div class="location">at         line 672</div>
         <code>            protected        bool
     <strong>isRequestVerified</strong>(string $timestamp, string $signature)
         </code>
@@ -2217,7 +2224,7 @@ signature. If both signatures do not match, the request cannot be verified as we
             </div>
                     <div class="method-item">
                     <h3 id="method_showUserAuthenticationUri">
-        <div class="location">at         line 712</div>
+        <div class="location">at         line 698</div>
         <code>            protected        
     <strong>showUserAuthenticationUri</strong>()
         </code>
@@ -2249,7 +2256,7 @@ signature. If both signatures do not match, the request cannot be verified as we
             </div>
                     <div class="method-item">
                     <h3 id="method_buildUserAuthenticationUri">
-        <div class="location">at         line 733</div>
+        <div class="location">at         line 719</div>
         <code>            protected        string
     <strong>buildUserAuthenticationUri</strong>()
         </code>
