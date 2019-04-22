@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.2.0] - 2019-04-22
+
 ### Added
 
 - Log messages from [LogService](src/classes/Service/LogService.php) in console, based on the current verbosity level
