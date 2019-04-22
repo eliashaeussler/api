@@ -82,6 +82,13 @@ class SchedulerRunCommand extends BaseCommand
             LocalizationUtility::localize('scheduler.run.option_limit', 'console'),
             20
         );
+        $this->addOption(
+            'non-strict',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            LocalizationUtility::localize('scheduler.run.option_non-strict', 'console'),
+            false
+        );
     }
 
     /**
@@ -93,6 +100,7 @@ class SchedulerRunCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $limit = (int) $input->getOption('limit');
+        $nonStrict = $input->getOption('non-strict') !== false;
 
         if ($limit < 1) {
             $this->io->error(
@@ -103,9 +111,10 @@ class SchedulerRunCommand extends BaseCommand
         }
 
         $tasks = SchedulerService::getScheduledTasks(
-            (int) $input->getOption('uid'),
             $input->getOption('task'),
-            $limit
+            (int) $input->getOption('uid'),
+            $limit,
+            $nonStrict
         );
 
         if (count($tasks) > 0) {
@@ -114,14 +123,14 @@ class SchedulerRunCommand extends BaseCommand
 
             // Execute tasks
             foreach ($tasks as $task) {
-                $taskUid = (int) $task['uid'];
-                $this->currentTask = $taskUid;
+                $this->currentTask = $task['uid'];
 
                 try {
                     $result = SchedulerService::executeTask(
                         $task['task'],
-                        unserialize($task['arguments']),
-                        new \DateTime($task['scheduled_execution'])
+                        $task['arguments'],
+                        $task['scheduled_execution'],
+                        !$nonStrict
                     );
                 } catch (\Exception $e) {
                     $this->io->error($e->getMessage());
@@ -134,7 +143,7 @@ class SchedulerRunCommand extends BaseCommand
                     $failedTasks[] = $task;
                 }
 
-                SchedulerService::finalizeExecution($taskUid, $result);
+                SchedulerService::finalizeExecution($task['uid'], $result);
 
                 $this->currentTask = null;
             }

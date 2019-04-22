@@ -59,7 +59,7 @@ class SchedulerService
      *
      * @return bool `true` if the task was successfully executed, `false` otherwise
      */
-    public static function executeTask(string $className, array $arguments, \DateTime $executionTime): bool
+    public static function executeTask(string $className, array $arguments, \DateTime $executionTime, bool $strict = true): bool
     {
         if (!class_exists($className) || !in_array(self::TASK_METHOD, get_class_methods($className))) {
             throw new InvalidClassException(
@@ -68,7 +68,7 @@ class SchedulerService
             );
         }
 
-        if ($executionTime > new \DateTime()) {
+        if ($strict && $executionTime > new \DateTime()) {
             LogService::log(
                 'Skipped execution of scheduled task, reason: Scheduled execution time was not reached.',
                 LogService::WARNING
@@ -181,14 +181,15 @@ class SchedulerService
      * class name. The class name can either be a FQN or the full class name relative to the
      * `EliasHaeussler\Api\Task` namespace.
      *
-     * @param int|null    $uid       Uid of a specific task to be returned
      * @param string|null $className Class name (either FQN or task class name) whose tasks should be returned
+     * @param int|null    $uid       Uid of a specific task to be returned
+     * @param int         $limit     Maximum numbers of tasks to be executed at this iteration
      *
      * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
      *
      * @return array Result set of the tasks which are scheduled for execution
      */
-    public static function getScheduledTasks(int $uid = null, string $className = null, int $limit = 20): array
+    public static function getScheduledTasks(?string $className = null, ?int $uid = null, int $limit = 20, bool $ignoreExecutionTime = false): array
     {
         if ($className && strpos($className, 'EliasHaeussler\\Api') !== 0) {
             $className = 'EliasHaeussler\\Api\\Task\\' . ltrim($className, '\\');
@@ -216,27 +217,44 @@ class SchedulerService
         }
 
         // Set execution time constraint
-        $execTimeExpr = $queryBuilder->expr()->lte(
-            'scheduled_execution', $queryBuilder->createNamedParameter(new \DateTime(), 'datetime')
-        );
-        if ($queryBuilder->getQueryPart('where')) {
-            $queryBuilder->andWhere($execTimeExpr);
-        } else {
-            $queryBuilder->where($execTimeExpr);
+        if (!$ignoreExecutionTime) {
+            $execTimeExpr = $queryBuilder->expr()->lte(
+                'scheduled_execution', $queryBuilder->createNamedParameter(new \DateTime(), 'datetime')
+            );
+            if ($queryBuilder->getQueryPart('where')) {
+                $queryBuilder->andWhere($execTimeExpr);
+            } else {
+                $queryBuilder->where($execTimeExpr);
+            }
         }
 
         // Set status constraint
-        $queryBuilder->andWhere(
-            $queryBuilder->expr()->eq(
-                'status', $queryBuilder->createNamedParameter(0, ParameterType::INTEGER)
-            )
+        $statusExpr = $queryBuilder->expr()->eq(
+            'status', $queryBuilder->createNamedParameter(0, ParameterType::INTEGER)
         );
+        if ($queryBuilder->getQueryPart('where')) {
+            $queryBuilder->andWhere($statusExpr);
+        } else {
+            $queryBuilder->where($statusExpr);
+        }
 
         // Set ordering and limitation
         $queryBuilder->orderBy('scheduled_execution');
         $queryBuilder->setMaxResults($limit);
 
-        return $queryBuilder->execute()->fetchAll();
+        // Get scheduled tasks
+        $tasks = $queryBuilder->execute()->fetchAll();
+
+        // Convert parameters to their appropriate types
+        return array_map(function ($task) {
+            $task['uid'] = (int) $task['uid'];
+            $task['arguments'] = unserialize($task['arguments']);
+            $task['scheduled_execution'] = new \DateTime($task['scheduled_execution']);
+            $task['last_execution_time'] = new \DateTime($task['last_execution_time']);
+            $task['status'] = (int) $task['status'];
+
+            return $task;
+        }, $tasks);
     }
 
     /**

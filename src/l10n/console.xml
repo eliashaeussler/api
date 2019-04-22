@@ -120,6 +120,9 @@
         <text id="scheduler.run.option_limit">
             Set a maximum number of tasks to be executed
         </text>
+        <text id="scheduler.run.option_non-strict">
+            Execute tasks which are scheduled for the future as well
+        </text>
         <text id="scheduler.run.successfulTasks_title">
             Successful tasks
         </text>
