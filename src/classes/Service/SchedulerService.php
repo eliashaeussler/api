@@ -181,9 +181,10 @@ class SchedulerService
      * class name. The class name can either be a FQN or the full class name relative to the
      * `EliasHaeussler\Api\Task` namespace.
      *
-     * @param string|null $className Class name (either FQN or task class name) whose tasks should be returned
-     * @param int|null    $uid       Uid of a specific task to be returned
-     * @param int         $limit     Maximum numbers of tasks to be executed at this iteration
+     * @param string|null $className           Class name (either FQN or task class name) whose tasks should be returned
+     * @param int|null    $uid                 Uid of a specific task to be returned
+     * @param int         $limit               Maximum numbers of tasks to be executed at this iteration
+     * @param bool        $ignoreExecutionTime Define whether to ignore exeuction time and return all tasks matching the constraints
      *
      * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
      *
