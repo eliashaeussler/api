@@ -79,7 +79,7 @@ ssh ${TARGET_HOST} -p ${TARGET_PORT} -T << __EOF
     echo "$(output " Done." ${SUCCESS})"
 
     printf "$(output "Remote: Update database..." ${ACTION} 0)"
-    php ${TARGET_PATH}/release/console.php -q database:schema update
+    php ${TARGET_PATH}/release/console.php database:schema update > /dev/null
     echo "$(output " Done." ${SUCCESS})"
 __EOF
 
