@@ -12,10 +12,13 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ### Updated
 
+- Use CLI log level in [LogService](src/classes/Service/LogService.php) only if it's lower than the default log level
+- Update DDEV to version 1.6.0
 - Ability to preserve empty elements when using [`GeneralUtility::trimExplode()`](src/classes/Utility/GeneralUtility.php)
 
 ### Fixed
 
+- Hide output of database schema update during deployment in order to make deployment work great again
 - Localized texts are now parsed better according to line breaks
 
 
