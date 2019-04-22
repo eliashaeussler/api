@@ -260,6 +260,42 @@ class SchedulerService
     }
 
     /**
+     * Cancel scheduled tasks.
+     *
+     * Cancels scheduled tasks by class name and optional argument constraints. Only tasks which haven't been
+     * executed will be canceled.
+     *
+     * @param string $className           Class name of the tasks to be canceled
+     * @param array  $argumentConstraints Optional argument constraints, will be passed as serialized value to the database
+     *
+     * @throws ClassNotFoundException if the {@see ConnectionService} class is not available
+     */
+    public static function cancelScheduledTasks(string $className, array $argumentConstraints = []): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionService::class)->getDatabase()->createQueryBuilder();
+
+        // Serialize arguments in order to compare them within SQL
+        if ($argumentConstraints) {
+            array_walk($argumentConstraints, function (&$value, $key) use ($queryBuilder) {
+                $value = $queryBuilder->expr()->like(
+                    'arguments',
+                    $queryBuilder->createNamedParameter('%' . serialize($key) . serialize($value) . '%')
+                );
+            });
+        }
+
+        // Cancel scheduled tasks in database
+        $queryBuilder->update('sys_scheduled_tasks')
+            ->set('status', $queryBuilder->createNamedParameter(-1, ParameterType::INTEGER))
+            ->where($queryBuilder->expr()->andX(
+                $queryBuilder->expr()->eq('task', $queryBuilder->createNamedParameter($className)),
+                $queryBuilder->expr()->eq('status', $queryBuilder->createNamedParameter(0, ParameterType::INTEGER)),
+                ...array_values($argumentConstraints)
+            ))
+            ->execute();
+    }
+
+    /**
      * Log message for a given task.
      *
      * Appends the log of a given task with the given log message.
