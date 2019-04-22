@@ -87,7 +87,7 @@ class LogService
     public static function log(string $message, int $severity = self::NOTICE): void
     {
         $logLevel = GeneralUtility::getEnvironmentVariable('MINIMUM_LOG_LEVEL', self::NOTICE);
-        if (PHP_SAPI == 'cli') {
+        if (PHP_SAPI == 'cli' && self::$cliLogLevel < $logLevel) {
             $logLevel = self::$cliLogLevel;
         }
 
