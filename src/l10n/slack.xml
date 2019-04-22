@@ -171,5 +171,8 @@
         <text id="exception.1552768435">
             Invalid issue display mode. Use one of `%s` instead.
         </text>
+        <text id="exception.1555778525">
+            Parameter "%s" is required, but was not set or is invalid.
+        </text>
     </body>
 </l10n>

@@ -163,5 +163,8 @@
         <text id="exception.1552768435">
             Ungültiger Ticket-Anzeigemodus. Verwende einen dieser Modi: `%s`
         </text>
+        <text id="exception.1555778525">
+            Parameter "%s" ist erforderlich, wurde aber nicht übergeben oder ist ungültig.
+        </text>
     </body>
 </l10n>

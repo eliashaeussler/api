@@ -26,6 +26,8 @@ use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\BaseRoute;
 use EliasHaeussler\Api\Service\LogService;
+use EliasHaeussler\Api\Service\SchedulerService;
+use EliasHaeussler\Api\Task\Slack\StatusUpdateTask;
 use EliasHaeussler\Api\Utility\GeneralUtility;
 use EliasHaeussler\Api\Utility\LocalizationUtility;
 
@@ -89,6 +91,9 @@ class LunchCommandRoute extends BaseRoute
     /** @var int Expiration period */
     protected $expirationPeriod = self::DEFAULT_EXPIRATION;
 
+    /** @var array API result data for the current user */
+    protected $userInformation = [];
+
     /**
      * {@inheritdoc}
      *
@@ -123,6 +128,15 @@ class LunchCommandRoute extends BaseRoute
                 'lunch.message.endBreak', 'slack', null,
                 SlackMessage::emoji('rocket')
             );
+
+            // Run scheduled tasks
+            $tasks = SchedulerService::getScheduledTasks(StatusUpdateTask::class, null, 1, true);
+            if ($tasks) {
+                foreach ($tasks as $task) {
+                    $result = SchedulerService::executeTask($task['task'], $task['arguments'], $task['scheduled_execution'], false);
+                    SchedulerService::finalizeExecution($task['uid'], $result);
+                }
+            }
         } else {
             $expiration = new \DateTime();
             $expiration->setTimestamp($this->expiration);
@@ -131,6 +145,22 @@ class LunchCommandRoute extends BaseRoute
                 $this->emoji,
                 $expiration->format('H:i')
             );
+
+            // Schedule task to restore status text and emoji
+            $statusText = $this->userInformation['user']['profile']['status_text'];
+            $statusEmoji = $this->userInformation['user']['profile']['status_emoji'];
+
+            if (!empty($statusText) || !empty($statusEmoji)) {
+                SchedulerService::scheduleTask(
+                    StatusUpdateTask::class,
+                    $expiration,
+                    [
+                        'userId' => $this->controller->getRequestData('user_id'),
+                        'statusText' => $statusText,
+                        'statusEmoji' => $statusEmoji,
+                    ]
+                );
+            }
         }
 
         echo $this->controller->buildMessage(Message::MESSAGE_TYPE_SUCCESS, $message);
@@ -192,9 +222,9 @@ class LunchCommandRoute extends BaseRoute
      */
     protected function checkIfStatusIsSet(): bool
     {
-        $userInformation = $this->controller->getUserInformation();
+        $this->userInformation = $this->controller->getUserInformation();
 
-        return $userInformation['user']['profile']['status_text'] == self::STATUS_MESSAGE;
+        return $this->userInformation['user']['profile']['status_text'] == self::STATUS_MESSAGE;
     }
 
     /**
