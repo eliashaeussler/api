@@ -262,7 +262,7 @@ specified, only the tasks matching the appropriate patterns are executed. If bot
 the appropriated constraints are AND-combined.
 
 ```bash
-./console.php scheduler:run [-u|--uid <uid>] [-t|--task <task>]
+./console.php scheduler:run [-u|--uid <uid>] [-t|--task <task>] [-l|--limit <limit>] [--non-strict]
 ```
 
 
