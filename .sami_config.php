@@ -2,15 +2,13 @@
 /**
  * Copyright (c) 2019 Elias Häußler <elias@haeussler.dev>. All rights reserved.
  */
-define("CLASSES_PATH", 'src/classes');
-define("SOURCE_PATH", __DIR__ . '/' . CLASSES_PATH);
-define("DOCS_DIR", __DIR__ . '/docs');
-
-$files = [];
+define('CLASSES_PATH', 'src/classes');
+define('SOURCE_PATH', __DIR__ . '/' . CLASSES_PATH);
+define('DOCS_DIR', __DIR__ . '/docs');
 
 $iterator = \Symfony\Component\Finder\Finder::create()
     ->files()
-    ->name("*.php")
+    ->name('*.php')
     ->in(SOURCE_PATH);
 
 return new \Sami\Sami($iterator, [
