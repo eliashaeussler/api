@@ -107,6 +107,27 @@
         <text id="standup.message.button">
             %s Join the call
         </text>
+        <text id="beer.help.text">
+            Use %%code{/beer} to spend %%emoji{beers} on your colleagues. Example: %%code{/beer @user}
+
+            You received %s %s so far.
+        </text>
+        <text id="beer.singular">
+            beer
+        </text>
+        <text id="beer.plural">
+            beers
+        </text>
+
+        <text id="beer.donorEqualsReceiver">
+            %s You should spend beers to others instead of drinking your own ones!
+        </text>
+        <text id="beer.success.single">
+            %s %s received the first beer. Cheers!
+        </text>
+        <text id="beer.success.multiple">
+            %s One more beer for %s (total: %s). Cheers!
+        </text>
 
         <text id="exception.1543541836">
             Authentication failed. Please contact your Slack admin.
@@ -173,6 +194,12 @@
         </text>
         <text id="exception.1555778525">
             Parameter "%s" is required, but was not set or is invalid.
+        </text>
+        <text id="exception.1556721904">
+            Hmm, something went wrong. It might be helpful to contact your Slack admin.
+        </text>
+        <text id="exception.1556723086">
+            You need to provide a user to receive the beer: `/beer @user`
         </text>
     </body>
 </l10n>

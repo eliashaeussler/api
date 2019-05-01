@@ -500,6 +500,16 @@ route is mapped to an appropriate routing class which should be an instance of {
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getUserDataFromString">getUserDataFromString</a>(string $rawString)
+        
+                                            <p>Get user ID and user name from raw string.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     string
                 </div>
                 <div class="col-md-8 type">
@@ -741,7 +751,7 @@ calling {see initializeRequest()}.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_call">
-        <div class="location">at         line 107</div>
+        <div class="location">at         line 109</div>
         <code>                    
     <strong>call</strong>()
         </code>
@@ -778,7 +788,7 @@ validity and authenticity inside this method as it differs from different reques
             </div>
                     <div class="method-item">
                     <h3 id="method_buildMessage">
-        <div class="location">at         line 161</div>
+        <div class="location">at         line 163</div>
         <code>                    string
     <strong>buildMessage</strong>(string $type, mixed $arg1, array ...$_)
         </code>
@@ -1061,7 +1071,7 @@ by setting <code>$useRawInput</code> to <code>true</code>.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_initializeRequest">
-        <div class="location">at         line 515</div>
+        <div class="location">at         line 547</div>
         <code>            protected        
     <strong>initializeRequest</strong>()
         </code>
@@ -1221,7 +1231,7 @@ from the header name.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_api">
-        <div class="location">at         line 135</div>
+        <div class="location">at         line 137</div>
         <code>                    bool|string
     <strong>api</strong>(string $function, string|array $data, bool $json = true, bool $authorize = true)
         </code>
@@ -1276,12 +1286,6 @@ is set to <code>true</code>.</p>                            </div>
                             <h4>See also</h4>
 
                     <table class="table table-condensed">
-                    <tr>
-                <td>
-                                            <a href="https://api.slack.com/web#methods">https://api.slack.com/web#methods</a>
-                                    </td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -1292,7 +1296,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_buildBotMessage">
-        <div class="location">at         line 181</div>
+        <div class="location">at         line 183</div>
         <code>                    string
     <strong>buildBotMessage</strong>(string $type, string|<a target="_blank" href="http://php.net/Exception">Exception</a> $message, array $attachments = [], bool $public = false, array $additionalConfiguration = [])
         </code>
@@ -1354,7 +1358,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_buildAttachmentForBotMessage">
-        <div class="location">at         line 225</div>
+        <div class="location">at         line 227</div>
         <code>                    array
     <strong>buildAttachmentForBotMessage</strong>(string $header, string $body, string $preText = &#039;&#039;, string $fallback = &#039;&#039;, bool $addFooter = false, array $additionalData = [], array $markdown = [&#039;fields&#039;])
         </code>
@@ -1426,7 +1430,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_buildAttachmentFooter">
-        <div class="location">at         line 258</div>
+        <div class="location">at         line 260</div>
         <code>                    string
     <strong>buildAttachmentFooter</strong>()
         </code>
@@ -1458,7 +1462,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_checkApiResult">
-        <div class="location">at         line 277</div>
+        <div class="location">at         line 279</div>
         <code>                    void
     <strong>checkApiResult</strong>(string|bool $result)
         </code>
@@ -1513,7 +1517,7 @@ is set to <code>true</code>.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserInformation">
-        <div class="location">at         line 327</div>
+        <div class="location">at         line 329</div>
         <code>                    mixed
     <strong>getUserInformation</strong>(bool $setLanguage = true)
         </code>
@@ -1567,8 +1571,52 @@ is set to <code>true</code>.</p>                            </div>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_getUserDataFromString">
+        <div class="location">at         line 367</div>
+        <code>                    array
+    <strong>getUserDataFromString</strong>(string $rawString)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get user ID and user name from raw string.</p>                    <p>Returns user ID and user name of a user which is mentioned within a raw string. This method always returns an
+array of exactly two elements, being the first the user ID and the second the user name. If the string was not
+escaped or escaped incorrect, this method will only return the user name as second element of the returned array.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$rawString</td>
+                <td>The raw input string in which a user is mentioned</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Array of user ID (first element) and user name (second element)</td>
+        </tr>
+    </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getRawCommandName">
-        <div class="location">at         line 365</div>
+        <div class="location">at         line 397</div>
         <code>                    string
     <strong>getRawCommandName</strong>()
         </code>
@@ -1614,7 +1662,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getAuthToken">
-        <div class="location">at         line 387</div>
+        <div class="location">at         line 419</div>
         <code>                    string
     <strong>getAuthToken</strong>()
         </code>
@@ -1646,7 +1694,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getAuthState">
-        <div class="location">at         line 397</div>
+        <div class="location">at         line 429</div>
         <code>                    string
     <strong>getAuthState</strong>()
         </code>
@@ -1678,7 +1726,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getClientId">
-        <div class="location">at         line 407</div>
+        <div class="location">at         line 439</div>
         <code>                    string
     <strong>getClientId</strong>()
         </code>
@@ -1710,7 +1758,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getClientSecret">
-        <div class="location">at         line 417</div>
+        <div class="location">at         line 449</div>
         <code>                    string
     <strong>getClientSecret</strong>()
         </code>
@@ -1742,7 +1790,7 @@ the name of the slash command without its prepended slash.</p>                  
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestData">
-        <div class="location">at         line 432</div>
+        <div class="location">at         line 464</div>
         <code>                    array|string
     <strong>getRequestData</strong>(string $key = &#039;&#039;)
         </code>
@@ -1785,7 +1833,7 @@ an empty string, if no request data is available for the given key.</p>         
             </div>
                     <div class="method-item">
                     <h3 id="method_setRequestDataForKey">
-        <div class="location">at         line 446</div>
+        <div class="location">at         line 478</div>
         <code>                    void
     <strong>setRequestDataForKey</strong>(string $key, mixed $value)
         </code>
@@ -1833,7 +1881,7 @@ be useful i. e. to update the given text from Slack.</p>                        
             </div>
                     <div class="method-item">
                     <h3 id="method_getDatabase">
-        <div class="location">at         line 456</div>
+        <div class="location">at         line 488</div>
         <code>                    <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
     <strong>getDatabase</strong>()
         </code>
@@ -1865,7 +1913,7 @@ be useful i. e. to update the given text from Slack.</p>                        
             </div>
                     <div class="method-item">
                     <h3 id="method_loadUserData">
-        <div class="location">at         line 468</div>
+        <div class="location">at         line 500</div>
         <code>                    
     <strong>loadUserData</strong>()
         </code>
@@ -1897,7 +1945,7 @@ be useful i. e. to update the given text from Slack.</p>                        
             </div>
                     <div class="method-item">
                     <h3 id="method_isUserAuthenticated">
-        <div class="location">at         line 495</div>
+        <div class="location">at         line 527</div>
         <code>                    bool
     <strong>isUserAuthenticated</strong>()
         </code>
@@ -1929,7 +1977,7 @@ be useful i. e. to update the given text from Slack.</p>                        
             </div>
                     <div class="method-item">
                     <h3 id="method_prepareCall">
-        <div class="location">at         line 562</div>
+        <div class="location">at         line 594</div>
         <code>            protected        
     <strong>prepareCall</strong>()
         </code>
@@ -1969,7 +2017,7 @@ if the request is not verified.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_storeRequestData">
-        <div class="location">at         line 579</div>
+        <div class="location">at         line 611</div>
         <code>            protected        
     <strong>storeRequestData</strong>()
         </code>
@@ -1992,7 +2040,7 @@ if the request is not verified.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setAccessType">
-        <div class="location">at         line 590</div>
+        <div class="location">at         line 622</div>
         <code>            protected        
     <strong>setAccessType</strong>()
         </code>
@@ -2016,7 +2064,7 @@ user agent will be any type of "Slackbot".</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_isRequestValid">
-        <div class="location">at         line 611</div>
+        <div class="location">at         line 643</div>
         <code>            protected        bool
     <strong>isRequestValid</strong>()
         </code>
@@ -2058,7 +2106,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequiredScopes">
-        <div class="location">at         line 628</div>
+        <div class="location">at         line 660</div>
         <code>            protected        array
     <strong>getRequiredScopes</strong>()
         </code>
@@ -2090,7 +2138,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_routeRequiresAuthentication">
-        <div class="location">at         line 638</div>
+        <div class="location">at         line 670</div>
         <code>            protected        bool
     <strong>routeRequiresAuthentication</strong>()
         </code>
@@ -2122,7 +2170,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_isValidAuthState">
-        <div class="location">at         line 650</div>
+        <div class="location">at         line 682</div>
         <code>            protected        bool
     <strong>isValidAuthState</strong>()
         </code>
@@ -2154,7 +2202,7 @@ request data is already set but does not include a user id, the request is marke
             </div>
                     <div class="method-item">
                     <h3 id="method_isRequestVerified">
-        <div class="location">at         line 672</div>
+        <div class="location">at         line 704</div>
         <code>            protected        bool
     <strong>isRequestVerified</strong>(string $timestamp, string $signature)
         </code>
@@ -2208,12 +2256,6 @@ signature. If both signatures do not match, the request cannot be verified as we
                             <h4>See also</h4>
 
                     <table class="table table-condensed">
-                    <tr>
-                <td>
-                                            <a href="https://api.slack.com/docs/verifying-requests-from-slack">https://api.slack.com/docs/verifying-requests-from-slack</a>
-                                    </td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -2224,7 +2266,7 @@ signature. If both signatures do not match, the request cannot be verified as we
             </div>
                     <div class="method-item">
                     <h3 id="method_showUserAuthenticationUri">
-        <div class="location">at         line 698</div>
+        <div class="location">at         line 730</div>
         <code>            protected        
     <strong>showUserAuthenticationUri</strong>()
         </code>
@@ -2256,7 +2298,7 @@ signature. If both signatures do not match, the request cannot be verified as we
             </div>
                     <div class="method-item">
                     <h3 id="method_buildUserAuthenticationUri">
-        <div class="location">at         line 719</div>
+        <div class="location">at         line 751</div>
         <code>            protected        string
     <strong>buildUserAuthenticationUri</strong>()
         </code>

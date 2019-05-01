@@ -100,6 +100,16 @@
             %s Anruf beitreten
         </text>
 
+        <text id="beer.donorEqualsReceiver">
+            %s Du solltest lieber Bier verteilen anstatt es nur für dich zu genießen!
+        </text>
+        <text id="beer.success.single">
+            %s %s erhält das erste Bier. Prost!
+        </text>
+        <text id="beer.success.multiple">
+            %s Noch ein Bier für %s (insgesamt: %s). Prost!
+        </text>
+
         <text id="exception.1543541836">
             Authentifizierung fehlgeschlagen. Bitte kontaktiere deinen Slack-Admin.
         </text>
@@ -165,6 +175,12 @@
         </text>
         <text id="exception.1555778525">
             Parameter "%s" ist erforderlich, wurde aber nicht übergeben oder ist ungültig.
+        </text>
+        <text id="exception.1556721904">
+            Hmm, irgendwas ist schief gelaufen. Du solltest dich an deinen Slack-Admin wenden.
+        </text>
+        <text id="exception.1556723086">
+            Du musst einen Benutzer angeben, der das Bier erhalten soll: `/beer @user`
         </text>
     </body>
 </l10n>

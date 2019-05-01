@@ -44,6 +44,9 @@ class SlackMessage
         'link' => '<>',
     ];
 
+    /** @var string Default prefix for mentions */
+    const MENTION_PREFIX = '<@';
+
     /** @var string Character separating URL and link text */
     const LINK_TEXT_SEPARATOR = '|';
 
@@ -115,7 +118,7 @@ class SlackMessage
     public static function mention(string $name, bool $isTeam = false): string
     {
         $name = trim($name);
-        $prefix = '<@';
+        $prefix = self::MENTION_PREFIX;
         $suffix = '>';
 
         if (in_array(strtolower($name), self::SPECIAL_MENTIONS)) {

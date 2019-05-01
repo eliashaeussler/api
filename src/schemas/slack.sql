@@ -22,3 +22,10 @@ CREATE TABLE `slack_redmine_api_keys` (
 
   PRIMARY KEY (`user`)
 );
+
+# Spent beers
+CREATE TABLE `slack_spent_beers` (
+  `donor` VARCHAR(20) NOT NULL DEFAULT '',
+  `receiver` VARCHAR(20) NOT NULL DEFAULT '',
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

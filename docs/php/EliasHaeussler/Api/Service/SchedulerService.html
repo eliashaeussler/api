@@ -345,7 +345,7 @@ future.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getScheduledTasks">
-        <div class="location">at         line 192</div>
+        <div class="location">at         line 193</div>
         <code>        static            array
     <strong>getScheduledTasks</strong>(string|null $className = null, int|null $uid = null, int $limit = 20, bool $ignoreExecutionTime = false)
         </code>
@@ -366,22 +366,22 @@ class name. The class name can either be a FQN or the full class name relative t
                     <tr>
                 <td>string|null</td>
                 <td>$className</td>
-                <td></td>
+                <td>Class name (either FQN or task class name) whose tasks should be returned</td>
             </tr>
                     <tr>
                 <td>int|null</td>
                 <td>$uid</td>
-                <td></td>
+                <td>Uid of a specific task to be returned</td>
             </tr>
                     <tr>
                 <td>int</td>
                 <td>$limit</td>
-                <td></td>
+                <td>Maximum numbers of tasks to be executed at this iteration</td>
             </tr>
                     <tr>
                 <td>bool</td>
                 <td>$ignoreExecutionTime</td>
-                <td></td>
+                <td>Define whether to ignore exeuction time and return all tasks matching the constraints</td>
             </tr>
             </table>
 
@@ -414,7 +414,7 @@ class name. The class name can either be a FQN or the full class name relative t
             </div>
                     <div class="method-item">
                     <h3 id="method_finalizeExecution">
-        <div class="location">at         line 270</div>
+        <div class="location">at         line 271</div>
         <code>        static            void
     <strong>finalizeExecution</strong>(int $uid, bool $executionResult)
         </code>
@@ -470,7 +470,7 @@ class name. The class name can either be a FQN or the full class name relative t
             </div>
                     <div class="method-item">
                     <h3 id="method_cancelScheduledTasks">
-        <div class="location">at         line 291</div>
+        <div class="location">at         line 292</div>
         <code>        static            void
     <strong>cancelScheduledTasks</strong>(string $className, array $argumentConstraints = [])
         </code>
@@ -527,7 +527,7 @@ executed will be canceled.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_log">
-        <div class="location">at         line 326</div>
+        <div class="location">at         line 327</div>
         <code>        static            void
     <strong>log</strong>(int $taskUid, string $message)
         </code>
@@ -583,7 +583,7 @@ executed will be canceled.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_persistTaskForSchedule">
-        <div class="location">at         line 350</div>
+        <div class="location">at         line 351</div>
         <code>        static    protected        bool
     <strong>persistTaskForSchedule</strong>(string $className, <a target="_blank" href="http://php.net/DateTime">DateTime</a> $execution, array $arguments)
         </code>

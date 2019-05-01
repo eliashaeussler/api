@@ -107,6 +107,13 @@
                                     </td>
             </tr>
                     <tr>
+                <td>MENTION_PREFIX</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
                 <td>LINK_TEXT_SEPARATOR</td>
                 <td class="last">
                     <p><em></em></p>
@@ -205,7 +212,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___callStatic">
-        <div class="location">at         line 71</div>
+        <div class="location">at         line 74</div>
         <code>        static            string
     <strong>__callStatic</strong>(string $name, array $arguments)
         </code>
@@ -263,7 +270,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_link">
-        <div class="location">at         line 95</div>
+        <div class="location">at         line 98</div>
         <code>        static            string
     <strong>link</strong>(string $url, string $label = &#039;&#039;)
         </code>
@@ -310,7 +317,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_mention">
-        <div class="location">at         line 115</div>
+        <div class="location">at         line 118</div>
         <code>        static            string
     <strong>mention</strong>(string $name, bool $isTeam = false)
         </code>
@@ -357,7 +364,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_date">
-        <div class="location">at         line 147</div>
+        <div class="location">at         line 150</div>
         <code>        static            string
     <strong>date</strong>(<a target="_blank" href="http://php.net/DateTime">DateTime</a> $date, string $format = &#039;{date_pretty}&#039;, string $link = &#039;&#039;, string $fallback = &#039;&#039;)
         </code>
@@ -409,12 +416,6 @@ be passed as first argument.</p>                            </div>
                             <h4>See also</h4>
 
                     <table class="table table-condensed">
-                    <tr>
-                <td>
-                                            <a href="https://api.slack.com/docs/message-formatting#formatting_dates">https://api.slack.com/docs/message-formatting#formatting_dates</a>
-                                    </td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -425,7 +426,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_convertPlaceholders">
-        <div class="location">at         line 169</div>
+        <div class="location">at         line 172</div>
         <code>        static            string
     <strong>convertPlaceholders</strong>(string $text)
         </code>
@@ -467,7 +468,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_wrapTextWithCharacters">
-        <div class="location">at         line 196</div>
+        <div class="location">at         line 199</div>
         <code>        static    protected        string
     <strong>wrapTextWithCharacters</strong>(string $text, string $prefix, string $suffix = &#039;&#039;)
         </code>
@@ -519,7 +520,7 @@ be passed as first argument.</p>                            </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_buildPlaceholderPatternFromMessageFormats">
-        <div class="location">at         line 212</div>
+        <div class="location">at         line 215</div>
         <code>        static    protected        string
     <strong>buildPlaceholderPatternFromMessageFormats</strong>()
         </code>

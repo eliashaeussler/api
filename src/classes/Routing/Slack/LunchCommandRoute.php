@@ -106,7 +106,7 @@ class LunchCommandRoute extends BaseRoute
     {
         // Show help text if request parameter starts with "help" keyword
         if (stripos($this->requestParameters, self::REQUEST_PARAMETER_HELP) === 0) {
-            echo $this->showHelpText();
+            $this->showHelpText();
 
             return;
         }

@@ -39,6 +39,7 @@ The API serves different endpoints which can be accessed from various clients.
 - Start or end your lunch break in Slack using slash command `/lunch`
 - Display Redmine issue information in Slack using slash command `/issue` or `/redmine issue`
 - Notify your team members in Slack that you're ready for stand-up using slash command `/standup`
+- Spend beer on your team members in Slack using slash command `/beer`
 
 
 ## Requirements
@@ -156,7 +157,7 @@ in the appropriate controller within the class constant `ROUTE_MAPPINGS`.
 ![Slack slash command `/lunch`](docs/assets/slack-lunch.gif)
 
 The [`SlackController`](src/classes/Controller/SlackController.php) will be used when sending
-requests in the form `<API_HOST>/slack/<parameters>`. It currently allows three route mappings:
+requests in the form `<API_HOST>/slack/<parameters>`. It currently allows these route mappings:
 
 - `authenticate`: Process user authentication at Slack using
   [`AuthenticateRoute`](src/classes/Routing/Slack/AuthenticateRoute.php) class
@@ -166,6 +167,8 @@ requests in the form `<API_HOST>/slack/<parameters>`. It currently allows three 
   [`RedmineCommandRoute`](src/classes/Routing/Slack/RedmineCommandRoute.php) class
 - `standup`: Process a request for the Slack slash command `/standup` using
   [`StandupCommandRoute`](src/classes/Routing/Slack/StandupCommandRoute.php) class
+- `beer`: Process a request for the Slack slash command `/beer` using
+  [`BeerCommandRoute`](src/classes/Routing/Slack/BeerCommandRoute.php) class
 
 
 ## Deployment

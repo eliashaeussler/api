@@ -25,6 +25,7 @@ use EliasHaeussler\Api\Exception\InvalidRequestException;
 use EliasHaeussler\Api\Frontend\Message;
 use EliasHaeussler\Api\Helpers\SlackMessage;
 use EliasHaeussler\Api\Routing\Slack\AuthenticateRoute;
+use EliasHaeussler\Api\Routing\Slack\BeerCommandRoute;
 use EliasHaeussler\Api\Routing\Slack\LunchCommandRoute;
 use EliasHaeussler\Api\Routing\Slack\RedmineCommandRoute;
 use EliasHaeussler\Api\Routing\Slack\StandupCommandRoute;
@@ -63,6 +64,7 @@ class SlackController extends BaseController
         'lunch' => LunchCommandRoute::class,
         'standup' => StandupCommandRoute::class,
         'redmine' => RedmineCommandRoute::class,
+        'beer' => BeerCommandRoute::class,
         self::ROUTE_AUTH => AuthenticateRoute::class,
     ];
 
@@ -349,6 +351,36 @@ class SlackController extends BaseController
         }
 
         return $result;
+    }
+
+    /**
+     * Get user ID and user name from raw string.
+     *
+     * Returns user ID and user name of a user which is mentioned within a raw string. This method always returns an
+     * array of exactly two elements, being the first the user ID and the second the user name. If the string was not
+     * escaped or escaped incorrect, this method will only return the user name as second element of the returned array.
+     *
+     * @param string $rawString The raw input string in which a user is mentioned
+     *
+     * @return array Array of user ID (first element) and user name (second element)
+     */
+    public function getUserDataFromString(string $rawString): array
+    {
+        $isEscaped = stripos($rawString, SlackMessage::MENTION_PREFIX) === 0;
+        $userId = null;
+        $userName = null;
+
+        if ($isEscaped) {
+            preg_match(sprintf('/%s(.+)\\|(.+)>/', SlackMessage::MENTION_PREFIX), $rawString, $matches);
+
+            if (count($matches) == 3) {
+                list(, $userId, $userName) = $matches;
+            }
+        } elseif (stripos($rawString, '@') === 0) {
+            $userName = ltrim($rawString, '@');
+        }
+
+        return [$userId, $userName];
     }
 
     /**
