@@ -18,7 +18,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ### Updated
 
-- Use CLI log level in [LogService](src/classes/Service/LogService.php) only if it's lower than the default log level
+- Use CLI log level in [`LogService`](src/classes/Service/LogService.php) only if it's lower than the default log level
 - Update DDEV to version 1.6.0
 - Ability to preserve empty elements when using [`GeneralUtility::trimExplode()`](src/classes/Utility/GeneralUtility.php)
 
