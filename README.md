@@ -31,6 +31,7 @@ The API serves different endpoints which can be accessed from various clients.
     + [`database:schema`](#databaseschema)
     + [`logfile:clear`](#logfileclear)
     + [`scheduler:run`](#schedulerrun)
+- [Changelog](#changelog)
 - [License](#license)
 
 
@@ -267,6 +268,11 @@ the appropriated constraints are AND-combined.
 ```bash
 ./console.php scheduler:run [-u|--uid <uid>] [-t|--task <task>] [-l|--limit <limit>] [--non-strict]
 ```
+
+
+## Changelog
+
+All notable changes can be seen at the [Changelog](CHANGELOG.md).
 
 
 ## License
