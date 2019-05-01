@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>EliasHaeussler\Api\Routing\Slack\RedmineCommandRoute | elias-haeussler.de API</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/sami.css">
+        <script src="../../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../../js/bootstrap.min.js"></script>
+        <script src="../../../../js/typeahead.min.js"></script>
+        <script src="../../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:EliasHaeussler_Api_Routing_Slack_RedmineCommandRoute" data-root-path="../../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../../../../1.0.0/index.html" data-version="1.0.0">1.0.0</option>
+                                            <option value="../../../../../2.0.0/index.html" data-version="2.0.0">2.0.0</option>
+                                            <option value="../../../../../3.0.0/index.html" data-version="3.0.0">3.0.0</option>
+                                            <option value="../../../../../3.1.0/index.html" data-version="3.1.0">3.1.0</option>
+                                            <option value="../../../../../4.0.0/index.html" data-version="4.0.0">4.0.0</option>
+                                            <option value="../../../../../4.0.1/index.html" data-version="4.0.1">4.0.1</option>
+                                            <option value="../../../../../4.0.2/index.html" data-version="4.0.2">4.0.2</option>
+                                            <option value="../../../../../4.1.0/index.html" data-version="4.1.0">4.1.0</option>
+                                            <option value="../../../../../4.2.0/index.html" data-version="4.2.0">4.2.0</option>
+                                            <option value="../../../../../4.3.0/index.html" data-version="4.3.0">4.3.0</option>
+                                            <option value="../../../../../master/index.html" data-version="master">master</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../../index.html">elias-haeussler.de API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../../traits.html">Traits</a></li>
+                    <li><a href="../../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../../EliasHaeussler.html">EliasHaeussler</a></li><li class="backslash">\</li><li><a href="../../../../EliasHaeussler/Api.html">Api</a></li><li class="backslash">\</li><li><a href="../../../../EliasHaeussler/Api/Routing.html">Routing</a></li><li class="backslash">\</li><li><a href="../../../../EliasHaeussler/Api/Routing/Slack.html">Slack</a></li><li class="backslash">\</li><li>RedmineCommandRoute</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            RedmineCommandRoute
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>RedmineCommandRoute</strong>        extends <a href="../../../../EliasHaeussler/Api/Routing/BaseRoute.html"><abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr></a>        (<a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>Redmine router for Slack API controller.</p>            <p>This class defines the concrete router for the "redmine" route inside the Slack API controller. It enables Slack
+users to get information about an issue directly from Redmine. This can be done by typing <code>/issue &lt;id&gt;</code> in Slack.
+The data will be requested from the Redmine API. For this, it's necessary to set a base URI as well as an active
+API key which will be used for authenticating an active user at the Redmine API.</p>                    </div>
+    
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>REQUEST_MODE_XML</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>REQUEST_MODE_JSON</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>REQUEST_MODE_PLAIN</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>DEFAULT_COMMAND</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ISSUE_DISPLAY_MODE_SHORT</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ISSUE_DISPLAY_MODE_FULL</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>DEFAULT_ISSUE_DISPLAY_MODE</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ACTION_AUTH</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ACTION_ISSUE</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_controller">
+                                        protected                                        <a href="../../../../EliasHaeussler/Api/Controller/SlackController.html"><abbr title="EliasHaeussler\Api\Controller\SlackController">SlackController</abbr></a>
+                </td>
+                <td>$controller</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_requestData">
+                                        protected                                        array
+                </td>
+                <td>$requestData</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../EliasHaeussler/Api/Routing/BaseRoute.html#property_requestData"><abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_baseUri">
+                                        protected                                        string
+                </td>
+                <td>$baseUri</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_apiKey">
+                                        protected                                        string
+                </td>
+                <td>$apiKey</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_action">
+                                        protected                                        string
+                </td>
+                <td>$action</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_issueMaxDescriptionLength">
+                                        protected                                        int
+                </td>
+                <td>$issueMaxDescriptionLength</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method___construct">__construct</a>(<a href="../../../../EliasHaeussler/Api/Controller/BaseController.html"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> $controller)
+        
+                                            <p>Initialize request router for current API controller.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../EliasHaeussler/Api/Routing/BaseRoute.html#method___construct"><abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_processRequest">processRequest</a>()
+        
+                                            <p>Process routing of API request.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initializeRequest">initializeRequest</a>()
+        
+                                            <p>Initialize routing for API request.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_showIssueData">showIssueData</a>()
+        
+                                            <p>Show data for a requested issue.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildIssueLink">buildIssueLink</a>(array $issue, array $optionalArguments = [])
+        
+                                            <p>Build link to issue in Redmine installation.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildIssueActions">buildIssueActions</a>(array $issue)
+        
+                                            <p>Build link actions for a specific issue.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_persistUserApiKey">persistUserApiKey</a>()
+        
+                                            <p>Persist a new API key for the current user.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_extractActionFromRequestText">extractActionFromRequestText</a>()
+        
+                                            <p>Extract user-provided action from text in API request data.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool|string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_sendAuthenticatedRequest">sendAuthenticatedRequest</a>(string $uri)
+        
+                                            <p>Send and receive an authenticated API request.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildUri">buildUri</a>(array $scopes, string $method = self::REQUEST_MODE_JSON, array $arguments = [])
+        
+                                            <p>Build Redmine URI containing scopes, request method and optional arguments.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildAuthenticationHeader">buildAuthenticationHeader</a>()
+        
+                                            <p>Build Redmine authentication header.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_retrieveApiKey">retrieveApiKey</a>()
+        
+                                            <p>Get available API key for the current user from the database.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">in <a href="../../../../EliasHaeussler/Api/Routing/BaseRoute.html#method___construct"><abbr title="EliasHaeussler\Api\Routing\BaseRoute">BaseRoute</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/BaseRoute.php#L45">line 45</a></div>
+        <code>final                    
+    <strong>__construct</strong>(<a href="../../../../EliasHaeussler/Api/Controller/BaseController.html"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> $controller)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Initialize request router for current API controller.</p>                    <p>Initializes the router for the current API request with the appropriate API controller. This includes
+processing the concrete initialization by calling {see initializeRequest()}.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../../EliasHaeussler/Api/Controller/BaseController.html"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></td>
+                <td>$controller</td>
+                <td>API controller for current route</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_processRequest">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L98">line 98</a></div>
+        <code>                    
+    <strong>processRequest</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Process routing of API request.</p>                    <p>This method processes the concrete API request and prints the result of it.</p>                            </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initializeRequest">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L124">line 124</a></div>
+        <code>            protected        
+    <strong>initializeRequest</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Initialize routing for API request.</p>                    <p>Defines necessary variables for the routing of the API request and ensures that it can be processed without errors.</p>                            </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_showIssueData">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L177">line 177</a></div>
+        <code>            protected        void
+    <strong>showIssueData</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Show data for a requested issue.</p>                    <p>Requests data for the requested issue from Redmine and prints it in order to send the requested data to Slack.
+If no issue was provided or the provided issue is invalid, the method throws an exception. This is also the
+case if the requested issue could not be found in Redmine.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/InvalidParameterException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></a></td>
+                <td>if no issue ID has been provided</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td>if the result from the Redmine API is invalid</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/IssueNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\IssueNotFoundException">IssueNotFoundException</abbr></a></td>
+                <td>if the requested issue could not be found</td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" href="http://php.net/Exception">Exception</a></td>
+                <td>if the issues' start date cannot be instantiated as {see DateTime} object</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildIssueLink">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L340">line 340</a></div>
+        <code>            protected        string
+    <strong>buildIssueLink</strong>(array $issue, array $optionalArguments = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build link to issue in Redmine installation.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$issue</td>
+                <td>The result array from Redmine API containing issue data</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$optionalArguments</td>
+                <td>Optional arguments, will be passed through to the URI builder</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The generated link to issue in Redmine installation</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildIssueActions">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L352">line 352</a></div>
+        <code>            protected        array
+    <strong>buildIssueActions</strong>(array $issue)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build link actions for a specific issue.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$issue</td>
+                <td>The result array from Redmine API containing issue data</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>The link actions</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_persistUserApiKey">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L391">line 391</a></div>
+        <code>            protected        void
+    <strong>persistUserApiKey</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Persist a new API key for the current user.</p>                    <p>Tries to store the new provided API key for the current user in the database. The method also checks the validity
+of the provided API key by accessing the Redmine API with the given key.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/InvalidParameterException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></a></td>
+                <td>if no API key was provided or the provided key is not valid</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../EliasHaeussler/Api/Exception/DatabaseException.html"><abbr title="EliasHaeussler\Api\Exception\DatabaseException">DatabaseException</abbr></a></td>
+                <td>if persisting the API key failed</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_extractActionFromRequestText">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L488">line 488</a></div>
+        <code>            protected        string
+    <strong>extractActionFromRequestText</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Extract user-provided action from text in API request data.</p>                    <p>Extracts the action the user has provided from the text in the current API request data. This means, if a
+user sends the slash command <code>/redmine issue 25389</code>, this method will extract <code>issue</code> from the request text,
+then updates the API request data by shifting the action from the request data text and finally returns the
+selected action.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The extracted action</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sendAuthenticatedRequest">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L508">line 508</a></div>
+        <code>            protected        bool|string
+    <strong>sendAuthenticatedRequest</strong>(string $uri)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Send and receive an authenticated API request.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$uri</td>
+                <td>The request uri</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool|string</td>
+            <td>The cURL request result</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildUri">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L522">line 522</a></div>
+        <code>            protected        string
+    <strong>buildUri</strong>(array $scopes, string $method = self::REQUEST_MODE_JSON, array $arguments = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build Redmine URI containing scopes, request method and optional arguments.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$scopes</td>
+                <td>API scopes, will be combined with slash character (/)</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$method</td>
+                <td>Request method, can be XML or JSON</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$arguments</td>
+                <td>Optional GET parameters</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The generated API request URI</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildAuthenticationHeader">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L554">line 554</a></div>
+        <code>            protected        string
+    <strong>buildAuthenticationHeader</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build Redmine authentication header.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>Redmine authentication header</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_retrieveApiKey">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/master/src/classes/Routing/Slack/RedmineCommandRoute.php#L564">line 564</a></div>
+        <code>            protected        string
+    <strong>retrieveApiKey</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get available API key for the current user from the database.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The API key from the current user, if available, an empty string otherwise</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

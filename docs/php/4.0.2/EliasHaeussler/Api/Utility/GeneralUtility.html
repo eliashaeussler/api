@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>EliasHaeussler\Api\Utility\GeneralUtility | elias-haeussler.de API</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:EliasHaeussler_Api_Utility_GeneralUtility" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../../../1.0.0/index.html" data-version="1.0.0">1.0.0</option>
+                                            <option value="../../../../2.0.0/index.html" data-version="2.0.0">2.0.0</option>
+                                            <option value="../../../../3.0.0/index.html" data-version="3.0.0">3.0.0</option>
+                                            <option value="../../../../3.1.0/index.html" data-version="3.1.0">3.1.0</option>
+                                            <option value="../../../../4.0.0/index.html" data-version="4.0.0">4.0.0</option>
+                                            <option value="../../../../4.0.1/index.html" data-version="4.0.1">4.0.1</option>
+                                            <option value="../../../../4.0.2/index.html" data-version="4.0.2">4.0.2</option>
+                                            <option value="../../../../4.1.0/index.html" data-version="4.1.0">4.1.0</option>
+                                            <option value="../../../../4.2.0/index.html" data-version="4.2.0">4.2.0</option>
+                                            <option value="../../../../4.3.0/index.html" data-version="4.3.0">4.3.0</option>
+                                            <option value="../../../../master/index.html" data-version="master">master</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">elias-haeussler.de API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../EliasHaeussler.html">EliasHaeussler</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api.html">Api</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api/Utility.html">Utility</a></li><li class="backslash">\</li><li>GeneralUtility</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            GeneralUtility
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>GeneralUtility</strong>        (<a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>General utility functions.</p>                                </div>
+    
+    
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;object
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_makeInstance">makeInstance</a>(string $className, mixed ...$constructorArguments)
+        
+                                            <p>Get new or existing instance of a given class.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_trimExplode">trimExplode</a>(string $delimiter, string $string, string $trimCharacters = &quot; \t\n\r\0\v&quot;, int $limit = PHP_INT_MAX)
+        
+                                            <p>Explode string by given delimiter and trim all resulting array components.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_replaceFirst">replaceFirst</a>(string $haystack, string $needle, string $replacement)
+        
+                                            <p>Replace first occurrence of search string with replacement string.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_splitIntoCharacters">splitIntoCharacters</a>(string $string, int $max = null)
+        
+                                            <p>Split string into single characters.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_convertArrayToString">convertArrayToString</a>(array $array, string $separator = PHP_EOL)
+        
+                                            <p>Convert array to its string representation.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getControllerName">getControllerName</a>(string $class)
+        
+                                            <p>Get normalized name of current API controller without namespace and class suffix.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_loadEnvironment">loadEnvironment</a>(string $file = &quot;.env&quot;, bool $silent = false)
+        
+                                            <p>Load API environment.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;mixed
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getEnvironmentVariable">getEnvironmentVariable</a>(string $name, mixed $default = &quot;&quot;)
+        
+                                            <p>Get value of an environment variable.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getEnvironmentVariableNames">getEnvironmentVariableNames</a>()
+        
+                                            <p>Get all loaded environment variables.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_registerExceptionHandler">registerExceptionHandler</a>()
+        
+                                            <p>Register custom exception handler.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isDebugEnabled">isDebugEnabled</a>()
+        
+                                            <p>Check whether debugging is enabled.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isRequestSecure">isRequestSecure</a>()
+        
+                                            <p>Check whether the current request is secured with SSL.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_makeInstance">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L41">line 41</a></div>
+        <code>        static            object
+    <strong>makeInstance</strong>(string $className, mixed ...$constructorArguments)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get new or existing instance of a given class.</p>                    <p>Instantiates or loads an existing instance of a given class with given constructor arguments and returns it.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$className</td>
+                <td>Name of the class whose instance should be returned</td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>...$constructorArguments</td>
+                <td>Optional arguments for the appropriate class constructor</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>object</td>
+            <td>A concrete instance of <code>$className</code></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the requested class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_trimExplode">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L68">line 68</a></div>
+        <code>        static            array
+    <strong>trimExplode</strong>(string $delimiter, string $string, string $trimCharacters = &quot; \t\n\r\0\v&quot;, int $limit = PHP_INT_MAX)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Explode string by given delimiter and trim all resulting array components.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$delimiter</td>
+                <td>Boundary string</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$string</td>
+                <td>Input string</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$trimCharacters</td>
+                <td>Trim characters to be passed to {see trim()}</td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$limit</td>
+                <td>Limit to be passed to {see explode()}</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Array with string components</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_replaceFirst">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L100">line 100</a></div>
+        <code>        static            string
+    <strong>replaceFirst</strong>(string $haystack, string $needle, string $replacement)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Replace first occurrence of search string with replacement string.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$haystack</td>
+                <td>The input string</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$needle</td>
+                <td>The search pattern</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$replacement</td>
+                <td>The replacement string</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The replaced input string</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_splitIntoCharacters">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L120">line 120</a></div>
+        <code>        static            array
+    <strong>splitIntoCharacters</strong>(string $string, int $max = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Split string into single characters.</p>                    <p>Splits a given string into its single characters and returns them as an array. Optionally, it's possible to set
+a maximum number of characters to be returned.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$string</td>
+                <td>String to be split into characters</td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$max</td>
+                <td>Maximum number of characters to be returned</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Single characters of given string</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_convertArrayToString">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L135">line 135</a></div>
+        <code>        static            string
+    <strong>convertArrayToString</strong>(array $array, string $separator = PHP_EOL)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Convert array to its string representation.</p>                    <p>Recursively converts an array to its appropriate string representation, separated by the given separator.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$array</td>
+                <td>The array to be converted into string</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$separator</td>
+                <td>String separating array elements from each other</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The converted string representation of the array</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getControllerName">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L152">line 152</a></div>
+        <code>        static            string
+    <strong>getControllerName</strong>(string $class)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get normalized name of current API controller without namespace and class suffix.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$class</td>
+                <td>Class name of the API controller</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>Normalized name of current API controller</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_loadEnvironment">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L170">line 170</a></div>
+        <code>        static            
+    <strong>loadEnvironment</strong>(string $file = &quot;.env&quot;, bool $silent = false)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Load API environment.</p>                    <p>Reads the environment variables of the current environment in order to use them in the API request.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$file</td>
+                <td>File name of the .env file</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$silent</td>
+                <td>Define whether to not throw errors if .env file could not be found</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getEnvironmentVariable">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L194">line 194</a></div>
+        <code>        static            mixed
+    <strong>getEnvironmentVariable</strong>(string $name, mixed $default = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get value of an environment variable.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td>Name of the environment variable</td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$default</td>
+                <td>Default variable if environment variable is not available</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td>The value of the given environment variable</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getEnvironmentVariableNames">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L206">line 206</a></div>
+        <code>        static            array
+    <strong>getEnvironmentVariableNames</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get all loaded environment variables.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Array of loaded environment variables</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_registerExceptionHandler">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L227">line 227</a></div>
+        <code>        static            
+    <strong>registerExceptionHandler</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Register custom exception handler.</p>                    <p>Registers an alternative exception handler to be used for handling exceptions in the frontend.</p>                            </div>
+                <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the exception handler class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isDebugEnabled">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L246">line 246</a></div>
+        <code>        static            bool
+    <strong>isDebugEnabled</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check whether debugging is enabled.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if debugging is enabled, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isRequestSecure">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.0.2/src/classes/Utility/GeneralUtility.php#L258">line 258</a></div>
+        <code>        static            bool
+    <strong>isRequestSecure</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check whether the current request is secured with SSL.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the request is secured, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

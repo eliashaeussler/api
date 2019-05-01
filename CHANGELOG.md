@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Updated
 
 - Sami is now required by Composer
+- PHP code documentation is now built for all available versions and source files are linked with GitHub repository
 
 
 

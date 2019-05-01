@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>EliasHaeussler\Api\Service\ConnectionService | elias-haeussler.de API</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:EliasHaeussler_Api_Service_ConnectionService" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../../../1.0.0/index.html" data-version="1.0.0">1.0.0</option>
+                                            <option value="../../../../2.0.0/index.html" data-version="2.0.0">2.0.0</option>
+                                            <option value="../../../../3.0.0/index.html" data-version="3.0.0">3.0.0</option>
+                                            <option value="../../../../3.1.0/index.html" data-version="3.1.0">3.1.0</option>
+                                            <option value="../../../../4.0.0/index.html" data-version="4.0.0">4.0.0</option>
+                                            <option value="../../../../4.0.1/index.html" data-version="4.0.1">4.0.1</option>
+                                            <option value="../../../../4.0.2/index.html" data-version="4.0.2">4.0.2</option>
+                                            <option value="../../../../4.1.0/index.html" data-version="4.1.0">4.1.0</option>
+                                            <option value="../../../../4.2.0/index.html" data-version="4.2.0">4.2.0</option>
+                                            <option value="../../../../4.3.0/index.html" data-version="4.3.0">4.3.0</option>
+                                            <option value="../../../../master/index.html" data-version="master">master</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">elias-haeussler.de API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../EliasHaeussler.html">EliasHaeussler</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api.html">Api</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api/Service.html">Service</a></li><li class="backslash">\</li><li>ConnectionService</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            ConnectionService
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>ConnectionService</strong>        (<a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>Database connection service.</p>            <p>This class provides a service to connect and interact with the database. A connection will automatically tried to be
+established if any class instance is constructed.</p>                    </div>
+    
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>SCHEMA_PATH</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>SCHEMA_FILE_PATTERN</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>TEMPORARY_TABLE_PREFIX</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_database">
+                                        protected                                        <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
+                </td>
+                <td>$database</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method___construct">__construct</a>()
+        
+                                            <p>Initialize connection service.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_connect">connect</a>()
+        
+                                            <p>Connect to database.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_createSchema">createSchema</a>(string|array|null $controllers = null)
+        
+                                            <p>Create table schema.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_dropUnusedComponents">dropUnusedComponents</a>(bool $dropFields = true, bool $dropTables = false, string|array|null $controllers = null, bool $dryRun = true)
+        
+                                            <p>Drop unused components from database schema.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_migrate">migrate</a>(array|string $files)
+        
+                                            <p>Migrate legacy SQLite database files to current MySQL database.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_export">export</a>()
+        
+                                            <p>Export database.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getDatabase">getDatabase</a>()
+        
+                                            <p>Get database connection.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_establishConnection">establishConnection</a>(array $parameters)
+        
+                                            <p>Establish database connection with given parameters.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getListOfSchemaFiles">getListOfSchemaFiles</a>(array|string|null $controllers = null)
+        
+                                            <p>Get list of schema files.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_readContentsOfSchemaFiles">readContentsOfSchemaFiles</a>(string|array $files)
+        
+                                            <p>Read contents of database schema files.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L67">line 67</a></div>
+        <code>                    
+    <strong>__construct</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Initialize connection service.</p>                    <p>Initializes the connection service by connecting to the database. Database credentials need to be defined as
+global environment variables.</p>                            </div>
+                <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Doctrine\DBAL\DBALException">DBALException</abbr></td>
+                <td>if the database connection cannot be established</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_connect">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L86">line 86</a></div>
+        <code>                    
+    <strong>connect</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Connect to database.</p>                    <p>Note that it's not possible to pass custom database credentials. You need to define them in your global
+environment. This can be done using a .env file. Requested environment variables:</p>
+
+<p>DB_HOST => Database host (defaults to <code>localhost</code>)
+DB_USER => Database user
+DB_PASS => Password for database user
+DB_NAME => Database name
+DB_PORT => Database port (defaults to <code>3306</code>)</p>                            </div>
+                <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Doctrine\DBAL\DBALException">DBALException</abbr></td>
+                <td>if the database connection cannot be established</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_createSchema">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L113">line 113</a></div>
+        <code>                    
+    <strong>createSchema</strong>(string|array|null $controllers = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Create table schema.</p>                    <p>Creates or modifies the table schemas for a given set of API controllers or all available schema files. For this,
+the appropriate table will be marked as temporary, then the new table schema will be added to the database.
+Finally, data from the temporary table will be inserted in the new table and the temporary table will be removed.
+Note that this only takes place if the schema files contain <code>CREATE TABLE</code> statements. In case of an error the
+old table schema will be restored and an exception will be thrown.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|array|null</td>
+                <td>$controllers</td>
+                <td>Name of one or more API controllers which will be used to identity the schema file</td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Doctrine\DBAL\DBALException">DBALException</abbr></td>
+                <td>if the database connection cannot be established</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/FileNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\FileNotFoundException">FileNotFoundException</abbr></a></td>
+                <td>if a table schema file is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_dropUnusedComponents">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L222">line 222</a></div>
+        <code>                    array
+    <strong>dropUnusedComponents</strong>(bool $dropFields = true, bool $dropTables = false, string|array|null $controllers = null, bool $dryRun = true)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Drop unused components from database schema.</p>                    <p>Allows dropping of unused components such as fields and tables from the current database schema. Dropping these
+components is based on the given schema files. If dropping tables is enabled, all tables which are not present
+in the schema files will be dropped. Dropping fields compares the current database schema with the given schema
+from the schema files and drops each field which is not defined in the schema files. For this, a temporary table
+based on the defined schema files will be created and dropped after execution.</p>
+
+<p>CAUTION: FIELDS AND TABLES WILL BE COMPLETELY DROPPED WHICH WILL CAUSE THEM TO LOSE ALL CONNECTED DATA AS WELL!</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>bool</td>
+                <td>$dropFields</td>
+                <td>Define whether to drop unused fields from current database schema</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$dropTables</td>
+                <td>Define whether to drop unused tables from current database schema</td>
+            </tr>
+                    <tr>
+                <td>string|array|null</td>
+                <td>$controllers</td>
+                <td>Name of one or more API controllers which will be used to identity the schema file</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$dryRun</td>
+                <td>Define whether to perform a dry run without changing the database schema</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Report of dropped tables and fields</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Doctrine\DBAL\DBALException">DBALException</abbr></td>
+                <td>if the database connection cannot be established</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/FileNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\FileNotFoundException">FileNotFoundException</abbr></a></td>
+                <td>if a table schema file is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_migrate">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L370">line 370</a></div>
+        <code>                    
+    <strong>migrate</strong>(array|string $files)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Migrate legacy SQLite database files to current MySQL database.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array|string</td>
+                <td>$files</td>
+                <td>The database files to be used for migration</td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidFileException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidFileException">InvalidFileException</abbr></a></td>
+                <td>if no files are provided for migration</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/FileNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\FileNotFoundException">FileNotFoundException</abbr></a></td>
+                <td>if any of the specified files does not exist</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Doctrine\DBAL\DBALException">DBALException</abbr></td>
+                <td>if any database connection cannot be established</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/DatabaseException.html"><abbr title="EliasHaeussler\Api\Exception\DatabaseException">DatabaseException</abbr></a></td>
+                <td>if connection to any database was not successful</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_export">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L461">line 461</a></div>
+        <code>                    void
+    <strong>export</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Export database.</p>                    <p>Creates a database dump for the current database and writes the dumped contents to stdin. Note that this
+method only writes the raw result of <code>mysqldump</code> to stdin and does NOT return or save it to a file. You
+need to handle the passed through contents by your own.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getDatabase">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L483">line 483</a></div>
+        <code>                    <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
+    <strong>getDatabase</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get database connection.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="Doctrine\DBAL\Connection">Connection</abbr></td>
+            <td>Database connection</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_establishConnection">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L502">line 502</a></div>
+        <code>            protected        <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
+    <strong>establishConnection</strong>(array $parameters)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Establish database connection with given parameters.</p>                    <p>Tries to establish a database connection with the given parameters. Configuration of the parameters must follow
+DBAL requirements.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$parameters</td>
+                <td>Database connection parameters</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="Doctrine\DBAL\Connection">Connection</abbr></td>
+            <td>The established database connection</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Doctrine\DBAL\DBALException">DBALException</abbr></td>
+                <td>if the database connection cannot be established</td>
+            </tr>
+            </table>
+
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html">https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html</a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getListOfSchemaFiles">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L525">line 525</a></div>
+        <code>            protected        array
+    <strong>getListOfSchemaFiles</strong>(array|string|null $controllers = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get list of schema files.</p>                    <p>Returns an array including the file names of available schema files. The search mode for schema files can be
+modified by providing a list of controller class names. If set, only the appropriate schema files will be returned.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array|string|null</td>
+                <td>$controllers</td>
+                <td>Name of one or more API controllers which will be used to identity the schema file</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>List of schema files</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_readContentsOfSchemaFiles">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.0/src/classes/Service/ConnectionService.php#L559">line 559</a></div>
+        <code>            protected        array
+    <strong>readContentsOfSchemaFiles</strong>(string|array $files)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Read contents of database schema files.</p>                    <p>Reads the contents of database schemas file and returns the <code>CREATE TABLE</code> statements within each of them.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|array</td>
+                <td>$files</td>
+                <td>Schema files</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><code>CREATE TABLE</code> statements inside each schema file</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/FileNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\FileNotFoundException">FileNotFoundException</abbr></a></td>
+                <td>if a table schema file is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

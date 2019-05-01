@@ -7,20 +7,38 @@ set -e
 SECONDS=0
 SCRIPT_PATH="$(dirname "$0")"
 ROOT_PATH="$(pwd "$SCRIPT_PATH")"
-SAMI="$ROOT_PATH/vendor/bin/sami.php"
-CONFIG_FILE="$ROOT_PATH/.sami_config.php"
 
-# Get scripts and variables
+# Get scripts
 set -a
 source "$SCRIPT_PATH/shared/console.sh"
 set +a
 
-# Ensure Sami is installed and executable
-[[ ! -f "$SAMI" ]] && composer install --dev --quiet
+# Global configuration
+SAMI="$ROOT_PATH/vendor/bin/sami.php"
+CONFIG_FILE="$ROOT_PATH/.sami_config.php"
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+# Ensure Sami is installed
+if [[ ! -f "$SAMI" ]]; then
+    output "Installing Sami..." ${ACTION} 0
+    composer install --dev --quiet
+    output " Done." ${SUCCESS}
+fi
 
 # Run Sami
-output "Building documentation" ${ACTION} 0
-php ${SAMI} --quiet update ${CONFIG_FILE} $@
+output "Building documentation..." ${ACTION}
+set +e
+php ${SAMI} update ${CONFIG_FILE} $@
+set -e
+output "Done." ${SUCCESS}
+
+# Go back to last branch
+output "Going back to initial branch..." ${ACTION} 0
+git add "$ROOT_PATH/docs" > /dev/null
+git stash push --quiet --message "Updated code documentation" -- "$ROOT_PATH/docs"
+git checkout --quiet "$CURRENT_BRANCH"
+git checkout --quiet stash -- "$ROOT_PATH/docs"
+git stash drop --quiet
 output " Done." ${SUCCESS}
 
 print_success_message

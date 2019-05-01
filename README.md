@@ -31,6 +31,7 @@ The API serves different endpoints which can be accessed from various clients.
     + [`database:schema`](#databaseschema)
     + [`logfile:clear`](#logfileclear)
     + [`scheduler:run`](#schedulerrun)
+- [Documentation](#documentation)
 - [Changelog](#changelog)
 - [License](#license)
 
@@ -268,6 +269,12 @@ the appropriated constraints are AND-combined.
 ```bash
 ./console.php scheduler:run [-u|--uid <uid>] [-t|--task <task>] [-l|--limit <limit>] [--non-strict]
 ```
+
+
+## Documentation
+
+The whole API documentation for all available versions can be found at
+[docs.elias-haeussler.de](https://docs.elias-haeussler.de/api/php/master).
 
 
 ## Changelog
