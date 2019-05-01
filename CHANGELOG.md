@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.3.0] - 2019-05-01
+
 ### Added
 
 - SlackController: Routing for `/beer` slash command using [`BeerCommandRoute`](src/classes/Routing/Slack/BeerCommandRoute.php) class
