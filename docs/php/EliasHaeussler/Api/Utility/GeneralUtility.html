@@ -109,7 +109,7 @@
                     static&nbsp;array
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_trimExplode">trimExplode</a>(string $delimiter, string $string, string $trimCharacters = &quot; \t\n\r\0\v&quot;, int $limit = PHP_INT_MAX)
+                    <a href="#method_trimExplode">trimExplode</a>(string $delimiter, string $string, bool $removeEmptyValues = true, string $trimCharacters = &quot; \t\n\r\0\v&quot;, int $limit = PHP_INT_MAX)
         
                                             <p>Explode string by given delimiter and trim all resulting array components.</p>                </div>
                 <div class="col-md-2"></div>
@@ -298,9 +298,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_trimExplode">
-        <div class="location">at         line 80</div>
+        <div class="location">at         line 81</div>
         <code>        static            array
-    <strong>trimExplode</strong>(string $delimiter, string $string, string $trimCharacters = &quot; \t\n\r\0\v&quot;, int $limit = PHP_INT_MAX)
+    <strong>trimExplode</strong>(string $delimiter, string $string, bool $removeEmptyValues = true, string $trimCharacters = &quot; \t\n\r\0\v&quot;, int $limit = PHP_INT_MAX)
         </code>
     </h3>
     <div class="details">
@@ -322,6 +322,11 @@
                 <td>string</td>
                 <td>$string</td>
                 <td>Input string</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$removeEmptyValues</td>
+                <td>Define whether to remove or preserve empty values</td>
             </tr>
                     <tr>
                 <td>string</td>
@@ -355,7 +360,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_replaceFirst">
-        <div class="location">at         line 112</div>
+        <div class="location">at         line 114</div>
         <code>        static            string
     <strong>replaceFirst</strong>(string $haystack, string $needle, string $replacement)
         </code>
@@ -407,7 +412,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_splitIntoCharacters">
-        <div class="location">at         line 132</div>
+        <div class="location">at         line 134</div>
         <code>        static            array
     <strong>splitIntoCharacters</strong>(string $string, int $max = null)
         </code>
@@ -455,7 +460,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_convertArrayToString">
-        <div class="location">at         line 147</div>
+        <div class="location">at         line 149</div>
         <code>        static            string
     <strong>convertArrayToString</strong>(array $array, string $separator = PHP_EOL)
         </code>
@@ -502,7 +507,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_getControllerName">
-        <div class="location">at         line 164</div>
+        <div class="location">at         line 166</div>
         <code>        static            string
     <strong>getControllerName</strong>(string $class)
         </code>
@@ -544,7 +549,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_getUriComponents">
-        <div class="location">at         line 183</div>
+        <div class="location">at         line 185</div>
         <code>        static            array
     <strong>getUriComponents</strong>(string $uri = &#039;&#039;)
         </code>
@@ -586,7 +591,7 @@ a maximum number of characters to be returned.</p>                            </
             </div>
                     <div class="method-item">
                     <h3 id="method_getServerName">
-        <div class="location">at         line 200</div>
+        <div class="location">at         line 202</div>
         <code>        static            string
     <strong>getServerName</strong>()
         </code>
@@ -619,7 +624,7 @@ the default server name, provided by the server itself, will be returned.</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_loadEnvironment">
-        <div class="location">at         line 213</div>
+        <div class="location">at         line 215</div>
         <code>        static            
     <strong>loadEnvironment</strong>(string $file = &#039;.env&#039;, bool $silent = false)
         </code>
@@ -657,7 +662,7 @@ the default server name, provided by the server itself, will be returned.</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getEnvironmentVariable">
-        <div class="location">at         line 237</div>
+        <div class="location">at         line 239</div>
         <code>        static            mixed
     <strong>getEnvironmentVariable</strong>(string $name, mixed $default = &#039;&#039;)
         </code>
@@ -704,7 +709,7 @@ the default server name, provided by the server itself, will be returned.</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getEnvironmentVariableNames">
-        <div class="location">at         line 249</div>
+        <div class="location">at         line 251</div>
         <code>        static            array
     <strong>getEnvironmentVariableNames</strong>()
         </code>
@@ -736,7 +741,7 @@ the default server name, provided by the server itself, will be returned.</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_registerExceptionHandler">
-        <div class="location">at         line 270</div>
+        <div class="location">at         line 272</div>
         <code>        static            
     <strong>registerExceptionHandler</strong>()
         </code>
@@ -768,7 +773,7 @@ the default server name, provided by the server itself, will be returned.</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_isDebugEnabled">
-        <div class="location">at         line 289</div>
+        <div class="location">at         line 291</div>
         <code>        static            bool
     <strong>isDebugEnabled</strong>()
         </code>
@@ -800,7 +805,7 @@ the default server name, provided by the server itself, will be returned.</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_isRequestSecure">
-        <div class="location">at         line 301</div>
+        <div class="location">at         line 303</div>
         <code>        static            bool
     <strong>isRequestSecure</strong>()
         </code>

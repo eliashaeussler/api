@@ -84,25 +84,23 @@ class LocalizationUtility
 
         try {
             // Parse localization file nodes
+            $type = strtolower($type);
             self::parseNodes($type);
 
             foreach ([self::$userPreferredLanguage, self::DEFAULT_LANGUAGE] as $language) {
-                // Get localization file nodes
-                $type = strtolower($type);
                 $nodes = self::$fileCache[$type][$language]['nodes'] ?? [];
 
                 if (isset($nodes[$id])) {
-                    $text = preg_replace('/\\n\\s*/', PHP_EOL, $nodes[$id]);
+                    $text = implode(PHP_EOL, GeneralUtility::trimExplode(PHP_EOL, $nodes[$id], false));
 
                     return sprintf($text, ...$arguments);
                 }
-                continue;
             }
-
-            return $default;
         } catch (FileNotFoundException | InvalidFileException $e) {
-            return $default;
+            // Intended fallthrough as by default the default value will be used as fallback
         }
+
+        return $default;
     }
 
     /**

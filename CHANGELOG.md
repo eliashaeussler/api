@@ -10,19 +10,27 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 - SlackController: Routing for `/beer` slash command using [`BeerCommandRoute`](src/classes/Routing/Slack/BeerCommandRoute.php) class
 
+### Updated
+
+- Ability to preserve empty elements when using [`GeneralUtility::trimExplode()`](src/classes/Utility/GeneralUtility.php)
+
+### Fixed
+
+- Localized texts are now parsed better according to line breaks
+
 
 
 ## [4.2.0] - 2019-04-22
 
 ### Added
 
-- Log messages from [LogService](src/classes/Service/LogService.php) in console, based on the current verbosity level
-- Scheduler service to be used for scheduling tasks for execution in the future using [SchedulerService](src/classes/Service/SchedulerService.php) class
+- Log messages from [`LogService`](src/classes/Service/LogService.php) in console, based on the current verbosity level
+- Scheduler service to be used for scheduling tasks for execution in the future using [`SchedulerService`](src/classes/Service/SchedulerService.php) class
 - SlackController: Restore previous user status after the lunch break has finished
 
 ### Fixed
 
-- Add missing localizations to [database:schema](src/classes/Command/DatabaseSchemaCommand.php) console command
+- Add missing localizations to [`database:schema`](src/classes/Command/DatabaseSchemaCommand.php) console command
 - Fix dropping of database components in case multiple schema files are available
 - SlackController: Allow checking of API request result in case the request failed and the return value is a boolean
 

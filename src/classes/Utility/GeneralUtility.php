@@ -70,16 +70,18 @@ class GeneralUtility
     /**
      * Explode string by given delimiter and trim all resulting array components.
      *
-     * @param string $delimiter      Boundary string
-     * @param string $string         Input string
-     * @param string $trimCharacters Trim characters to be passed to {@see trim()}
-     * @param int    $limit          Limit to be passed to {@see explode()}
+     * @param string $delimiter         Boundary string
+     * @param string $string            Input string
+     * @param bool   $removeEmptyValues Define whether to remove or preserve empty values
+     * @param string $trimCharacters    Trim characters to be passed to {@see trim()}
+     * @param int    $limit             Limit to be passed to {@see explode()}
      *
      * @return array Array with string components
      */
     public static function trimExplode(
         string $delimiter,
         string $string,
+        bool $removeEmptyValues = true,
         string $trimCharacters = " \t\n\r\0\x0B",
         int $limit = PHP_INT_MAX
     ) {
@@ -87,9 +89,9 @@ class GeneralUtility
 
         if ($values !== false) {
             $result = [];
-            array_walk($values, function ($value) use ($trimCharacters, &$result) {
+            array_walk($values, function ($value) use ($trimCharacters, &$result, $removeEmptyValues) {
                 $trimmedValue = trim($value, $trimCharacters);
-                if (!empty($trimmedValue)) {
+                if (!$removeEmptyValues || ($removeEmptyValues && !empty($trimmedValue))) {
                     $result[] = $trimmedValue;
                 }
             });
