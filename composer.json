@@ -25,7 +25,8 @@
   },
   "require-dev": {
     "filp/whoops": "^2.3",
-    "friendsofphp/php-cs-fixer": "^2.14"
+    "friendsofphp/php-cs-fixer": "^2.14",
+    "sami/sami": "^4.1"
   },
   "autoload": {
     "psr-4": {
