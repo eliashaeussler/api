@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.3.1] - 2019-05-01
+
 ### Updated
 
 - Sami is now required by Composer
