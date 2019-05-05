@@ -57,13 +57,14 @@ rsync -arq --delete --delete-excluded --port ${TARGET_PORT} "${ROOT_PATH}"/ ${TA
     --exclude /temp \
     --exclude /.php_cs* \
     --exclude /.sami_config.php \
-    --exclude /docs/cache
+    --exclude /docs/cache \
+    --exclude /docs/__build__ \
+    --exclude /.gitlab-ci.yml
 output " Done." ${SUCCESS}
 
 # Set new release on remote
 ssh ${TARGET_HOST} -p ${TARGET_PORT} -T << __EOF
-    $(typeset -f output)
-
+    typeset -f output
     set -e
 
     # Create revision and version file

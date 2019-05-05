@@ -6,6 +6,10 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Added
+
+- Support for Gitlab CI
+
 ### Updated
 
 - Use optimized composer autoloader for production

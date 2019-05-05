@@ -1,0 +1,49 @@
+image: composer:1
+
+cache:
+  paths:
+    - docs/cache/
+    - vendor/
+
+stages:
+  - test
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - composer install
+    - sh sbin/generate_documentation.sh
+
+test:
+  stage: test
+  before_script:
+    - cp .php_cs.dist .php_cs
+  script:
+    - sh sbin/php-cs-fixer.sh --dry-run --diff
+
+deploy:
+  stage: deploy
+  variables:
+    REMOTE_HOST: "${REMOTE_USER}@${REMOTE_HOSTNAME}"
+  before_script:
+    # Remote target configuration
+    - cp remote.env.dist remote.env
+    - sed -i "s|TARGET_HOST=.*|TARGET_HOST=$REMOTE_HOST|g" remote.env
+    - sed -i "s|TARGET_PATH=.*|TARGET_PATH=$REMOTE_PATH|g" remote.env
+    - sed -i "s|TARGET_PORT=.*|TARGET_PORT=$REMOTE_PORT|g" remote.env
+    - cat remote.env
+
+    # Environment configuration
+    - apk add rsync --update
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -
+    - ssh-keyscan -p ${REMOTE_PORT} ${REMOTE_HOSTNAME} >> ~/.ssh/known_hosts
+  script:
+    - find . -type d -exec chmod 755 {} \;
+    - sh sbin/deploy.sh
+  only:
+    - master

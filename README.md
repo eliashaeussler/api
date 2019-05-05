@@ -1,5 +1,6 @@
 [![license](https://img.shields.io/github/license/eliashaeussler/api.svg)](LICENSE)
 [![release](https://img.shields.io/github/release/eliashaeussler/api.svg)](https://github.com/eliashaeussler/api/releases/)
+[![pipeline status](http://gitlab.elias-haeussler.de/eliashaeussler/api/badges/master/pipeline.svg)](http://gitlab.elias-haeussler.de/eliashaeussler/api/commits/master)
 
 
 # elias-haeussler.de API
