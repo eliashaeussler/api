@@ -6,7 +6,13 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Added
 
+- Add `roave/security-advisories` package to keep the set of installed packages secure
+
+### Updated
+
+- Update Twig as the current version has security issues
 
 
 
