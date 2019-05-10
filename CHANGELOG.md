@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.3.2] - 2019-05-10
+
 ### Fixed
 
 - Allow generation of code documentation if staging area is clear
