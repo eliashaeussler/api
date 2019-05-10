@@ -37,8 +37,10 @@ output "Going back to initial branch..." ${ACTION} 0
 git add "$ROOT_PATH/docs" > /dev/null
 git stash push --quiet --message "Updated code documentation" -- "$ROOT_PATH/docs"
 git checkout --quiet "$CURRENT_BRANCH"
-git checkout --quiet stash -- "$ROOT_PATH/docs"
-git stash drop --quiet
+if [[ "$(git stash list)" ]]; then
+    git checkout --quiet stash -- "$ROOT_PATH/docs"
+    git stash drop --quiet
+fi
 output " Done." ${SUCCESS}
 
 print_success_message

@@ -6,7 +6,9 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Fixed
 
+- Allow generation of code documentation if staging area is clear
 
 
 
