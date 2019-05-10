@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Fixed
 
 - Allow generation of code documentation if staging area is clear
+- Fix version filter in Sami configuration in order to generate documentation for clearly all stable versions
 
 
 

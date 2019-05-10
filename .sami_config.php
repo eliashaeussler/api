@@ -13,7 +13,7 @@ $iterator = \Symfony\Component\Finder\Finder::create()
 
 $versions = (new \Sami\Version\GitVersionCollection(ROOT_PATH))
     ->addFromTags(function ($version) {
-        return strpos($version, '0') != 0;
+        return ((int) ltrim($version, 'v')[0]) != 0;
     })
     ->add('master');
 
