@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>EliasHaeussler\Api\Controller\SlackController | elias-haeussler.de API</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:EliasHaeussler_Api_Controller_SlackController" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../../../1.0.0/index.html" data-version="1.0.0">1.0.0</option>
+                                            <option value="../../../../2.0.0/index.html" data-version="2.0.0">2.0.0</option>
+                                            <option value="../../../../3.0.0/index.html" data-version="3.0.0">3.0.0</option>
+                                            <option value="../../../../3.1.0/index.html" data-version="3.1.0">3.1.0</option>
+                                            <option value="../../../../4.0.0/index.html" data-version="4.0.0">4.0.0</option>
+                                            <option value="../../../../4.0.1/index.html" data-version="4.0.1">4.0.1</option>
+                                            <option value="../../../../4.0.2/index.html" data-version="4.0.2">4.0.2</option>
+                                            <option value="../../../../4.1.0/index.html" data-version="4.1.0">4.1.0</option>
+                                            <option value="../../../../4.1.1/index.html" data-version="4.1.1">4.1.1</option>
+                                            <option value="../../../../4.2.0/index.html" data-version="4.2.0">4.2.0</option>
+                                            <option value="../../../../4.3.0/index.html" data-version="4.3.0">4.3.0</option>
+                                            <option value="../../../../4.3.1/index.html" data-version="4.3.1">4.3.1</option>
+                                            <option value="../../../../master/index.html" data-version="master">master</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">elias-haeussler.de API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../EliasHaeussler.html">EliasHaeussler</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api.html">Api</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api/Controller.html">Controller</a></li><li class="backslash">\</li><li>SlackController</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            SlackController
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>SlackController</strong>        extends <a href="../../../EliasHaeussler/Api/Controller/BaseController.html"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a>        (<a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>Slack API controller.</p>            <p>This API controller converts API requests to valid requests for the Slack API and processes them. Each available
+route is mapped to an appropriate routing class which should be an instance of {see BaseRoute} class.</p>                    </div>
+    
+            <h2>Traits</h2>
+
+        
+    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="../../../EliasHaeussler/Api/Controller/UserEnvironmentRequired.html"><abbr title="EliasHaeussler\Api\Controller\UserEnvironmentRequired">UserEnvironmentRequired</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Set requirement of user environment for specific API controllers.
+                </div>
+            </div>
+            </div>
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>REQUEST_HEADER_PREFIX_PATTERN</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ROUTE_CLI</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ROUTE_MAPPINGS</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>API_URI</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>AUTHORIZE_URI</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ROUTE_AUTH</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>REQUIRED_SCOPES</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_requestBody">
+                                        protected                                        string
+                </td>
+                <td>$requestBody</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#property_requestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_requestHeaders">
+                                        protected                                        array
+                </td>
+                <td>$requestHeaders</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#property_requestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_requestParameters">
+                                        protected                                        array
+                </td>
+                <td>$requestParameters</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#property_requestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_route">
+                                        protected                                        string
+                </td>
+                <td>$route</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#property_route"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_database">
+                                        protected                                        <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
+                </td>
+                <td>$database</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_clientId">
+                                        protected                                        string
+                </td>
+                <td>$clientId</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_clientSecret">
+                                        protected                                        string
+                </td>
+                <td>$clientSecret</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_signingSecret">
+                                        protected                                        string
+                </td>
+                <td>$signingSecret</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_authType">
+                                        protected                                        string
+                </td>
+                <td>$authType</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_authState">
+                                        protected                                        string
+                </td>
+                <td>$authState</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_requestData">
+                                        protected                                        array
+                </td>
+                <td>$requestData</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_authToken">
+                                        protected                                        string
+                </td>
+                <td>$authToken</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method___construct">__construct</a>(string $route)
+        
+                                            <p>Initialize API request for selected controller.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method___construct"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_call">call</a>()
+        
+                                            <p>Process API request.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildMessage">buildMessage</a>(string $type, mixed $arg1, array ...$_)
+        
+                                            <p>Build message for Frontend.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRequestBody">getRequestBody</a>()
+        
+                                            <p>Get body of current API request.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRequestHeaders">getRequestHeaders</a>()
+        
+                                            <p>Get HTTP headers of current API request.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRequestHeader">getRequestHeader</a>(string $header, bool $useRawInput = false)
+        
+                                            <p>Get value of given HTTP header.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeader"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRequestParameters">getRequestParameters</a>()
+        
+                                            <p>Get API request parameters.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed|null
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRequestParameter">getRequestParameter</a>(string $key)
+        
+                                            <p>Get value of given API request parameters.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameter"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_setRoute">setRoute</a>(string $route)
+        
+                                            <p>Set current API request route.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_setRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initializeRequest">initializeRequest</a>()
+        
+                                            <p>Initialize API request.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_readRequestBody">readRequestBody</a>()
+        
+                                            <p>Read body of current API request.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_readRequestHeaders">readRequestHeaders</a>()
+        
+                                            <p>Rad HTTP headers of current API request.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_readRequestParameters">readRequestParameters</a>()
+        
+                                            <p>Read GET and POST parameters of current API request.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initializeEnvironment">initializeEnvironment</a>()
+        
+                                            <p>{@inheritdoc}</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/UserEnvironmentRequired.html#method_initializeEnvironment"><abbr title="EliasHaeussler\Api\Controller\UserEnvironmentRequired">UserEnvironmentRequired</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_matchesRoute">matchesRoute</a>(string $route)
+        
+                                            <p>Check if given route matches the current route.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_matchesRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool|string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_api">api</a>(string $function, string|array $data, bool $json = true, bool $authorize = true)
+        
+                                            <p>Call the Slack API with given function and data.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildBotMessage">buildBotMessage</a>(string $type, string|<a target="_blank" href="http://php.net/Exception">Exception</a> $message, array $attachments = [], bool $public = false, array $additionalConfiguration = [])
+        
+                                            <p>Build message for Bot.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildAttachmentForBotMessage">buildAttachmentForBotMessage</a>(string $header, string $body, string $preText = &#039;&#039;, string $fallback = &#039;&#039;, bool $addFooter = false, array $additionalData = [], array $markdown = [&#039;fields&#039;])
+        
+                                            <p>Generate attachment for bot message.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildAttachmentFooter">buildAttachmentFooter</a>()
+        
+                                            <p>Build footer for Slack attachments.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_checkApiResult">checkApiResult</a>(string|bool $result)
+        
+                                            <p>Check if result from API request is valid.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getUserInformation">getUserInformation</a>(bool $setLanguage = true)
+        
+                                            <p>Request user information from Slack API and set user-preferred language.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getUserDataFromString">getUserDataFromString</a>(string $rawString)
+        
+                                            <p>Get user ID and user name from raw string.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRawCommandName">getRawCommandName</a>()
+        
+                                            <p>Get raw command name from full slash command.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getAuthToken">getAuthToken</a>()
+        
+                                            <p>Get Slack authentication token.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getAuthState">getAuthState</a>()
+        
+                                            <p>Get Slack authentication state string.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getClientId">getClientId</a>()
+        
+                                            <p>Get client ID of Slack app.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getClientSecret">getClientSecret</a>()
+        
+                                            <p>Get client secret of Slack app.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRequestData">getRequestData</a>(string $key = &#039;&#039;)
+        
+                                            <p>Get data from API request.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_setRequestDataForKey">setRequestDataForKey</a>(string $key, mixed $value)
+        
+                                            <p>Set value for a specific key of the current API request data.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getDatabase">getDatabase</a>()
+        
+                                            <p>Get database connection.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_loadUserData">loadUserData</a>()
+        
+                                            <p>Load user data from database.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isUserAuthenticated">isUserAuthenticated</a>()
+        
+                                            <p>Check whether the current user is already authenticated.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_prepareCall">prepareCall</a>()
+        
+                                            <p>Check if request is verified before processing API request.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_storeRequestData">storeRequestData</a>()
+        
+                                            <p>Store raw request data by converting it into an array of data.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_setAccessType">setAccessType</a>()
+        
+                                            <p>Set access type of current API request.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isRequestValid">isRequestValid</a>()
+        
+                                            <p>Check whether the current request is valid.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRequiredScopes">getRequiredScopes</a>()
+        
+                                            <p>Get scopes which are required for the current route.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_routeRequiresAuthentication">routeRequiresAuthentication</a>()
+        
+                                            <p>Check if the current route requires user authentication.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isValidAuthState">isValidAuthState</a>()
+        
+                                            <p>Check whether the provided state is valid.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isRequestVerified">isRequestVerified</a>(string $timestamp, string $signature)
+        
+                                            <p>Check whether API request can be verified.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_showUserAuthenticationUri">showUserAuthenticationUri</a>()
+        
+                                            <p>Show message for necessary user authentication.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildUserAuthenticationUri">buildUserAuthenticationUri</a>()
+        
+                                            <p>Build URI for necessary user authentication.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method___construct"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L66">line 66</a></div>
+        <code>final                    
+    <strong>__construct</strong>(string $route)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Initialize API request for selected controller.</p>                    <p>Initializes the current API request for the selected controller by reading the request body and HTTP headers and
+defining the selected route. Finally, the concrete controller initialization will be processed. This is done by
+calling {see initializeRequest()}.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$route</td>
+                <td>API request route</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_call">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L109">line 109</a></div>
+        <code>                    
+    <strong>call</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Process API request.</p>                    <p>This methods calls a concrete routing class to process the current API request. It's necessary to check both the
+validity and authenticity inside this method as it differs from different requests.</p>                            </div>
+                <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the routing class is not available</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/NoMappingDefinedException.html"><abbr title="EliasHaeussler\Api\Exception\NoMappingDefinedException">NoMappingDefinedException</abbr></a></td>
+                <td>if no route mapping is defined for the current route</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildMessage">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L163">line 163</a></div>
+        <code>                    string
+    <strong>buildMessage</strong>(string $type, mixed $arg1, array ...$_)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build message for Frontend.</p>                    <p>Calls the appropriate method in {see Message} class to build a message in the Frontend. Note that it's required
+to pass all necessary arguments to this method if they are required by the appropriate method in {see Message}
+class. The first parameter <code>$type</code> defines the name of the method to be used for building the message.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td>Message type, will be used to call the appropriate method in {see Message} class</td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$arg1</td>
+                <td>First argument to be passed to appropriate method in {see Message} class. Required.</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>...$_</td>
+                <td>More arguments to be passed to appropriate method in {see Message} class. Optional.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The generated message, if successful, or an empty string, if the build process failed</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the {see Message} class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequestBody">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L154">line 154</a></div>
+        <code>                    string
+    <strong>getRequestBody</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get body of current API request.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>API request body</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequestHeaders">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L164">line 164</a></div>
+        <code>                    array
+    <strong>getRequestHeaders</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get HTTP headers of current API request.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Additional HTTP headers of API request</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequestHeader">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestHeader"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L181">line 181</a></div>
+        <code>                    string
+    <strong>getRequestHeader</strong>(string $header, bool $useRawInput = false)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get value of given HTTP header.</p>                    <p>Returns the value of a given HTTP header of the current API request. Note that you shouldn't provide the "HTTP_"
+prefix in the <code>$header</code> argument. Also note that hyphens will be replaced by underscores. This can be disabled
+by setting <code>$useRawInput</code> to <code>true</code>.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$header</td>
+                <td>Name of the HTTP header to return</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$useRawInput</td>
+                <td>Define whether the raw name of the given HTTP header should be used</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>Value of the given HTTP header</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequestParameters">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L197">line 197</a></div>
+        <code>                    array
+    <strong>getRequestParameters</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get API request parameters.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>API request parameters</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequestParameter">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_getRequestParameter"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L209">line 209</a></div>
+        <code>                    mixed|null
+    <strong>getRequestParameter</strong>(string $key)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get value of given API request parameters.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td>Name of the API request parameter to return</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed|null</td>
+            <td>API request parameters</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setRoute">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_setRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L219">line 219</a></div>
+        <code>                    
+    <strong>setRoute</strong>(string $route)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Set current API request route.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$route</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initializeRequest">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L547">line 547</a></div>
+        <code>            protected        
+    <strong>initializeRequest</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Initialize API request.</p>                    <p>Defines necessary variables for the API request and ensures that it can be processed without errors. This method
+can also be used to pre-check API conditions and user authentications.</p>                            </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_readRequestBody">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestBody"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L237">line 237</a></div>
+        <code>            protected        
+    <strong>readRequestBody</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Read body of current API request.</p>                    <p>Reads the raw body of the current API request and stores it in the current object.</p>                            </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_readRequestHeaders">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestHeaders"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L249">line 249</a></div>
+        <code>            protected        
+    <strong>readRequestHeaders</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Rad HTTP headers of current API request.</p>                    <p>Reads all HTTP headers of the current API request and stores them in the current object. Note that this method
+will only read headers starting with "HTTP_" as they can be customized by the sender. The prefix will be removed
+from the header name.</p>                            </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_readRequestParameters">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_readRequestParameters"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L273">line 273</a></div>
+        <code>            protected        
+    <strong>readRequestParameters</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Read GET and POST parameters of current API request.</p>                    <p>Reads the GET and POST parameters of the current API request and stores them together in the current object.</p>                            </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initializeEnvironment">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/UserEnvironmentRequired.html#method_initializeEnvironment"><abbr title="EliasHaeussler\Api\Controller\UserEnvironmentRequired">UserEnvironmentRequired</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/UserEnvironmentRequired.php#L36">line 36</a></div>
+        <code>            protected        
+    <strong>initializeEnvironment</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>{@inheritdoc}</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_matchesRoute">
+        <div class="location">in <a href="../../../EliasHaeussler/Api/Controller/BaseController.html#method_matchesRoute"><abbr title="EliasHaeussler\Api\Controller\BaseController">BaseController</abbr></a> at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/BaseController.php#L296">line 296</a></div>
+        <code>            protected        bool
+    <strong>matchesRoute</strong>(string $route)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check if given route matches the current route.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$route</td>
+                <td>Route to be checked against the current route</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the given route matches the current route, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_api">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L137">line 137</a></div>
+        <code>                    bool|string
+    <strong>api</strong>(string $function, string|array $data, bool $json = true, bool $authorize = true)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Call the Slack API with given function and data.</p>                    <p>Calls a specific function of the Slack API with the data provided to this method. Data can be provided as string
+or array. When providing data as string, make sure that it is already JSON-encoded if <code>$json</code> is set to <code>true</code>.
+Array data will be encoded as JSON if <code>$json</code> is set to <code>true</code>. Authorization headers can be send if <code>$authorize</code>
+is set to <code>true</code>.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$function</td>
+                <td>Slack API function</td>
+            </tr>
+                    <tr>
+                <td>string|array</td>
+                <td>$data</td>
+                <td>Additional data to be sent during API request</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$json</td>
+                <td>Define whether to use JSON or POST to send data</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$authorize</td>
+                <td>Define whether to send authorization headers</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool|string</td>
+            <td>The API result on success or <code>false</code> on failure</td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="https://api.slack.com/web#methods">https://api.slack.com/web#methods</a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildBotMessage">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L183">line 183</a></div>
+        <code>                    string
+    <strong>buildBotMessage</strong>(string $type, string|<a target="_blank" href="http://php.net/Exception">Exception</a> $message, array $attachments = [], bool $public = false, array $additionalConfiguration = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build message for Bot.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td>Message type</td>
+            </tr>
+                    <tr>
+                <td>string|<a target="_blank" href="http://php.net/Exception">Exception</a></td>
+                <td>$message</td>
+                <td>Message</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$attachments</td>
+                <td>Attachments</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$public</td>
+                <td>Define whether to post message publicly</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$additionalConfiguration</td>
+                <td>Additional configuration, will be merged with default configuration</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The rendered message</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildAttachmentForBotMessage">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L227">line 227</a></div>
+        <code>                    array
+    <strong>buildAttachmentForBotMessage</strong>(string $header, string $body, string $preText = &#039;&#039;, string $fallback = &#039;&#039;, bool $addFooter = false, array $additionalData = [], array $markdown = [&#039;fields&#039;])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Generate attachment for bot message.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$header</td>
+                <td>Header text</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$body</td>
+                <td>Body text</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$preText</td>
+                <td>Additional pre text</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$fallback</td>
+                <td>Fallback text</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$addFooter</td>
+                <td>Define whether to add footer to attachment</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$additionalData</td>
+                <td>Additional data, will be merged with the default data</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$markdown</td>
+                <td>Fields to format with Markdown</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Attachment for bot message</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildAttachmentFooter">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L260">line 260</a></div>
+        <code>                    string
+    <strong>buildAttachmentFooter</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build footer for Slack attachments.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>Slack attachment footer</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_checkApiResult">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L279">line 279</a></div>
+        <code>                    void
+    <strong>checkApiResult</strong>(string|bool $result)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check if result from API request is valid.</p>                    <p>Checks if the provided, raw JSON-encoded result from an API request is valid and contains a valid answer.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|bool</td>
+                <td>$result</td>
+                <td>Raw result from API request, parsed as JSON</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td>if API request failed or contains an invalid answer</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/AuthenticationException.html"><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></a></td>
+                <td>if the user needs to re-authenticate himself</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getUserInformation">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L329">line 329</a></div>
+        <code>                    mixed
+    <strong>getUserInformation</strong>(bool $setLanguage = true)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Request user information from Slack API and set user-preferred language.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>bool</td>
+                <td>$setLanguage</td>
+                <td>Define whether to request and set user-preferred language</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td>The user information result from Slack API</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td>if API request failed or contains an invalid answer</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/AuthenticationException.html"><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></a></td>
+                <td>if the user needs to re-authenticate himself</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getUserDataFromString">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L367">line 367</a></div>
+        <code>                    array
+    <strong>getUserDataFromString</strong>(string $rawString)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get user ID and user name from raw string.</p>                    <p>Returns user ID and user name of a user which is mentioned within a raw string. This method always returns an
+array of exactly two elements, being the first the user ID and the second the user name. If the string was not
+escaped or escaped incorrect, this method will only return the user name as second element of the returned array.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$rawString</td>
+                <td>The raw input string in which a user is mentioned</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Array of user ID (first element) and user name (second element)</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRawCommandName">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L397">line 397</a></div>
+        <code>                    string
+    <strong>getRawCommandName</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get raw command name from full slash command.</p>                    <p>Returns the raw command name from the currently selected slash command. The raw command name contains only
+the name of the slash command without its prepended slash.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The raw command name</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td>if no Slack command is set or no request data is available</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidParameterException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidParameterException">InvalidParameterException</abbr></a></td>
+                <td>if an invalid slash command has been provided</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getAuthToken">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L419">line 419</a></div>
+        <code>                    string
+    <strong>getAuthToken</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get Slack authentication token.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>Slack authentication token</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getAuthState">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L429">line 429</a></div>
+        <code>                    string
+    <strong>getAuthState</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get Slack authentication state string.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>Slack authentication state string</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getClientId">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L439">line 439</a></div>
+        <code>                    string
+    <strong>getClientId</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get client ID of Slack app.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>Client ID of Slack app</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getClientSecret">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L449">line 449</a></div>
+        <code>                    string
+    <strong>getClientSecret</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get client secret of Slack app.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>Client secret of Slack app</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequestData">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L464">line 464</a></div>
+        <code>                    array|string
+    <strong>getRequestData</strong>(string $key = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get data from API request.</p>                    <p>Returns data from API request, either a specific key, if provided, or all available data. This method returns
+an empty string, if no request data is available for the given key.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td>Key of API request to return. Optional.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|string</td>
+            <td>API request data</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setRequestDataForKey">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L478">line 478</a></div>
+        <code>                    void
+    <strong>setRequestDataForKey</strong>(string $key, mixed $value)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Set value for a specific key of the current API request data.</p>                    <p>Updates a specific value of the current API request data with the provided value for the given key. This can
+be useful i. e. to update the given text from Slack.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getDatabase">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L488">line 488</a></div>
+        <code>                    <abbr title="Doctrine\DBAL\Connection">Connection</abbr>
+    <strong>getDatabase</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get database connection.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="Doctrine\DBAL\Connection">Connection</abbr></td>
+            <td>Database connection</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_loadUserData">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L500">line 500</a></div>
+        <code>                    
+    <strong>loadUserData</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Load user data from database.</p>                    <p>Loads the available user data from the database and stores them locally.</p>                            </div>
+                <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/AuthenticationException.html"><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></a></td>
+                <td>if user data is missing in the database</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isUserAuthenticated">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L527">line 527</a></div>
+        <code>                    bool
+    <strong>isUserAuthenticated</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check whether the current user is already authenticated.</p>                    <p>Checks whether the current user is already authenticated by testing if an appropriate database entry exists.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the user is already authenticated, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_prepareCall">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L594">line 594</a></div>
+        <code>            protected        
+    <strong>prepareCall</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check if request is verified before processing API request.</p>                    <p>Checks whether the current request is verified by walking through the authentication process of Slack. This
+method is called right before the API request is being processed and will stop the process from being started
+if the request is not verified.</p>
+
+<p>THEREFORE, IT IS VERY IMPORTANT TO ALWAYS CALL THIS METHOD BEFORE PROCESSING ANY API REQUEST!</p>                            </div>
+                <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/AuthenticationException.html"><abbr title="EliasHaeussler\Api\Exception\AuthenticationException">AuthenticationException</abbr></a></td>
+                <td>if the current request could not be verified</td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" href="http://php.net/Exception">Exception</a></td>
+                <td>if the difference between request send and receive time could not be calculated</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_storeRequestData">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L611">line 611</a></div>
+        <code>            protected        
+    <strong>storeRequestData</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Store raw request data by converting it into an array of data.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setAccessType">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L622">line 622</a></div>
+        <code>            protected        
+    <strong>setAccessType</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Set access type of current API request.</p>                    <p>The access type is defined by the user agent of the current request. If the request was generated by Slack, the
+user agent will be any type of "Slackbot".</p>                            </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isRequestValid">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L643">line 643</a></div>
+        <code>            protected        bool
+    <strong>isRequestValid</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check whether the current request is valid.</p>                    <p>Checks whether the request data is set and has been initialized yet. If not, an exception will be thrown. If the
+request data is already set but does not include a user id, the request is marked as invalid.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the request is valid, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidRequestException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidRequestException">InvalidRequestException</abbr></a></td>
+                <td>if the request data is not set or has not been initialized yet</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequiredScopes">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L660">line 660</a></div>
+        <code>            protected        array
+    <strong>getRequiredScopes</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get scopes which are required for the current route.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Required scopes for the current route</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_routeRequiresAuthentication">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L670">line 670</a></div>
+        <code>            protected        bool
+    <strong>routeRequiresAuthentication</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check if the current route requires user authentication.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the current route requires authentication, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isValidAuthState">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L682">line 682</a></div>
+        <code>            protected        bool
+    <strong>isValidAuthState</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check whether the provided state is valid.</p>                    <p>Checks whether the request state, provided by GET parameter, equals the expected state.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the requested state equals the expected state</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isRequestVerified">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L704">line 704</a></div>
+        <code>            protected        bool
+    <strong>isRequestVerified</strong>(string $timestamp, string $signature)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check whether API request can be verified.</p>                    <p>Checks whether the current API request can be verified. This is done in multiple steps. At first, the time
+difference between request and current time is checked. If the difference is larger than five minutes, the
+request cannot be verified. In the second step, a signature will be calculated an compared with a delivered
+signature. If both signatures do not match, the request cannot be verified as well.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$timestamp</td>
+                <td>Timestamp of the API request, sent by Slack as HTTP header</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$signature</td>
+                <td>Signature of the API request, sent by Slack as HTTP header</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the request can be verified, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" href="http://php.net/Exception">Exception</a></td>
+                <td>if the difference between request send and receive time could not be calculated</td>
+            </tr>
+            </table>
+
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="https://api.slack.com/docs/verifying-requests-from-slack">https://api.slack.com/docs/verifying-requests-from-slack</a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_showUserAuthenticationUri">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L730">line 730</a></div>
+        <code>            protected        
+    <strong>showUserAuthenticationUri</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Show message for necessary user authentication.</p>                                                </div>
+                <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the {see Frontend} class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildUserAuthenticationUri">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Controller/SlackController.php#L751">line 751</a></div>
+        <code>            protected        string
+    <strong>buildUserAuthenticationUri</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Build URI for necessary user authentication.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>URI for user authentication</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

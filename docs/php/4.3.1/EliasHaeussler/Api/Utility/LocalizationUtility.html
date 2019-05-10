@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>EliasHaeussler\Api\Utility\LocalizationUtility | elias-haeussler.de API</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:EliasHaeussler_Api_Utility_LocalizationUtility" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../../../1.0.0/index.html" data-version="1.0.0">1.0.0</option>
+                                            <option value="../../../../2.0.0/index.html" data-version="2.0.0">2.0.0</option>
+                                            <option value="../../../../3.0.0/index.html" data-version="3.0.0">3.0.0</option>
+                                            <option value="../../../../3.1.0/index.html" data-version="3.1.0">3.1.0</option>
+                                            <option value="../../../../4.0.0/index.html" data-version="4.0.0">4.0.0</option>
+                                            <option value="../../../../4.0.1/index.html" data-version="4.0.1">4.0.1</option>
+                                            <option value="../../../../4.0.2/index.html" data-version="4.0.2">4.0.2</option>
+                                            <option value="../../../../4.1.0/index.html" data-version="4.1.0">4.1.0</option>
+                                            <option value="../../../../4.1.1/index.html" data-version="4.1.1">4.1.1</option>
+                                            <option value="../../../../4.2.0/index.html" data-version="4.2.0">4.2.0</option>
+                                            <option value="../../../../4.3.0/index.html" data-version="4.3.0">4.3.0</option>
+                                            <option value="../../../../4.3.1/index.html" data-version="4.3.1">4.3.1</option>
+                                            <option value="../../../../master/index.html" data-version="master">master</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">elias-haeussler.de API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../EliasHaeussler.html">EliasHaeussler</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api.html">Api</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api/Utility.html">Utility</a></li><li class="backslash">\</li><li>LocalizationUtility</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            LocalizationUtility
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>LocalizationUtility</strong>        (<a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Utility/LocalizationUtility.php">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>Localization utility functions.</p>                                </div>
+    
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>LANGUAGE_CODE_PATTERN</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>LOCALIZATION_PATH</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>LOCALIZATION_FILE_PATTERN</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>DEFAULT_FILE_NAME</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>LOCALIZATION_TEXT_XPATH</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>DEFAULT_LANGUAGE</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_fileCache">
+                    static                    protected                                        array
+                </td>
+                <td>$fileCache</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_userPreferredLanguage">
+                    static                    protected                                        string
+                </td>
+                <td>$userPreferredLanguage</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_selectedLanguage">
+                    static                    protected                                        string
+                </td>
+                <td>$selectedLanguage</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_localize">localize</a>(string $id, string|null $type = self::DEFAULT_FILE_NAME, string|null $default = &#039;&#039;, mixed ...$arguments)
+        
+                                            <p>Localize a text by its id and localization type.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_readUserPreferredLanguages">readUserPreferredLanguages</a>(string|null $source = null)
+        
+                                            <p>Read user-preferred localization languages by given locale string.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_setUserPreferredLanguage">setUserPreferredLanguage</a>(string $userPreferredLanguage)
+        
+                                            <p>Set user-preferred localization language.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_parseNodes">parseNodes</a>(string $type = self::DEFAULT_FILE_NAME)
+        
+                                            <p>Parse nodes of a localization file.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_readFileContents">readFileContents</a>(string $type = self::DEFAULT_FILE_NAME)
+        
+                                            <p>Read contents of a localization file.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_localize">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Utility/LocalizationUtility.php#L71">line 71</a></div>
+        <code>        static            string
+    <strong>localize</strong>(string $id, string|null $type = self::DEFAULT_FILE_NAME, string|null $default = &#039;&#039;, mixed ...$arguments)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Localize a text by its id and localization type.</p>                    <p>Returns a localized text which is identified by its id and the localization type. The localization type needs to
+match the appropriate localization file without its file extension.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$id</td>
+                <td>The localization text identifier</td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$type</td>
+                <td>The localization type, needs to match the basename of the appropriate localization file</td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$default</td>
+                <td>An optional default value which will be returned if the localization text is not available</td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>...$arguments</td>
+                <td>Additional arguments which will be passed to the internal {see sprintf()} function</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>The localized text</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_readUserPreferredLanguages">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Utility/LocalizationUtility.php#L114">line 114</a></div>
+        <code>        static            void
+    <strong>readUserPreferredLanguages</strong>(string|null $source = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Read user-preferred localization languages by given locale string.</p>                    <p>Reads and stores the user-preferred localization language by a given locale string. If no locale string is
+provided, the language will be extracted from the HTTP header.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$source</td>
+                <td>Locale source string</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setUserPreferredLanguage">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Utility/LocalizationUtility.php#L137">line 137</a></div>
+        <code>        static            void
+    <strong>setUserPreferredLanguage</strong>(string $userPreferredLanguage)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Set user-preferred localization language.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$userPreferredLanguage</td>
+                <td>User-preferred localization language</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_parseNodes">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Utility/LocalizationUtility.php#L155">line 155</a></div>
+        <code>        static    protected        void
+    <strong>parseNodes</strong>(string $type = self::DEFAULT_FILE_NAME)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Parse nodes of a localization file.</p>                    <p>Reads the file contents of a localization file, identified by the given type, and parses its nodes. During the
+execution of this method, the file contents and its nodes will be saved to the
+{see LocalizationUtility::$fileCache} property. Note that the method does not return the nodes of the
+localization files, but only parses and stores them locally.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td>The localization type, needs to match the basename of the appropriate localization file</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/FileNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\FileNotFoundException">FileNotFoundException</abbr></a></td>
+                <td>if the localization file cannot be found or is not readable</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidFileException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidFileException">InvalidFileException</abbr></a></td>
+                <td>if the localization file contains invalid content</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_readFileContents">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.3.1/src/classes/Utility/LocalizationUtility.php#L203">line 203</a></div>
+        <code>        static    protected        void
+    <strong>readFileContents</strong>(string $type = self::DEFAULT_FILE_NAME)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Read contents of a localization file.</p>                    <p>Reads the contents of a localization file, identified by the given type, and stores them locally in the
+{see LocalizationUtility::$fileCache} property. Note that this method does not return the file contents,
+but only parses and stores them locally.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td>The localization type, needs to match the basename of the appropriate localization file</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/FileNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\FileNotFoundException">FileNotFoundException</abbr></a></td>
+                <td>if the localization file cannot be found or is not readable</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>
