@@ -5,8 +5,7 @@
 declare(strict_types=1);
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__)
-    ->exclude('docs');
+    ->in(['public', 'src']);
 
 return PhpCsFixer\Config::create()
     ->setRules([
@@ -16,7 +15,6 @@ return PhpCsFixer\Config::create()
         '@PhpCsFixer' => true,
         '@Symfony' => true,
         'concat_space' => ['spacing' => 'one'],
-        'elseif' => false,
         'linebreak_after_opening_tag' => true,
         'list_syntax' => true,
         'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
