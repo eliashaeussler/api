@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Exit on first error
-set -e
-
 # Global variables
 SECONDS=0
 SCRIPT_PATH="$(dirname "$0")"
@@ -27,20 +24,17 @@ fi
 
 # Run Sami
 output "Building documentation..." ${ACTION}
-set +e
 php ${SAMI} update ${CONFIG_FILE} $@
-set -e
 output "Done." ${SUCCESS}
 
 # Go back to last branch
 output "Going back to initial branch..." ${ACTION} 0
-git add "$ROOT_PATH/docs" > /dev/null
-git stash push --quiet --message "Updated code documentation" -- "$ROOT_PATH/docs"
 git checkout --quiet "$CURRENT_BRANCH"
-if [[ "$(git stash list)" ]]; then
-    git checkout --quiet stash -- "$ROOT_PATH/docs"
-    git stash drop --quiet
-fi
+output " Done." ${SUCCESS}
+
+# Apply generated documentation
+output "Applying generated documentation..." ${ACTION} 0
+cp -r "$ROOT_PATH/docs/__build__/" "$ROOT_PATH/docs/php/" && rm -r "$ROOT_PATH/docs/__build__"
 output " Done." ${SUCCESS}
 
 print_success_message

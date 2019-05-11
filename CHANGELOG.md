@@ -14,6 +14,10 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 - Update Twig as the current version has security issues
 
+### Fixed
+
+- Allow switching of versions while building code documentation
+
 
 
 ## [4.3.2] - 2019-05-10

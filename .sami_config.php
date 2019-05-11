@@ -20,7 +20,7 @@ $versions = (new \Sami\Version\GitVersionCollection(ROOT_PATH))
 return new \Sami\Sami($iterator, [
     'versions' => $versions,
     'title' => 'elias-haeussler.de API',
-    'build_dir' => DOCS_PATH . '/php/%version%',
+    'build_dir' => DOCS_PATH . '/__build__/%version%',
     'cache_dir' => DOCS_PATH . '/cache/%version%',
     'remote_repository' => new \Sami\RemoteRepository\GitHubRemoteRepository('eliashaeussler/api', ROOT_PATH),
     'default_opened_level' => 2,
