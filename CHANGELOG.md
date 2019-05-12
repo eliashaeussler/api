@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.3.3] - 2019-05-12
+
 ### Added
 
 - Add `roave/security-advisories` package to keep the set of installed packages secure
