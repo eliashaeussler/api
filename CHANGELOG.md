@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Added
 
 - Add `roave/security-advisories` package to keep the set of installed packages secure
+- Add missing code documentation
 
 ### Updated
 
