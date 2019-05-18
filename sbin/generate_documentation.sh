@@ -24,7 +24,7 @@ fi
 
 # Run Sami
 output "Building documentation..." ${ACTION}
-php ${SAMI} update ${CONFIG_FILE} $@
+php ${SAMI} update ${CONFIG_FILE} --force $@
 output "Done." ${SUCCESS}
 
 # Go back to last branch
