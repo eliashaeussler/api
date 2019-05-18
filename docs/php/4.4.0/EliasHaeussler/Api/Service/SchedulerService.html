@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>EliasHaeussler\Api\Service\SchedulerService | elias-haeussler.de API</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:EliasHaeussler_Api_Service_SchedulerService" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../../../1.0.0/index.html" data-version="1.0.0">1.0.0</option>
+                                            <option value="../../../../2.0.0/index.html" data-version="2.0.0">2.0.0</option>
+                                            <option value="../../../../3.0.0/index.html" data-version="3.0.0">3.0.0</option>
+                                            <option value="../../../../3.1.0/index.html" data-version="3.1.0">3.1.0</option>
+                                            <option value="../../../../4.0.0/index.html" data-version="4.0.0">4.0.0</option>
+                                            <option value="../../../../4.0.1/index.html" data-version="4.0.1">4.0.1</option>
+                                            <option value="../../../../4.0.2/index.html" data-version="4.0.2">4.0.2</option>
+                                            <option value="../../../../4.1.0/index.html" data-version="4.1.0">4.1.0</option>
+                                            <option value="../../../../4.1.1/index.html" data-version="4.1.1">4.1.1</option>
+                                            <option value="../../../../4.2.0/index.html" data-version="4.2.0">4.2.0</option>
+                                            <option value="../../../../4.3.0/index.html" data-version="4.3.0">4.3.0</option>
+                                            <option value="../../../../4.3.1/index.html" data-version="4.3.1">4.3.1</option>
+                                            <option value="../../../../4.3.2/index.html" data-version="4.3.2">4.3.2</option>
+                                            <option value="../../../../4.3.3/index.html" data-version="4.3.3">4.3.3</option>
+                                            <option value="../../../../4.3.4/index.html" data-version="4.3.4">4.3.4</option>
+                                            <option value="../../../../4.4.0/index.html" data-version="4.4.0">4.4.0</option>
+                                            <option value="../../../../master/index.html" data-version="master">master</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">elias-haeussler.de API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../EliasHaeussler.html">EliasHaeussler</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api.html">Api</a></li><li class="backslash">\</li><li><a href="../../../EliasHaeussler/Api/Service.html">Service</a></li><li class="backslash">\</li><li>SchedulerService</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            SchedulerService
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>SchedulerService</strong>        (<a href="https://github.com/eliashaeussler/api/blob/4.4.0/src/classes/Service/SchedulerService.php">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>Task scheduler service.</p>            <p>This class provides a service to schedule and execute tasks. Tasks are working processes
+which need to be executed at a given time in the future. If the execution time was met,
+the scheduler service can be used to execute the tasks. Each task needs to extend the
+{see AbstractTask} class in order to serve as scheduler task.</p>                    </div>
+    
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>TASK_METHOD</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_executeTask">executeTask</a>(string $className, array $arguments, <a target="_blank" href="http://php.net/DateTime">DateTime</a> $executionTime, bool $strict = true)
+        
+                                            <p>Execute a scheduled task.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_scheduleTask">scheduleTask</a>(string $className, <a target="_blank" href="http://php.net/DateTime">DateTime</a> $execution, array $arguments = [])
+        
+                                            <p>Schedule a specific task.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getScheduledTasks">getScheduledTasks</a>(string|null $className = null, int|null $uid = null, int $limit = 20, bool $ignoreExecutionTime = false)
+        
+                                            <p>Get currently scheduled tasks.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_finalizeExecution">finalizeExecution</a>(int $uid, bool $executionResult)
+        
+                                            <p>Finalize executed task in database.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_cancelScheduledTasks">cancelScheduledTasks</a>(string $className, array $argumentConstraints = [])
+        
+                                            <p>Cancel scheduled tasks.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_log">log</a>(int $taskUid, string $message)
+        
+                                            <p>Log message for a given task.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_persistTaskForSchedule">persistTaskForSchedule</a>(string $className, <a target="_blank" href="http://php.net/DateTime">DateTime</a> $execution, array $arguments)
+        
+                                            <p>Persist a scheduled task in the database.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_executeTask">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.4.0/src/classes/Service/SchedulerService.php#L62">line 62</a></div>
+        <code>        static            bool
+    <strong>executeTask</strong>(string $className, array $arguments, <a target="_blank" href="http://php.net/DateTime">DateTime</a> $executionTime, bool $strict = true)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Execute a scheduled task.</p>                    <p>Runs a scheduled task if it meets the requirements. These are the following:
+- Task must extend the {see AbstractTask} class
+- Arguments must match the task method signature
+- Execution time must be in the past or equal the current time</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$className</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$arguments</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" href="http://php.net/DateTime">DateTime</a></td>
+                <td>$executionTime</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$strict</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the task was successfully executed, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" href="http://php.net/ReflectionException">ReflectionException</a></td>
+                <td>if the task class or method does not exist</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidClassException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidClassException">InvalidClassException</abbr></a></td>
+                <td>if the class for the scheduled task is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_scheduleTask">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.4.0/src/classes/Service/SchedulerService.php#L126">line 126</a></div>
+        <code>        static            bool
+    <strong>scheduleTask</strong>(string $className, <a target="_blank" href="http://php.net/DateTime">DateTime</a> $execution, array $arguments = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Schedule a specific task.</p>                    <p>Stores a specific task in the database in order to make them execute at the given
+execution time. It's important that the task meets the requirements, such as
+extending the {see AbstractTask} class and serving the correct arguments needed for
+executing the appropriate task method. Also, the execution time has to be in the
+future.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$className</td>
+                <td>Name of the class to be used to execute the task</td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" href="http://php.net/DateTime">DateTime</a></td>
+                <td>$execution</td>
+                <td>Scheduled task execution time</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$arguments</td>
+                <td>Arguments which will be passed to the task method</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if the task was successfully scheduled, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the {see ConnectionService} class is not available</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidClassException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidClassException">InvalidClassException</abbr></a></td>
+                <td>if the task class does not extend the {see AbstractTask} class</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidExecutionTimeException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidExecutionTimeException">InvalidExecutionTimeException</abbr></a></td>
+                <td>if the scheduled execution time is not in the future</td>
+            </tr>
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/InvalidMethodSignatureException.html"><abbr title="EliasHaeussler\Api\Exception\InvalidMethodSignatureException">InvalidMethodSignatureException</abbr></a></td>
+                <td>if the number of arguments does not match the number of task method arguments</td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" href="http://php.net/ReflectionException">ReflectionException</a></td>
+                <td>if the task class does not exist</td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" href="http://php.net/Exception">Exception</a></td>
+                <td>if the {see DateTime} object cannot be instantiated</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getScheduledTasks">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.4.0/src/classes/Service/SchedulerService.php#L193">line 193</a></div>
+        <code>        static            array
+    <strong>getScheduledTasks</strong>(string|null $className = null, int|null $uid = null, int $limit = 20, bool $ignoreExecutionTime = false)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get currently scheduled tasks.</p>                    <p>Returns tasks which are currently scheduled for execution. Depending on the provided arguments,
+this method either returns all tasks or only tasks matching the given uid and/or the given
+class name. The class name can either be a FQN or the full class name relative to the
+<code>EliasHaeussler\Api\Task</code> namespace.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$className</td>
+                <td>Class name (either FQN or task class name) whose tasks should be returned</td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$uid</td>
+                <td>Uid of a specific task to be returned</td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$limit</td>
+                <td>Maximum numbers of tasks to be executed at this iteration</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$ignoreExecutionTime</td>
+                <td>Define whether to ignore exeuction time and return all tasks matching the constraints</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>Result set of the tasks which are scheduled for execution</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the {see ConnectionService} class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_finalizeExecution">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.4.0/src/classes/Service/SchedulerService.php#L271">line 271</a></div>
+        <code>        static            void
+    <strong>finalizeExecution</strong>(int $uid, bool $executionResult)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Finalize executed task in database.</p>                    <p>Writes the result of a executed task to the database.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$uid</td>
+                <td>Uid of the executed task</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$executionResult</td>
+                <td>Result of the executed task</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the {see ConnectionService} class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_cancelScheduledTasks">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.4.0/src/classes/Service/SchedulerService.php#L292">line 292</a></div>
+        <code>        static            void
+    <strong>cancelScheduledTasks</strong>(string $className, array $argumentConstraints = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Cancel scheduled tasks.</p>                    <p>Cancels scheduled tasks by class name and optional argument constraints. Only tasks which haven't been
+executed will be canceled.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$className</td>
+                <td>Class name of the tasks to be canceled</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$argumentConstraints</td>
+                <td>Optional argument constraints, will be passed as serialized value to the database</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the {see ConnectionService} class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_log">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.4.0/src/classes/Service/SchedulerService.php#L327">line 327</a></div>
+        <code>        static            void
+    <strong>log</strong>(int $taskUid, string $message)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Log message for a given task.</p>                    <p>Appends the log of a given task with the given log message.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$taskUid</td>
+                <td>Uid of the task whose log should be appended by the given log message</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$message</td>
+                <td>Log message to be appended to the log of the given task</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the {see ConnectionService} class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_persistTaskForSchedule">
+        <div class="location">at         <a href="https://github.com/eliashaeussler/api/blob/4.4.0/src/classes/Service/SchedulerService.php#L351">line 351</a></div>
+        <code>        static    protected        bool
+    <strong>persistTaskForSchedule</strong>(string $className, <a target="_blank" href="http://php.net/DateTime">DateTime</a> $execution, array $arguments)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Persist a scheduled task in the database.</p>                    <p>Writes a scheduled task to the database.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$className</td>
+                <td>Name of the task class, must extend the {see AbstractTask} class</td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" href="http://php.net/DateTime">DateTime</a></td>
+                <td>$execution</td>
+                <td>Time of scheduled execution</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$arguments</td>
+                <td>Arguments passed to the task method</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><code>true</code> if persistence was successful, <code>false</code> otherwise</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../EliasHaeussler/Api/Exception/ClassNotFoundException.html"><abbr title="EliasHaeussler\Api\Exception\ClassNotFoundException">ClassNotFoundException</abbr></a></td>
+                <td>if the {see ConnectionService} class is not available</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>
