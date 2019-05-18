@@ -33,7 +33,7 @@ version="$(git --git-dir="${ROOT_PATH}/.git" describe --tags)"
 
 # Install dependencies
 output "Install dependencies (no dev) via Composer..." ${ACTION} 0
-composer install --no-dev --quiet
+composer install --no-dev --quiet --classmap-authoritative
 output " Done." ${SUCCESS}
 
 # Create directory structure on remote

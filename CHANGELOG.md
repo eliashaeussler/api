@@ -6,7 +6,9 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+### Updated
 
+- Use optimized composer autoloader for production
 
 
 
