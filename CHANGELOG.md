@@ -9,6 +9,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 ### Updated
 
 - Ignore previously cached files when generating documentation
+- Remove previously generate code documentation for a class which no longer existed
 
 
 
