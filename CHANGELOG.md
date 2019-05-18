@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.3.4] - 2019-05-18
+
 ### Updated
 
 - Ignore previously cached files when generating documentation
@@ -13,7 +19,7 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 
 
-## [4.3.3] - 2019-05-12
+## [4.3.3] - 2019-05-18
 
 ### Added
 
