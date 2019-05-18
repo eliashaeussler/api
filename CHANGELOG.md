@@ -6,6 +6,12 @@ Version numbers are based on [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+
+
+
+
+## [4.4.0] - 2019-05-18
+
 ### Added
 
 - Support for Gitlab CI
