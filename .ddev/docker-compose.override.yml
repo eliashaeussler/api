@@ -1,9 +1,0 @@
-version: '3.6'
-
-services:
-  db:
-    ports:
-      - 3306:3306
-  web:
-    environment:
-      PHP_IDE_CONFIG: serverName=$DDEV_HOSTNAME
